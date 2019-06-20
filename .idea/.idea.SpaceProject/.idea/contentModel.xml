@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\home\.Rider2018.3\system\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\home\.Rider2018.3\system\resharper-host\local\Transient\ReSharperHost\v183\SolutionCaches\_SpaceProject.648904449.00" t="ExcludeRecursive" />
+    <e p="C:\Users\home\UnityDocuments\SpaceProject" t="IncludeRecursive">
+      <e p="Assembly-CSharp.csproj" t="IncludeRecursive" />
+      <e p="Assets" t="Include">
+        <e p="Game" t="Include">
+          <e p="Scripts" t="Include">
+            <e p="ClickableTile.cs" t="Include" />
+            <e p="Node.cs" t="Include" />
+            <e p="TileMap.cs" t="Include" />
+            <e p="TileType.cs" t="Include" />
+            <e p="Unit.cs" t="Include" />
+          </e>
+        </e>
+      </e>
+      <e p="Library" t="ExcludeRecursive" />
+      <e p="obj" t="ExcludeRecursive" />
+      <e p="packages" t="ExcludeRecursive" />
+      <e p="SpaceProject.sln" t="IncludeFlat" />
+      <e p="Temp" t="ExcludeRecursive">
+        <e p="bin" t="ExcludeRecursive" />
+      </e>
+    </e>
+  </component>
+</project>
