@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2e49c5bb-5c92-4894-b6c2-f4aaf5b2a5f8" name="Default Changelist" comment="" />
+    <list default="true" id="2e49c5bb-5c92-4894-b6c2-f4aaf5b2a5f8" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.SpaceProject/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.SpaceProject/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Library/shadercompiler-UnityShaderCompiler.exe0.log" beforeDir="false" afterPath="$PROJECT_DIR$/Library/shadercompiler-UnityShaderCompiler.exe0.log" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -11,9 +14,25 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Assets/Game/Scripts/ClickableTile.cs">
+          <provider selected="true" editor-type-id="text-editor">
+            <state>
+              <caret column="6" selection-start-column="6" selection-end-column="6" />
+              <folding>
+                <marker date="1559678117468" expanded="true" signature="6:78" ph="..." />
+                <marker date="1559678117468" expanded="true" signature="122:705" ph="{...}" />
+                <marker date="1559678117468" expanded="true" signature="272:497" ph="{...}" />
+                <marker date="1559678117468" expanded="true" signature="521:703" ph="{...}" />
+                <marker date="1559678117468" expanded="true" signature="622:688" ph="{...}" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Assets/Game/Scripts/TileMap.cs">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="740">
+            <state relative-caret-position="494">
               <caret line="43" column="9" selection-start-line="43" selection-start-column="9" selection-end-line="43" selection-end-column="9" />
               <folding>
                 <marker date="1560714810990" expanded="false" signature="6:97" ph="..." />
@@ -61,80 +80,6 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Assets/Game/Scripts/Unit.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-362">
-              <caret line="22" column="49" selection-start-line="22" selection-start-column="49" selection-end-line="22" selection-end-column="49" />
-              <folding>
-                <marker date="1560975536916" expanded="false" signature="6:52" ph="..." />
-                <marker date="1560975536916" expanded="true" signature="87:3990" ph="{...}" />
-                <marker date="1560975536916" expanded="true" signature="432:629" ph="{...}" />
-                <marker date="1560975536916" expanded="true" signature="648:2127" ph="{...}" />
-                <marker date="1560975536916" expanded="true" signature="690:1321" ph="{...}" />
-                <marker date="1560975536916" expanded="true" signature="870:1298" ph="{...}" />
-                <marker date="1560975536916" expanded="true" signature="885:1147" ph="/* var cost = map.CostToEnterTile(currentPath[i], currentPath[i &lt; currentPath.Count-1 ? i + 1 : i]); ... */" />
-                <marker date="1560975536916" expanded="true" signature="1339:1473" ph="/* Have we moved our visible piece close enough to the target tile that we can ... */" />
-                <marker date="1560975536916" expanded="true" signature="1584:1634" ph="{...}" />
-                <marker date="1560975536916" expanded="true" signature="1676:1727" ph="{...}" />
-                <marker date="1560975536916" expanded="true" signature="2005:2084" ph="{...}" />
-                <marker date="1560975536916" expanded="true" signature="2192:2508" ph="{...}" />
-                <marker date="1560975536916" expanded="true" signature="2594:3654" ph="{...}" />
-                <marker date="1560975536916" expanded="true" signature="2628:2668" ph="{...}" />
-                <marker date="1560975536916" expanded="true" signature="2717:2757" ph="{...}" />
-                <marker date="1560975536916" expanded="true" signature="2780:2887" ph="/* Teleport us to our correct &quot;current&quot; position, in case we ... */" />
-                <marker date="1560975536916" expanded="true" signature="3359:3648" ph="{...}" />
-                <marker date="1560975536916" expanded="true" signature="3373:3564" ph="/* We only have one tile left in the path, and that tile MUST be our ultimate ... */" />
-                <marker date="1560975536916" expanded="true" signature="3725:3988" ph="{...}" />
-                <marker date="1560975536916" expanded="true" signature="3853:3894" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Assets/Game/Scripts/ClickableTile.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="500">
-              <caret line="30" selection-start-line="30" selection-end-line="30" />
-              <folding>
-                <marker date="1559678117468" expanded="false" signature="6:78" ph="..." />
-                <marker date="1559678117468" expanded="true" signature="122:705" ph="{...}" />
-                <marker date="1559678117468" expanded="true" signature="272:497" ph="{...}" />
-                <marker date="1559678117468" expanded="true" signature="521:703" ph="{...}" />
-                <marker date="1559678117468" expanded="true" signature="622:688" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Assets/Game/Scripts/Node.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-              <folding>
-                <marker date="1554741425713" expanded="false" signature="6:52" ph="..." />
-                <marker date="1554741425713" expanded="true" signature="72:383" ph="{...}" />
-                <marker date="1554741425713" expanded="true" signature="163:214" ph="{...}" />
-                <marker date="1554741425713" expanded="true" signature="254:381" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Assets/Game/Scripts/TileType.cs">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-              <folding>
-                <marker date="1554749338962" expanded="true" signature="63:202" ph="{...}" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
@@ -155,14 +100,17 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/Assets/Game/Scripts/ClickableTile.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Game/Scripts/Unit.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Game/Prefabs/Meteor.prefab" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Game/Scripts/TileType.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/C7033418-969C-409C-8CD1-4950555A0E6C/87/d9a92f33/Vector3.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/C7033418-969C-409C-8CD1-4950555A0E6C/27/f3889660/Component.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Game/Scripts/TileMap.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Game/Scripts/ClickableTile.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Game/Scripts/Unit.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/C7033418-969C-409C-8CD1-4950555A0E6C/87/d9a92f33/Vector3.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/C7033418-969C-409C-8CD1-4950555A0E6C/fb/06884011/Mathf.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scenes/Scene1.unity" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Assets/Game/Scripts/Node.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Assets/Scenes/SampleScene.unity" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/C7033418-969C-409C-8CD1-4950555A0E6C/08/5b8f77fb/LineRenderer.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/24D852EC-3AC3-4D89-9BB0-79CFB1FCBE45/81/9b85b9be/List`1.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
@@ -196,6 +144,10 @@
     </navigator>
     <panes>
       <pane id="AssemblyExplorer" />
+      <pane id="SolutionExplorer">
+        <option name="show-all-files" value="false" />
+      </pane>
+      <pane id="FileSystemExplorer" />
       <pane id="UnityExplorer">
         <subPane>
           <expand>
@@ -203,16 +155,33 @@
               <item name="Project" type="e068e287:UnityExplorerRootNode" />
               <item name="Assets" type="48f920db:UnityExplorerNode$AssetsRoot" />
             </path>
+            <path>
+              <item name="Project" type="e068e287:UnityExplorerRootNode" />
+              <item name="Assets" type="48f920db:UnityExplorerNode$AssetsRoot" />
+              <item name="Editor" type="1045f7f1:UnityExplorerNode" />
+            </path>
+            <path>
+              <item name="Project" type="e068e287:UnityExplorerRootNode" />
+              <item name="Assets" type="48f920db:UnityExplorerNode$AssetsRoot" />
+              <item name="Game" type="1045f7f1:UnityExplorerNode" />
+            </path>
+            <path>
+              <item name="Project" type="e068e287:UnityExplorerRootNode" />
+              <item name="Assets" type="48f920db:UnityExplorerNode$AssetsRoot" />
+              <item name="Game" type="1045f7f1:UnityExplorerNode" />
+              <item name="Scripts" type="1045f7f1:UnityExplorerNode" />
+            </path>
+            <path>
+              <item name="Project" type="e068e287:UnityExplorerRootNode" />
+              <item name="Assets" type="48f920db:UnityExplorerNode$AssetsRoot" />
+              <item name="Scenes" type="1045f7f1:UnityExplorerNode" />
+            </path>
           </expand>
           <select />
         </subPane>
         <option name="show-hidden-items" value="false" />
         <option name="show-project-names" value="true" />
       </pane>
-      <pane id="SolutionExplorer">
-        <option name="show-all-files" value="false" />
-      </pane>
-      <pane id="FileSystemExplorer" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -250,7 +219,7 @@
     </configuration>
   </component>
   <component name="SvnConfiguration">
-    <configuration />
+    <configuration>C:\Users\home\AppData\Roaming\Subversion</configuration>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -277,12 +246,14 @@
       <workItem from="1560713960131" duration="2270000" />
       <workItem from="1560886822148" duration="605000" />
       <workItem from="1560974461236" duration="1673000" />
-      <workItem from="1561062380891" duration="741000" />
+      <workItem from="1561062380891" duration="1509000" />
+      <workItem from="1561102723884" duration="2727000" />
+      <workItem from="1561119855072" duration="2023000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="52391000" />
+    <option name="totallyTimeSpent" value="57819000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -296,7 +267,7 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14765458" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15085287" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Capture Tool" order="3" />
@@ -312,10 +283,10 @@
       <window_info anchor="bottom" id="Performance Profiler" order="8" weight="0.32936078" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="10" />
-      <window_info active="true" anchor="bottom" id="Unity" order="11" visible="true" weight="0.30985916" />
+      <window_info anchor="bottom" id="Unity" order="11" weight="0.30985916" />
       <window_info anchor="bottom" id="Database Changes" order="12" />
       <window_info anchor="bottom" id="Unit Tests" order="13" weight="0.32936078" />
-      <window_info anchor="bottom" id="Terminal" order="14" visible="true" weight="0.32936078" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="14" visible="true" weight="0.32936078" />
       <window_info anchor="bottom" id="Event Log" order="15" side_tool="true" />
       <window_info anchor="bottom" id="Build" order="16" weight="0.3298731" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -541,9 +512,102 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Game/Scripts/Node.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
+          <folding>
+            <marker date="1554741425713" expanded="false" signature="6:52" ph="..." />
+            <marker date="1554741425713" expanded="true" signature="72:383" ph="{...}" />
+            <marker date="1554741425713" expanded="true" signature="163:214" ph="{...}" />
+            <marker date="1554741425713" expanded="true" signature="254:381" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Game/Scripts/TileType.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="160">
+          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
+          <folding>
+            <marker date="1554749338962" expanded="true" signature="63:202" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Game/Scripts/Unit.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-766">
+          <caret line="26" column="8" lean-forward="true" selection-start-line="26" selection-start-column="8" selection-end-line="26" selection-end-column="8" />
+          <folding>
+            <marker date="1560975536916" expanded="false" signature="6:52" ph="..." />
+            <marker date="1560975536916" expanded="true" signature="87:3990" ph="{...}" />
+            <marker date="1560975536916" expanded="true" signature="432:629" ph="{...}" />
+            <marker date="1560975536916" expanded="true" signature="648:2127" ph="{...}" />
+            <marker date="1560975536916" expanded="true" signature="690:1321" ph="{...}" />
+            <marker date="1560975536916" expanded="true" signature="870:1298" ph="{...}" />
+            <marker date="1560975536916" expanded="true" signature="885:1147" ph="/* var cost = map.CostToEnterTile(currentPath[i], currentPath[i &lt; currentPath.Count-1 ? i + 1 : i]); ... */" />
+            <marker date="1560975536916" expanded="true" signature="1339:1473" ph="/* Have we moved our visible piece close enough to the target tile that we can ... */" />
+            <marker date="1560975536916" expanded="true" signature="1584:1634" ph="{...}" />
+            <marker date="1560975536916" expanded="true" signature="1676:1727" ph="{...}" />
+            <marker date="1560975536916" expanded="true" signature="2005:2084" ph="{...}" />
+            <marker date="1560975536916" expanded="true" signature="2192:2508" ph="{...}" />
+            <marker date="1560975536916" expanded="true" signature="2594:3654" ph="{...}" />
+            <marker date="1560975536916" expanded="true" signature="2628:2668" ph="{...}" />
+            <marker date="1560975536916" expanded="true" signature="2717:2757" ph="{...}" />
+            <marker date="1560975536916" expanded="true" signature="2780:2887" ph="/* Teleport us to our correct &quot;current&quot; position, in case we ... */" />
+            <marker date="1560975536916" expanded="true" signature="3359:3648" ph="{...}" />
+            <marker date="1560975536916" expanded="true" signature="3373:3564" ph="/* We only have one tile left in the path, and that tile MUST be our ultimate ... */" />
+            <marker date="1560975536916" expanded="true" signature="3725:3988" ph="{...}" />
+            <marker date="1560975536916" expanded="true" signature="3853:3894" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Game/Prefabs/Meteor.prefab">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1450">
+          <caret line="12" column="44" lean-forward="true" selection-start-line="12" selection-start-column="44" selection-end-line="12" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Game/Materials/Hull.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Game/Sprites/Effects_v05_Publish.psd">
+      <provider selected="true" editor-type-id="layeredimageeditor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Game/Sprites/Meteor.png">
+      <provider selected="true" editor-type-id="images" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Game/Sprites/SpaceArtPublish.psd">
+      <provider selected="true" editor-type-id="layeredimageeditor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Scenes/SampleScene.unity">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3286" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Scenes/Scene1.unity">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Assets/Game/Scripts/ClickableTile.cs">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="6" selection-start-column="6" selection-end-column="6" />
+          <folding>
+            <marker date="1559678117468" expanded="true" signature="6:78" ph="..." />
+            <marker date="1559678117468" expanded="true" signature="122:705" ph="{...}" />
+            <marker date="1559678117468" expanded="true" signature="272:497" ph="{...}" />
+            <marker date="1559678117468" expanded="true" signature="521:703" ph="{...}" />
+            <marker date="1559678117468" expanded="true" signature="622:688" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Assets/Game/Scripts/TileMap.cs">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="740">
+        <state relative-caret-position="494">
           <caret line="43" column="9" selection-start-line="43" selection-start-column="9" selection-end-line="43" selection-end-column="9" />
           <folding>
             <marker date="1560714810990" expanded="false" signature="6:97" ph="..." />
@@ -586,72 +650,6 @@
             <marker date="1560714810990" expanded="true" signature="6882:6977" ph="{...}" />
             <marker date="1560714810990" expanded="true" signature="7089:7175" ph="{...}" />
             <marker date="1560714810990" expanded="true" signature="7294:7315" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Game/Scripts/ClickableTile.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="30" selection-start-line="30" selection-end-line="30" />
-          <folding>
-            <marker date="1559678117468" expanded="false" signature="6:78" ph="..." />
-            <marker date="1559678117468" expanded="true" signature="122:705" ph="{...}" />
-            <marker date="1559678117468" expanded="true" signature="272:497" ph="{...}" />
-            <marker date="1559678117468" expanded="true" signature="521:703" ph="{...}" />
-            <marker date="1559678117468" expanded="true" signature="622:688" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Game/Scripts/Node.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-          <folding>
-            <marker date="1554741425713" expanded="false" signature="6:52" ph="..." />
-            <marker date="1554741425713" expanded="true" signature="72:383" ph="{...}" />
-            <marker date="1554741425713" expanded="true" signature="163:214" ph="{...}" />
-            <marker date="1554741425713" expanded="true" signature="254:381" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Game/Scripts/TileType.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-          <folding>
-            <marker date="1554749338962" expanded="true" signature="63:202" ph="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Assets/Game/Scripts/Unit.cs">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-362">
-          <caret line="22" column="49" selection-start-line="22" selection-start-column="49" selection-end-line="22" selection-end-column="49" />
-          <folding>
-            <marker date="1560975536916" expanded="false" signature="6:52" ph="..." />
-            <marker date="1560975536916" expanded="true" signature="87:3990" ph="{...}" />
-            <marker date="1560975536916" expanded="true" signature="432:629" ph="{...}" />
-            <marker date="1560975536916" expanded="true" signature="648:2127" ph="{...}" />
-            <marker date="1560975536916" expanded="true" signature="690:1321" ph="{...}" />
-            <marker date="1560975536916" expanded="true" signature="870:1298" ph="{...}" />
-            <marker date="1560975536916" expanded="true" signature="885:1147" ph="/* var cost = map.CostToEnterTile(currentPath[i], currentPath[i &lt; currentPath.Count-1 ? i + 1 : i]); ... */" />
-            <marker date="1560975536916" expanded="true" signature="1339:1473" ph="/* Have we moved our visible piece close enough to the target tile that we can ... */" />
-            <marker date="1560975536916" expanded="true" signature="1584:1634" ph="{...}" />
-            <marker date="1560975536916" expanded="true" signature="1676:1727" ph="{...}" />
-            <marker date="1560975536916" expanded="true" signature="2005:2084" ph="{...}" />
-            <marker date="1560975536916" expanded="true" signature="2192:2508" ph="{...}" />
-            <marker date="1560975536916" expanded="true" signature="2594:3654" ph="{...}" />
-            <marker date="1560975536916" expanded="true" signature="2628:2668" ph="{...}" />
-            <marker date="1560975536916" expanded="true" signature="2717:2757" ph="{...}" />
-            <marker date="1560975536916" expanded="true" signature="2780:2887" ph="/* Teleport us to our correct &quot;current&quot; position, in case we ... */" />
-            <marker date="1560975536916" expanded="true" signature="3359:3648" ph="{...}" />
-            <marker date="1560975536916" expanded="true" signature="3373:3564" ph="/* We only have one tile left in the path, and that tile MUST be our ultimate ... */" />
-            <marker date="1560975536916" expanded="true" signature="3725:3988" ph="{...}" />
-            <marker date="1560975536916" expanded="true" signature="3853:3894" ph="{...}" />
           </folding>
         </state>
       </provider>
