@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class TileMap : MonoBehaviour
@@ -11,8 +9,8 @@ public class TileMap : MonoBehaviour
 
     private int[,] _tiles;
 
-    private int mapSizeX = 25;
-    private int mapSizeY = 25;
+    public int mapSizeX = 25;
+    public int mapSizeY  = 25;
     
     Node[,] _graph;
     
