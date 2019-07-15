@@ -23,7 +23,7 @@ public class MouseManager : MonoBehaviour
 
         if (Physics.Raycast(ray, out hitInfo))
         {
-            Debug.Log("Mouse is over: " + hitInfo.collider.name + " " + hitInfo.transform.root.gameObject.name);
+//            Debug.Log("Mouse is over: " + hitInfo.collider.name + " " + hitInfo.transform.root.gameObject.name);
             GameObject hitObject = hitInfo.transform.root.gameObject;
 
             SelectObject(hitObject);
