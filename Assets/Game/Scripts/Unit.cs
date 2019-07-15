@@ -93,16 +93,15 @@ public class Unit : MonoBehaviour
         // Teleport us to our correct "current" position, in case we
         // haven't finished the animation yet.
         transform.position = map.TileCoordToWorldCoord( tileX, tileY );
-        
-        int pathLength = currentPath.Count > remainingMovement ? (int) remainingMovement : currentPath.Count - 1;
+
+        int pathLength = CalculatePathLength();
         //Debug.Log("Path Length: " + pathLength);
         // Get cost from current tile to next tile
         for (int i = 1; i < pathLength+1; i++)
         {
             remainingMovement -= map.CostToEnterTile(currentPath[0], currentPath[i] );
         }
-        
-        
+       
         // Move us to the next tile in the sequence
         tileX = currentPath[pathLength].x;
         tileY = currentPath[pathLength].y;
@@ -117,6 +116,51 @@ public class Unit : MonoBehaviour
             currentPath = null;
         }
     }
+    
+    //Find path length before first 
+    private int CalculatePathLength() 
+    {
+        int possiblePathLength = currentPath.Count > remainingMovement ? (int) remainingMovement : currentPath.Count - 1;
+        int pathLength;
+        for (pathLength = 1; pathLength <= possiblePathLength-1; pathLength++)
+        {
+            var horizontalMoving = currentPath[pathLength - 1].x == currentPath[pathLength].x &&
+                                   currentPath[pathLength].x == currentPath[pathLength + 1].x &&
+                                   currentPath[pathLength - 1].y != currentPath[pathLength].y &&
+                                   currentPath[pathLength].y != currentPath[pathLength + 1].y;
+            var verticalMoving = currentPath[pathLength - 1].y == currentPath[pathLength].y &&
+                                 currentPath[pathLength].y == currentPath[pathLength + 1].y &&
+                                 currentPath[pathLength - 1].x != currentPath[pathLength].x &&
+                                 currentPath[pathLength].x != currentPath[pathLength + 1].x;
+            var diagonalMoving = currentPath[pathLength - 1].y != currentPath[pathLength].y &&
+                                 currentPath[pathLength].y != currentPath[pathLength + 1].y &&
+                                 currentPath[pathLength - 1].x != currentPath[pathLength].x &&
+                                 currentPath[pathLength].x != currentPath[pathLength + 1].x;
+            if(!horizontalMoving && !verticalMoving && !diagonalMoving)
+            {
+                return pathLength;
+            }
+        }
+        return pathLength;
+    }
+    
+    //            if (!(currentPath[pathLength - 1].x != currentPath[pathLength].x && currentPath[pathLength - 1].y == currentPath[pathLength].y) ||
+//                !(currentPath[pathLength - 1].y != currentPath[pathLength].y && currentPath[pathLength - 1].x == currentPath[pathLength].x) ||
+//                !(currentPath[pathLength - 1].y != currentPath[pathLength].y && currentPath[pathLength - 1].x != currentPath[pathLength].x))
+
+//                Debug.Log("Condition 1: " + (currentPath[pathLength-1].x == currentPath[pathLength].x &&
+//                                              currentPath[pathLength].x == currentPath[pathLength+1].x &&
+//                                              currentPath[pathLength-1].y != currentPath[pathLength].y &&
+//                                              currentPath[pathLength].y != currentPath[pathLength+1].y));
+//                Debug.Log("Condition 2: " + (currentPath[pathLength-1].y == currentPath[pathLength].y &&
+//                                              currentPath[pathLength].y == currentPath[pathLength+1].y &&
+//                                              currentPath[pathLength-1].x != currentPath[pathLength].x &&
+//                                              currentPath[pathLength].x != currentPath[pathLength+1].x));
+//                Debug.Log("Condition 3: " +  (currentPath[pathLength-1].y != currentPath[pathLength].y &&
+//                                               currentPath[pathLength].y != currentPath[pathLength+1].y &&
+//                                               currentPath[pathLength-1].x != currentPath[pathLength].x &&
+//                                               currentPath[pathLength].x != currentPath[pathLength+1].x));
+//                Debug.Log("Path length = " + pathLength);
 
     // The "Next Turn" button calls this.
     public void NextTurn() {
