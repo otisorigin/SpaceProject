@@ -37,36 +37,27 @@ public class Unit : MonoBehaviour
             lineRenderer.positionCount = currentPath.Count;
             lineRenderer.enabled = true;
             
-            for (int i = 0; i < currentPath.Count; i++)
+            for (var i = 0; i < currentPath.Count; i++)
             {
                 lineRenderer.SetPosition(i,  map.TileCoordToWorldCoord(currentPath[i].x, currentPath[i].y) + new Vector3(0, 0, -0.75f));
             }
             
         }
-        
+        var target = map.TileCoordToWorldCoord(tileX, tileY);
+        var position = transform.position;
         // Have we moved our visible piece close enough to the target tile that we can
         // advance to the next step in our pathfinding?
-        //Debug.Log("Map: " + map + "\n TileX = " + tileX + " TileY = " + tileY + " isPathSet = " + isPathSet);
-        if (Vector3.Distance(transform.position, map.TileCoordToWorldCoord(tileX, tileY)) < 0.1f && isPathSet)
+        if (Vector3.Distance(position, target) < 0.1f && isPathSet)
         {
             AdvancePathing();
         }
-        
         if (currentPath == null)
         {
             isPathSet = false;
         }
-            
-        var position = transform.position;
-        var target = Vector3.Lerp(position, map.TileCoordToWorldCoord( tileX, tileY ), speed/3.5f * Time.deltaTime);
-
         // Smoothly animate towards the correct map tile.
-        if(position != target && currentPath != null)
-        {
-            var targetRotation = Rotate(position, target);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation,  Time.deltaTime * speed);
-        }
-        transform.position = target;
+        transform.rotation = Quaternion.Slerp(transform.rotation, Rotate(position, target),  Time.deltaTime * speed);
+        transform.position = Vector3.Lerp(position, target, speed/3.5f * Time.deltaTime);
     }
 
     private Quaternion Rotate(Vector3 position, Vector3 target)
@@ -79,17 +70,11 @@ public class Unit : MonoBehaviour
     }
     
     // Advances our pathfinding progress by one tile.
-    void AdvancePathing() {
-        if (currentPath == null)
+    private void AdvancePathing() {
+        if (currentPath == null || remainingMovement <= 0)
         {
             return;
         }
-            
-        if (remainingMovement <= 0)
-        {
-            return;
-        }
-        
         // Teleport us to our correct "current" position, in case we
         // haven't finished the animation yet.
         transform.position = map.TileCoordToWorldCoord( tileX, tileY );
@@ -120,7 +105,7 @@ public class Unit : MonoBehaviour
     //Find path length before first 
     private int CalculatePathLength() 
     {
-        int possiblePathLength = currentPath.Count > remainingMovement ? (int) remainingMovement : currentPath.Count - 1;
+        var possiblePathLength = currentPath.Count > remainingMovement ? (int) remainingMovement : currentPath.Count - 1;
         int pathLength;
         for (pathLength = 1; pathLength <= possiblePathLength-1; pathLength++)
         {
@@ -143,24 +128,6 @@ public class Unit : MonoBehaviour
         }
         return pathLength;
     }
-    
-    //            if (!(currentPath[pathLength - 1].x != currentPath[pathLength].x && currentPath[pathLength - 1].y == currentPath[pathLength].y) ||
-//                !(currentPath[pathLength - 1].y != currentPath[pathLength].y && currentPath[pathLength - 1].x == currentPath[pathLength].x) ||
-//                !(currentPath[pathLength - 1].y != currentPath[pathLength].y && currentPath[pathLength - 1].x != currentPath[pathLength].x))
-
-//                Debug.Log("Condition 1: " + (currentPath[pathLength-1].x == currentPath[pathLength].x &&
-//                                              currentPath[pathLength].x == currentPath[pathLength+1].x &&
-//                                              currentPath[pathLength-1].y != currentPath[pathLength].y &&
-//                                              currentPath[pathLength].y != currentPath[pathLength+1].y));
-//                Debug.Log("Condition 2: " + (currentPath[pathLength-1].y == currentPath[pathLength].y &&
-//                                              currentPath[pathLength].y == currentPath[pathLength+1].y &&
-//                                              currentPath[pathLength-1].x != currentPath[pathLength].x &&
-//                                              currentPath[pathLength].x != currentPath[pathLength+1].x));
-//                Debug.Log("Condition 3: " +  (currentPath[pathLength-1].y != currentPath[pathLength].y &&
-//                                               currentPath[pathLength].y != currentPath[pathLength+1].y &&
-//                                               currentPath[pathLength-1].x != currentPath[pathLength].x &&
-//                                               currentPath[pathLength].x != currentPath[pathLength+1].x));
-//                Debug.Log("Path length = " + pathLength);
 
     // The "Next Turn" button calls this.
     public void NextTurn() {
@@ -168,7 +135,6 @@ public class Unit : MonoBehaviour
         while(currentPath!=null && remainingMovement > 0) {
             AdvancePathing();
         }
-
         // Reset our available movement points.
         remainingMovement = travelDistance;
     }
