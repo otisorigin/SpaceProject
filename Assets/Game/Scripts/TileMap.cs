@@ -37,7 +37,6 @@ public class TileMap : MonoBehaviour
         if (source.x != target.x && source.y != target.y)
         {
             //We are moving diagonally! Fudge the cost for tile-braking
-            //Purely a cosmetic thing!
             cost += 1.0f;
         }
         return cost;

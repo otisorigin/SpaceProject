@@ -19,7 +19,7 @@ public class Unit : MonoBehaviour
 
     private LineRenderer lineRenderer;
     // How far this unit can move in one turn. Note that some tiles cost extra.
-    float remainingMovement;
+    int remainingMovement;
 
     private void Start()
     {
@@ -70,6 +70,7 @@ public class Unit : MonoBehaviour
     }
     
     // Advances our pathfinding progress by one tile.
+    // Advances our pathfinding progress by one tile.
     private void AdvancePathing() {
         if (currentPath == null || remainingMovement <= 0)
         {
@@ -84,15 +85,41 @@ public class Unit : MonoBehaviour
         // Get cost from current tile to next tile
         for (int i = 1; i < pathLength+1; i++)
         {
-            remainingMovement -= map.CostToEnterTile(currentPath[0], currentPath[i] );
+            var cost = (int) map.CostToEnterTile(currentPath[0], currentPath[i]);
+            if (remainingMovement - cost > 0)
+            {
+                remainingMovement -= cost;
+                continue;
+            }
+
+            if (remainingMovement - cost == 0)
+            {
+                remainingMovement -= cost;
+                pathLength = i;
+                break;
+            }
+
+            if (remainingMovement - cost < 0)
+            {
+                pathLength = i - 1;
+                break;
+            }
+            //remainingMovement -= (int) map.CostToEnterTile(currentPath[0], currentPath[i] );
+        }
+
+        if (pathLength > 0)
+        {
+            // Move us to the next tile in the sequence
+            tileX = currentPath[pathLength].x;
+            tileY = currentPath[pathLength].y;
+            // Remove the old "current" tile from the pathfinding list
+            currentPath.RemoveRange(0, pathLength);
+        }
+        else
+        {
+            remainingMovement = 0;
         }
        
-        // Move us to the next tile in the sequence
-        tileX = currentPath[pathLength].x;
-        tileY = currentPath[pathLength].y;
-        // Remove the old "current" tile from the pathfinding list
-        currentPath.RemoveRange(0, pathLength);
-		
         if(currentPath.Count == 1) {
             // We only have one tile left in the path, and that tile MUST be our ultimate
             // destination -- and we are standing on it!
@@ -101,6 +128,57 @@ public class Unit : MonoBehaviour
             currentPath = null;
         }
     }
+
+
+    
+//    private void AdvancePathing() {
+//        if (currentPath == null || remainingMovement <= 0)
+//        {
+//            return;
+//        }
+//        // Teleport us to our correct "current" position, in case we
+//        // haven't finished the animation yet.
+//        transform.position = map.TileCoordToWorldCoord( tileX, tileY );
+//
+//        int totalCost = 0;
+//        //How much moves can we actually make with considering remainingMovement
+//        int allowableMoves;
+//        // Get cost from current tile to next tile
+//        for (allowableMoves = 1; allowableMoves < CalculatePathLength()+1; allowableMoves++)
+//        {
+//            var cost = (int) map.CostToEnterTile(currentPath[0], currentPath[allowableMoves]);
+//            totalCost += cost;
+//            if (remainingMovement - totalCost > 0)
+//            {
+//                remainingMovement -= cost;
+//            }
+//            if (remainingMovement - totalCost == 0)
+//            {
+//                remainingMovement -= cost;
+//                break;
+//            }
+//            if(remainingMovement - totalCost < 0)
+//            {
+//                --allowableMoves;
+//                break;
+//            }
+//        }
+//        Debug.Log("Remaining Movement = " + remainingMovement);
+//        Debug.Log("Allowable Moves = " + allowableMoves);
+//        // Move us to the next tile in the sequence
+//        tileX = currentPath[allowableMoves].x;
+//        tileY = currentPath[allowableMoves].y;
+//        // Remove the old "current" tile from the pathfinding list
+//        currentPath.RemoveRange(0, allowableMoves);
+//		
+//        if(currentPath.Count == 1) {
+//            // We only have one tile left in the path, and that tile MUST be our ultimate
+//            // destination -- and we are standing on it!
+//            // So let's just clear our pathfinding info.
+//            lineRenderer.enabled = false;
+//            currentPath = null;
+//        }
+//    }
     
     //Find path length before first 
     private int CalculatePathLength() 
