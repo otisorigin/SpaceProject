@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Game.Scripts.Unit;
 using UnityEngine;
 
 public class TileMap : MonoBehaviour
 {
-    public GameObject selectedUnit;
+    public Unit selectedUnit;
     
     public TileType[] tileArray;
 
@@ -22,6 +23,16 @@ public class TileMap : MonoBehaviour
         GeneratePathfindingGrapgh();
         GenerateMapVisual();
     }
+    
+    public void UnitSelect(Unit unit)
+    {
+        if (selectedUnit != null)
+        {
+            selectedUnit.isSelected = false;
+        }
+        selectedUnit = unit;
+        selectedUnit.isSelected = true;
+    }    
 
     public float CostToEnterTile(Node source, Node target)
     {

@@ -252,6 +252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedObject: {fileID: 0}
+  map: {fileID: 1789782817}
 --- !u!4 &341601210
 Transform:
   m_ObjectHideFlags: 0
@@ -383,21 +384,20 @@ PrefabInstance:
       propertyPath: travelDistance
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 5174981318423021911, guid: b7af5d7c82077e64b93cd65f2f05cfab,
+        type: 3}
+      propertyPath: isSelected
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7af5d7c82077e64b93cd65f2f05cfab, type: 3}
---- !u!1 &503039341 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5174981318423021909, guid: b7af5d7c82077e64b93cd65f2f05cfab,
-    type: 3}
-  m_PrefabInstance: {fileID: 5174981318862752824}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &503039343 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5174981318423021911, guid: b7af5d7c82077e64b93cd65f2f05cfab,
     type: 3}
   m_PrefabInstance: {fileID: 5174981318862752824}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 503039341}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 04596689cf2e06945b87ace30f77f6d8, type: 3}
@@ -945,7 +945,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86a258fcf8caaa643b4ff9e013f260d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedUnit: {fileID: 503039341}
+  selectedUnit: {fileID: 503039343}
   tileArray:
   - name: Space
     tileVisualPrefab: {fileID: 5803371556117509026, guid: f5445a1fd846b684f90c9127466a029e,
@@ -1031,6 +1031,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5174981318423021910, guid: b7af5d7c82077e64b93cd65f2f05cfab,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174981318423021910, guid: b7af5d7c82077e64b93cd65f2f05cfab,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 5174981317769558242, guid: b7af5d7c82077e64b93cd65f2f05cfab,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -1055,6 +1065,11 @@ PrefabInstance:
         type: 3}
       propertyPath: travelDistance
       value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174981318423021911, guid: b7af5d7c82077e64b93cd65f2f05cfab,
+        type: 3}
+      propertyPath: isSelected
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7af5d7c82077e64b93cd65f2f05cfab, type: 3}
