@@ -214,7 +214,8 @@ namespace Game.Scripts.Unit
         }
 
         // The "Next Turn" button calls this.
-        public void NextTurn() {
+        public void NextTurn() 
+        {
             if (isSelected)
             {
                 // Make sure to wrap-up any outstanding movement left over.
@@ -223,6 +224,15 @@ namespace Game.Scripts.Unit
                 }
                 // Reset our available movement points.
                 remainingMovement = travelDistance;
+            }
+        }
+
+        public void ResetPath()
+        {
+            if (isSelected)
+            {
+                currentPath = null;
+                isPathSet = false;
             }
         }
     }
