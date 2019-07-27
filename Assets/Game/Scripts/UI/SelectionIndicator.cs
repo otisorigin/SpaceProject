@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Game.Scripts.Unit;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SelectionIndicator : MonoBehaviour
 {
@@ -20,7 +17,7 @@ public class SelectionIndicator : MonoBehaviour
     {
         if (mm.selectedObject != null && mm.selectedObject.CompareTag(_unit.tag))
         {
-            this.transform.position = mm.selectedObject.transform.position;
+            transform.position = mm.selectedObject.transform.position;
             if (Input.GetMouseButtonDown(0))
             {
                 UnitSelection(mm.selectedObject.GetComponent<Unit>());

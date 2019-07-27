@@ -1,11 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MouseManager : MonoBehaviour
 {
-
     public GameObject selectedObject;
+
     public TileMap map;
     // Start is called before the first frame update
 
@@ -39,8 +37,10 @@ public class MouseManager : MonoBehaviour
             {
                 return;
             }
+
             ClearSelection();
         }
+
         selectedObject = obj;
     }
 

@@ -1,5 +1,3 @@
-using Game.Scripts.Unit;
-
 public class UnitSelectionController
 {
     private Unit selectedUnit;
@@ -9,5 +7,5 @@ public class UnitSelectionController
         selectedUnit.isSelected = false;
         selectedUnit = unit;
         selectedUnit.isSelected = true;
-    }    
+    }
 }

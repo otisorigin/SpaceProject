@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEditor.Experimental.UIElements.GraphView;
 using UnityEngine;
 
-namespace Game.Scripts.Unit
-{
     public class Unit : MonoBehaviour
     {
         public int travelDistance;
@@ -236,4 +235,3 @@ namespace Game.Scripts.Unit
             }
         }
     }
-}
