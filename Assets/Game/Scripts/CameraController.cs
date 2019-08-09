@@ -13,11 +13,11 @@ public class CameraController : MonoBehaviour
     public float maxSize = 8;
 //    private readonly Vector2 _panLimit;
 //
-//    void Start()
-//    {
+    void Start()
+    {
 //        var transform1 = transform;
 //        transform1.position = new Vector3(map.mapSizeX / 2.0f, map.mapSizeY / 2.0f, transform1.position.z);
-//    }
+    }
 
     // Update is called once per frame
     void Update()

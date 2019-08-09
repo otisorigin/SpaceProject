@@ -1,23 +1,36 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEngine;
 
-public class PathIndicator : MonoBehaviour
+namespace Game.Scripts.UI
 {
-    private MouseManager mm;
-    
-    // Start is called before the first frame update
-    void Start()
+    public class PathIndicator : MonoBehaviour
     {
-        mm = GameObject.FindObjectOfType<MouseManager>();
-    }
+        private MouseManager mm;
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (mm.selectedObject != null && !mm.selectedObject.CompareTag("Unit") && !mm.selectedObject.CompareTag("Barrier"))
+        // Start is called before the first frame update
+        void Start()
         {
-            transform.position = mm.selectedObject.transform.position;
+            mm = FindObjectOfType<MouseManager>();
+            //transform.localScale = mm.selectedObject.gameObject.transform.localScale;
+        }
+    
+        void Update()
+        {
+            OnCover();
+            OnClick();
+        }
+
+        protected void OnCover()
+        {
+            if (mm.GetSelectedUnit() != null && mm.selectedObject != null && !mm.selectedObject.CompareTag("Unit") &&
+                !mm.selectedObject.CompareTag("Barrier"))
+            {
+                transform.position = mm.selectedObject.transform.position;
+            }
+        }
+
+        protected void OnClick()
+        {
         }
     }
 }
