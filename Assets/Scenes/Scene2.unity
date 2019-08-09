@@ -382,6 +382,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectedObject: {fileID: 0}
   map: {fileID: 1789782817}
+  cursorTexture: {fileID: 2800000, guid: 60f04ad3d78dc814eb9b66f6cf032855, type: 3}
+  cursorMode: 0
+  hotSpot: {x: 0, y: 0}
 --- !u!4 &341601210
 Transform:
   m_ObjectHideFlags: 0
@@ -718,6 +721,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abd2d9faa0b34a858ba5408adc151ab2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firstUserUnits:
+  - {fileID: 459673568}
+  - {fileID: 503039343}
+  secondUserUnits: []
 --- !u!4 &684847964
 Transform:
   m_ObjectHideFlags: 0
