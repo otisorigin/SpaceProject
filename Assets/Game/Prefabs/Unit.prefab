@@ -136,10 +136,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04596689cf2e06945b87ace30f77f6d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileX: 0
-  tileY: 0
+  travelDistance: 0
+  speed: 0
   map: {fileID: 0}
-  isPathSet: 0
 --- !u!120 &5174981318423021896
 LineRenderer:
   m_ObjectHideFlags: 0

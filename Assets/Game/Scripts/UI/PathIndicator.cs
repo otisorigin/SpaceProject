@@ -23,7 +23,7 @@ namespace Game.Scripts.UI
         protected void OnCover()
         {
             if (mm.GetSelectedUnit() != null && mm.selectedObject != null && !mm.selectedObject.CompareTag("Unit") &&
-                !mm.selectedObject.CompareTag("Barrier"))
+                !mm.selectedObject.CompareTag("Barrier") && !mm.GetSelectedUnit().isPathSet)
             {
                 transform.position = mm.selectedObject.transform.position;
             }

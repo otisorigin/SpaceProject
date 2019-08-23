@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using Zenject;
 
-public class MouseManager : MonoBehaviour
+public class MouseManager : MonoBehaviour, IMouseManager
 {
     public GameObject selectedObject;
-    public TileMap map;
+    [Inject] private UnitGroup _unitGroup;
     public Texture2D cursorTexture;
     public CursorMode cursorMode = CursorMode.Auto;
     public Vector2 hotSpot = Vector2.zero;
@@ -57,6 +58,6 @@ public class MouseManager : MonoBehaviour
 
     public Unit GetSelectedUnit()
     {
-        return map.selectedUnit;
+        return _unitGroup.SelectedUnit;
     }
 }

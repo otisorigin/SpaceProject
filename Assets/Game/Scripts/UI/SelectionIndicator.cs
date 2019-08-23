@@ -1,33 +1,38 @@
 ﻿using UnityEngine;
+using Zenject;
 
 public class SelectionIndicator : MonoBehaviour
 {
-    private MouseManager mm;
+    [Inject] private MouseManager _mouseManager;
+
+    [Inject] private TileMap _tileMap;
+    
+    [Inject] private UnitGroup _unitGroup;
 
     private Unit _unit;
     // Start is called before the first frame update
     void Start()
     {
-        _unit = GameObject.FindObjectOfType<Unit>();
-        mm = GameObject.FindObjectOfType<MouseManager>();
+        _unit = FindObjectOfType<Unit>();
+        _mouseManager = FindObjectOfType<MouseManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (mm.selectedObject != null && mm.selectedObject.CompareTag(_unit.tag))
+        var selectedObject = _mouseManager.selectedObject;
+        if (selectedObject != null &&selectedObject.CompareTag(_unit.tag))
         {
-            transform.position = mm.selectedObject.transform.position;
+            transform.position = selectedObject.transform.position;
             if (Input.GetMouseButtonDown(0))
             {
-                UnitSelection(mm.selectedObject.GetComponent<Unit>());
+                UnitSelection(selectedObject.GetComponent<Unit>());
             }
         }
-   
     }
 
     private void UnitSelection(Unit selectedUnit)
     {
-        mm.map.UnitSelect(selectedUnit);
+        _unitGroup.UnitSelect(selectedUnit);
     }
 }

@@ -1,10 +1,12 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
-public class TileMap : MonoBehaviour
+public class TileMap : MonoBehaviour, ITileMap
 {
-    public Unit selectedUnit;
-    
+    [Inject]
+    private UnitGroup _unitGroup;
+
     public TileType[] tileArray;
 
     private int[,] _tiles;
@@ -23,15 +25,15 @@ public class TileMap : MonoBehaviour
         GenerateMapVisual();
     }
     
-    public void UnitSelect(Unit unit)
-    {
-        if (selectedUnit != null)
-        {
-            selectedUnit.isSelected = false;
-        }
-        selectedUnit = unit;
-        selectedUnit.isSelected = true;
-    }    
+//    public void UnitSelect(Unit unit)
+//    {
+////        if (GetSelectedUnit() != null)
+////        {
+////            GetSelectedUnit().isSelected = false;
+////        }
+////        _unitGroup.SelectedUnit  = unit;
+////        GetSelectedUnit().isSelected = true;
+//    }    
 
     public float CostToEnterTile(Node source, Node target)
     {
@@ -54,9 +56,9 @@ public class TileMap : MonoBehaviour
 
     private void SetUnitPosition()
     {
-        var unit = selectedUnit.GetComponent<Unit>();
-        unit.tileX = (int) selectedUnit.transform.position.x;
-        unit.tileY = (int) selectedUnit.transform.position.y;
+        var unit = _unitGroup.SelectedUnit.GetComponent<Unit>();
+        unit.tileX = (int) unit.transform.position.x;
+        unit.tileY = (int) unit.transform.position.y;
         unit.map = this;
     }
 
@@ -199,7 +201,7 @@ public class TileMap : MonoBehaviour
             return;
         }
         
-        var unit = selectedUnit.GetComponent<Unit>();
+        var unit = _unitGroup.SelectedUnit.GetComponent<Unit>();
         unit.currentPath = null;
         
         var unvisited = new List<Node>();
@@ -276,10 +278,5 @@ public class TileMap : MonoBehaviour
 
         currentPath.Reverse();
         unit.currentPath = currentPath;
-    }
-
-    public void SetPathTo(int x, int y)
-    {
-        
     }
 }
