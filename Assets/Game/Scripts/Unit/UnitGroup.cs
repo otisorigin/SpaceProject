@@ -1,25 +1,25 @@
+using System.Linq;
 using UnityEngine;
 
-public class UnitGroup : MonoBehaviour, IUnitGroup
+public class UnitGroup : MonoBehaviour
 {
-    public Unit SelectedUnit { get; private set; }
+    public Unit SelectedUnit { get; set; }
+    public string CurrentUser { get; set; }
     public Unit[] firstUserUnitList;
     public Unit[] secondUserUnitsList;
 
-    void Start()
-    {
-        SelectedUnit = firstUserUnitList[0].GetComponent<Unit>();
-    }
-
     public void ResetPath()
     {
-        SelectedUnit.currentPath = null;
-        SelectedUnit.isPathSet = false;
+        if (SelectedUnit != null)
+        {
+            SelectedUnit.CurrentPath = null;
+            SelectedUnit.isPathSet = false;
+        }
     }
 
     public void NextTurn()
     {
-        
+        firstUserUnitList.ToList().ForEach(unit => unit.NextTurn());
     }
 
     public void UnitSelect(Unit selectedUnit)

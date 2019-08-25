@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using Zenject;
 
-public class MouseManager : MonoBehaviour, IMouseManager
+public class MouseManager : MonoBehaviour
 {
-    public GameObject selectedObject;
+    public GameObject SelectedObject { get; set; }
     [Inject] private UnitGroup _unitGroup;
     public Texture2D cursorTexture;
     public CursorMode cursorMode = CursorMode.Auto;
@@ -38,9 +38,9 @@ public class MouseManager : MonoBehaviour, IMouseManager
 
     void SelectObject(GameObject obj)
     {
-        if (selectedObject != null)
+        if (SelectedObject != null)
         {
-            if (obj == selectedObject)
+            if (obj == SelectedObject)
             {
                 return;
             }
@@ -48,12 +48,12 @@ public class MouseManager : MonoBehaviour, IMouseManager
             ClearSelection();
         }
 
-        selectedObject = obj;
+        SelectedObject = obj;
     }
 
     void ClearSelection()
     {
-        selectedObject = null;
+        SelectedObject = null;
     }
 
     public Unit GetSelectedUnit()

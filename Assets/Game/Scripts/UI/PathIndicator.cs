@@ -1,36 +1,34 @@
-﻿
-using UnityEngine;
+﻿using UnityEngine;
+using Zenject;
 
-namespace Game.Scripts.UI
+public class PathIndicator : MonoBehaviour
 {
-    public class PathIndicator : MonoBehaviour
+    [Inject] 
+    private MouseManager mm;
+
+    // Start is called before the first frame update
+    void Start()
     {
-        private MouseManager mm;
+        mm = FindObjectOfType<MouseManager>();
+        //transform.localScale = mm.selectedObject.gameObject.transform.localScale;
+    }
 
-        // Start is called before the first frame update
-        void Start()
-        {
-            mm = FindObjectOfType<MouseManager>();
-            //transform.localScale = mm.selectedObject.gameObject.transform.localScale;
-        }
-    
-        void Update()
-        {
-            OnCover();
-            OnClick();
-        }
+    void Update()
+    {
+        OnCover();
+        OnClick();
+    }
 
-        protected void OnCover()
+    protected void OnCover()
+    {
+        if (mm.GetSelectedUnit() != null && mm.SelectedObject != null && !mm.SelectedObject.CompareTag("Unit") &&
+            !mm.SelectedObject.CompareTag("Barrier") && !mm.GetSelectedUnit().isPathSet)
         {
-            if (mm.GetSelectedUnit() != null && mm.selectedObject != null && !mm.selectedObject.CompareTag("Unit") &&
-                !mm.selectedObject.CompareTag("Barrier") && !mm.GetSelectedUnit().isPathSet)
-            {
-                transform.position = mm.selectedObject.transform.position;
-            }
+            transform.position = mm.SelectedObject.transform.position;
         }
+    }
 
-        protected void OnClick()
-        {
-        }
+    protected void OnClick()
+    {
     }
 }

@@ -5,7 +5,7 @@ public class SelectionIndicator : MonoBehaviour
 {
     [Inject] private MouseManager _mouseManager;
 
-    [Inject] private TileMap _tileMap;
+//    [Inject] private TileMap _tileMap;
     
     [Inject] private UnitGroup _unitGroup;
 
@@ -14,13 +14,13 @@ public class SelectionIndicator : MonoBehaviour
     void Start()
     {
         _unit = FindObjectOfType<Unit>();
-        _mouseManager = FindObjectOfType<MouseManager>();
+        //_mouseManager = FindObjectOfType<MouseManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        var selectedObject = _mouseManager.selectedObject;
+        var selectedObject = _mouseManager.SelectedObject;
         if (selectedObject != null &&selectedObject.CompareTag(_unit.tag))
         {
             transform.position = selectedObject.transform.position;

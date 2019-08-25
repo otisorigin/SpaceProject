@@ -6,14 +6,16 @@ using Zenject;
 public class Unit : MonoBehaviour
 {
     public int travelDistance;
-    [Inject]
-    private UnitGroup _unitGroup;
+    
 
     //Speed and smooth movement on the screen
     public float speed;
-    public TileMap map;
+    [Inject]
+    private TileMap _map;
+    [Inject]
+    private UnitGroup _unitGroup;
     [NonSerialized] public bool isPathSet;
-    public List<Node> currentPath { get; set; }
+    public List<Node> CurrentPath { get; set; }
     [NonSerialized] public int tileX;
     [NonSerialized] public int tileY;
 
@@ -35,19 +37,19 @@ public class Unit : MonoBehaviour
     {
         if (IsSelected(this))
         {
-            if (currentPath != null)
+            if (CurrentPath != null)
             {
-                lineRenderer.positionCount = currentPath.Count;
+                lineRenderer.positionCount = CurrentPath.Count;
                 lineRenderer.enabled = true;
 
-                for (var i = 0; i < currentPath.Count; i++)
+                for (var i = 0; i < CurrentPath.Count; i++)
                 {
                     lineRenderer.SetPosition(i,
-                        map.TileCoordToWorldCoord(currentPath[i].x, currentPath[i].y) + new Vector3(0, 0, -0.75f));
+                        _map.TileCoordToWorldCoord(CurrentPath[i].x, CurrentPath[i].y) + new Vector3(0, 0, -0.75f));
                 }
             }
 
-            var target = map.TileCoordToWorldCoord(tileX, tileY);
+            var target = _map.TileCoordToWorldCoord(tileX, tileY);
             var position = transform.position;
             // Have we moved our visible piece close enough to the target tile that we can
             // advance to the next step in our pathfinding?
@@ -56,7 +58,7 @@ public class Unit : MonoBehaviour
                 AdvancePathing();
             }
 
-            if (currentPath == null)
+            if (CurrentPath == null)
             {
                 isPathSet = false;
             }
@@ -80,21 +82,21 @@ public class Unit : MonoBehaviour
     // Advances our pathfinding progress by one tile.
     private void AdvancePathing()
     {
-        if (currentPath == null || remainingMovement <= 0)
+        if (CurrentPath == null || remainingMovement <= 0)
         {
             return;
         }
 
         // Teleport us to our correct "current" position, in case we
         // haven't finished the animation yet.
-        transform.position = map.TileCoordToWorldCoord(tileX, tileY);
+        transform.position = _map.TileCoordToWorldCoord(tileX, tileY);
 
         int pathLength = CalculatePathLength();
         //Debug.Log("Path Length: " + pathLength);
         // Get cost from current tile to next tile
         for (int i = 1; i < pathLength + 1; i++)
         {
-            var cost = (int) map.CostToEnterTile(currentPath[0], currentPath[i]);
+            var cost = (int) _map.CostToEnterTile(CurrentPath[0], CurrentPath[i]);
             if (remainingMovement - cost > 0)
             {
                 remainingMovement -= cost;
@@ -120,23 +122,23 @@ public class Unit : MonoBehaviour
         if (pathLength > 0)
         {
             // Move us to the next tile in the sequence
-            tileX = currentPath[pathLength].x;
-            tileY = currentPath[pathLength].y;
+            tileX = CurrentPath[pathLength].x;
+            tileY = CurrentPath[pathLength].y;
             // Remove the old "current" tile from the pathfinding list
-            currentPath.RemoveRange(0, pathLength);
+            CurrentPath.RemoveRange(0, pathLength);
         }
         else
         {
             remainingMovement = 0;
         }
 
-        if (currentPath.Count == 1)
+        if (CurrentPath.Count == 1)
         {
             // We only have one tile left in the path, and that tile MUST be our ultimate
             // destination -- and we are standing on it!
             // So let's just clear our pathfinding info.
             lineRenderer.enabled = false;
-            currentPath = null;
+            CurrentPath = null;
         }
     }
 
@@ -144,22 +146,22 @@ public class Unit : MonoBehaviour
     private int CalculatePathLength()
     {
         var possiblePathLength =
-            currentPath.Count > remainingMovement ? (int) remainingMovement : currentPath.Count - 1;
+            CurrentPath.Count > remainingMovement ? (int) remainingMovement : CurrentPath.Count - 1;
         int pathLength;
         for (pathLength = 1; pathLength <= possiblePathLength - 1; pathLength++)
         {
-            var horizontalMoving = currentPath[pathLength - 1].x == currentPath[pathLength].x &&
-                                   currentPath[pathLength].x == currentPath[pathLength + 1].x &&
-                                   currentPath[pathLength - 1].y != currentPath[pathLength].y &&
-                                   currentPath[pathLength].y != currentPath[pathLength + 1].y;
-            var verticalMoving = currentPath[pathLength - 1].y == currentPath[pathLength].y &&
-                                 currentPath[pathLength].y == currentPath[pathLength + 1].y &&
-                                 currentPath[pathLength - 1].x != currentPath[pathLength].x &&
-                                 currentPath[pathLength].x != currentPath[pathLength + 1].x;
-            var diagonalMoving = currentPath[pathLength - 1].y != currentPath[pathLength].y &&
-                                 currentPath[pathLength].y != currentPath[pathLength + 1].y &&
-                                 currentPath[pathLength - 1].x != currentPath[pathLength].x &&
-                                 currentPath[pathLength].x != currentPath[pathLength + 1].x;
+            var horizontalMoving = CurrentPath[pathLength - 1].x == CurrentPath[pathLength].x &&
+                                   CurrentPath[pathLength].x == CurrentPath[pathLength + 1].x &&
+                                   CurrentPath[pathLength - 1].y != CurrentPath[pathLength].y &&
+                                   CurrentPath[pathLength].y != CurrentPath[pathLength + 1].y;
+            var verticalMoving = CurrentPath[pathLength - 1].y == CurrentPath[pathLength].y &&
+                                 CurrentPath[pathLength].y == CurrentPath[pathLength + 1].y &&
+                                 CurrentPath[pathLength - 1].x != CurrentPath[pathLength].x &&
+                                 CurrentPath[pathLength].x != CurrentPath[pathLength + 1].x;
+            var diagonalMoving = CurrentPath[pathLength - 1].y != CurrentPath[pathLength].y &&
+                                 CurrentPath[pathLength].y != CurrentPath[pathLength + 1].y &&
+                                 CurrentPath[pathLength - 1].x != CurrentPath[pathLength].x &&
+                                 CurrentPath[pathLength].x != CurrentPath[pathLength + 1].x;
             if (!horizontalMoving && !verticalMoving && !diagonalMoving)
             {
                 return pathLength;
@@ -172,17 +174,17 @@ public class Unit : MonoBehaviour
     // The "Next Turn" button calls this.
     public void NextTurn()
     {
-        if (IsSelected(this))
-        {
+        //if (IsSelected(this))
+        //{
             // Make sure to wrap-up any outstanding movement left over.
-            while (currentPath != null && remainingMovement > 0)
+            while (CurrentPath != null && remainingMovement > 0)
             {
                 AdvancePathing();
             }
 
             // Reset our available movement points.
             remainingMovement = travelDistance;
-        }
+        //}
     }
 
 //    public void ResetPath()
@@ -196,6 +198,6 @@ public class Unit : MonoBehaviour
     
     private bool IsSelected(Unit unit)
     {
-        return unit == _unitGroup.SelectedUnit;
+        return _unitGroup.SelectedUnit != null && unit == _unitGroup.SelectedUnit;
     }
 }

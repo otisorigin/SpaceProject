@@ -3,15 +3,16 @@ using Zenject;
 
 public class CoreInstaller : MonoInstaller<CoreInstaller>
 {
+    public UnitGroup unitGroup;
+    public TileMap mapPrefab;
+    public MouseManager mouseManagerPrefab;
     public override void InstallBindings()
     {
-        Container.Bind<IUnitGroup>().To<UnitGroup>().AsSingle();
-        Container.Bind<ITileMap>().To<TileMap>().AsSingle();
-        Container.Bind<IMouseManager>().To<MouseManager>().AsSingle();
-//        Container.Bind<MouseManager>().AsSingle().NonLazy();
-//        Container.Bind<TileMap>().AsSingle().NonLazy();
-//        Container.Bind<ClickableTile>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
-//        Container.Bind<SelectionIndicator>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
-        Container.Bind<Unit>().FromNewComponentOnNewGameObject().AsSingle().NonLazy();
+        Container.Bind<UnitGroup>().FromInstance(unitGroup).AsSingle();
+        Container.Bind<TileMap>().FromComponentInNewPrefab(mapPrefab).AsSingle();
+        Container.Bind<MouseManager>().FromComponentInNewPrefab(mouseManagerPrefab).AsSingle();
+        Container.Bind<ClickableTile>().AsSingle();
+        Container.Bind<SelectionIndicator>().AsSingle();
+        Container.Bind<Unit>().AsSingle();
     }
 }

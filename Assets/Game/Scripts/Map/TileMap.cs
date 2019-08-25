@@ -2,10 +2,10 @@
 using UnityEngine;
 using Zenject;
 
-public class TileMap : MonoBehaviour, ITileMap
+public class TileMap : MonoBehaviour
 {
     [Inject]
-    private UnitGroup _unitGroup;
+    public UnitGroup _unitGroup;
 
     public TileType[] tileArray;
 
@@ -56,10 +56,13 @@ public class TileMap : MonoBehaviour, ITileMap
 
     private void SetUnitPosition()
     {
-        var unit = _unitGroup.SelectedUnit.GetComponent<Unit>();
-        unit.tileX = (int) unit.transform.position.x;
-        unit.tileY = (int) unit.transform.position.y;
-        unit.map = this;
+        if (_unitGroup.SelectedUnit != null)
+        {
+            var unit = _unitGroup.SelectedUnit.GetComponent<Unit>();
+            unit.tileX = (int) unit.transform.position.x;
+            unit.tileY = (int) unit.transform.position.y;
+            // unit.map = this;
+        }
     }
 
     private void GeneratePathfindingGrapgh()
@@ -83,26 +86,6 @@ public class TileMap : MonoBehaviour, ITileMap
         {
             for (int y = 0; y < mapSizeY; y++)
             {
-//4 way graph
-//                if (x > 0)
-//                {
-//                    _graph[x,y].neighbours.Add( _graph[x-1, y] );
-//                }
-//
-//                if (x < mapSizeX-1)
-//                {
-//                    _graph[x,y].neighbours.Add( _graph[x+1, y] );
-//                }
-//                
-//                if (y > 0)
-//                {
-//                    _graph[x,y].neighbours.Add( _graph[x, y-1] );
-//                }
-//
-//                if (y < mapSizeX-1)
-//                {
-//                    _graph[x,y].neighbours.Add( _graph[x, y+1] );
-//                }
                 //Left
                 if (x > 0)
                 {
@@ -174,7 +157,7 @@ public class TileMap : MonoBehaviour, ITileMap
                 ClickableTile clickableTile = square.GetComponent<ClickableTile>();
                 clickableTile.tileX = x;
                 clickableTile.tileY = y;
-                clickableTile.map = this;
+                clickableTile.Map = this;
             }
         }
     }
@@ -183,11 +166,6 @@ public class TileMap : MonoBehaviour, ITileMap
     {
         return new Vector3(x, y, -1);
     }
-
-//    public Quaternion RotationDirectToWorldRotation(int x, int y)
-//    {
-//        return new Quaternion(x,y,0f,0f);
-//    }
 
     private bool UnitCanEnterTile(int x, int y)
     {
@@ -202,7 +180,7 @@ public class TileMap : MonoBehaviour, ITileMap
         }
         
         var unit = _unitGroup.SelectedUnit.GetComponent<Unit>();
-        unit.currentPath = null;
+        unit.CurrentPath = null;
         
         var unvisited = new List<Node>();
 
@@ -277,6 +255,6 @@ public class TileMap : MonoBehaviour, ITileMap
         }
 
         currentPath.Reverse();
-        unit.currentPath = currentPath;
+        unit.CurrentPath = currentPath;
     }
 }
