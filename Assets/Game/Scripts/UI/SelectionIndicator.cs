@@ -21,8 +21,10 @@ public class SelectionIndicator : MonoBehaviour
     void Update()
     {
         var selectedObject = _mouseManager.SelectedObject;
-        if (selectedObject != null &&selectedObject.CompareTag(_unit.tag))
+        if (selectedObject != null && selectedObject.CompareTag(_unit.tag))
         {
+            //Renderer r;
+                //r.bounds.size.x
             transform.position = selectedObject.transform.position;
             if (Input.GetMouseButtonDown(0))
             {

@@ -186,15 +186,6 @@ public class Unit : MonoBehaviour
             remainingMovement = travelDistance;
         //}
     }
-
-//    public void ResetPath()
-//    {
-//        if (IsSelected(this))
-//        {
-//            currentPath = null;
-//            isPathSet = false;
-//        }
-//    }
     
     private bool IsSelected(Unit unit)
     {
