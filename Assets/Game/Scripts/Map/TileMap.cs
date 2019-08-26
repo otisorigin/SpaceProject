@@ -5,7 +5,7 @@ using Zenject;
 public class TileMap : MonoBehaviour
 {
     [Inject]
-    public UnitGroup _unitGroup;
+    public GameController _controller;
 
     public TileType[] tileArray;
 
@@ -56,9 +56,9 @@ public class TileMap : MonoBehaviour
 
     private void SetUnitPosition()
     {
-        if (_unitGroup.SelectedUnit != null)
+        if (_controller.SelectedUnit != null)
         {
-            var unit = _unitGroup.SelectedUnit.GetComponent<Unit>();
+            var unit = _controller.SelectedUnit.GetComponent<Unit>();
             unit.tileX = (int) unit.transform.position.x;
             unit.tileY = (int) unit.transform.position.y;
             // unit.map = this;
@@ -179,7 +179,7 @@ public class TileMap : MonoBehaviour
             return;
         }
         
-        var unit = _unitGroup.SelectedUnit.GetComponent<Unit>();
+        var unit = _controller.SelectedUnit.GetComponent<Unit>();
         unit.CurrentPath = null;
         
         var unvisited = new List<Node>();

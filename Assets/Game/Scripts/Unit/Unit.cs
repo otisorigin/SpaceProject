@@ -13,7 +13,7 @@ public class Unit : MonoBehaviour
     [Inject]
     private TileMap _map;
     [Inject]
-    private UnitGroup _unitGroup;
+    private GameController _controller;
     [NonSerialized] public bool isPathSet;
     public List<Node> CurrentPath { get; set; }
     [NonSerialized] public int tileX;
@@ -189,6 +189,6 @@ public class Unit : MonoBehaviour
     
     private bool IsSelected(Unit unit)
     {
-        return _unitGroup.SelectedUnit != null && unit == _unitGroup.SelectedUnit;
+        return _controller.SelectedUnit != null && unit == _controller.SelectedUnit;
     }
 }

@@ -4,7 +4,7 @@ using Zenject;
 public class MouseManager : MonoBehaviour
 {
     public GameObject SelectedObject { get; set; }
-    [Inject] private UnitGroup _unitGroup;
+    [Inject] private GameController _controller;
     public Texture2D cursorTexture;
     public CursorMode cursorMode = CursorMode.Auto;
     public Vector2 hotSpot = Vector2.zero;
@@ -58,6 +58,6 @@ public class MouseManager : MonoBehaviour
 
     public Unit GetSelectedUnit()
     {
-        return _unitGroup.SelectedUnit;
+        return _controller.SelectedUnit;
     }
 }

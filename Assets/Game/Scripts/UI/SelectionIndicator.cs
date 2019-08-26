@@ -7,7 +7,7 @@ public class SelectionIndicator : MonoBehaviour
 
 //    [Inject] private TileMap _tileMap;
     
-    [Inject] private UnitGroup _unitGroup;
+    [Inject] private GameController _controller;
 
     private Unit _unit;
     // Start is called before the first frame update
@@ -35,6 +35,6 @@ public class SelectionIndicator : MonoBehaviour
 
     private void UnitSelection(Unit selectedUnit)
     {
-        _unitGroup.UnitSelect(selectedUnit);
+        _controller.UnitSelect(selectedUnit);
     }
 }
