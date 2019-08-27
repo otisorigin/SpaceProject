@@ -1,23 +1,31 @@
+using System.Linq;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
     private Player _player1;
     private Player _player2;
-    public Player CurrentPlayer { get; set; }
+    public Player CurrentPlayer { get; private set; }
     
-    public Unit SelectedUnit { get; set; }
+    public Unit SelectedUnit { get; private set; }
     public Unit[] firstPlayerUnitGroup;
     public Unit[] secondPlayerUnitGroup;
+    
+    public enum GameState {UnitSelection, UnitMovement, UnitAttack};
 
-    private IGameState _gameState;
+    public GameState CurrentState { get; private set; }
 
     private void Start()
     {
         _player1 = new Player("Player_1", firstPlayerUnitGroup);
         _player2 = new Player("Player_2", secondPlayerUnitGroup);
         CurrentPlayer = _player1;
-        ChangeGameState(new UnitSelection());
+        ChangeGameState(GameState.UnitSelection);
+    }
+
+    void Update()
+    {
+        //_currentGameState.
     }
 
     public void ButtonAttack()
@@ -41,11 +49,18 @@ public class GameController : MonoBehaviour
     
     public void UnitSelect(Unit selectedUnit)
     {
+        ChangeGameState(GameState.UnitMovement);
         SelectedUnit = selectedUnit;
     }
 
-    private void ChangeGameState(IGameState newState)
+    public void ChangeGameState(GameState newState)
     {
-        _gameState = newState;
+        CurrentState = newState;
+        Debug.Log("Current game state: " + CurrentState);
+    }
+
+    public bool IsUnitOfCurrentPlayer(Unit unit)
+    {
+        return CurrentPlayer.UnitGroup.Contains(unit);
     }
 }

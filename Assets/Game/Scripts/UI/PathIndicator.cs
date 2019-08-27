@@ -4,12 +4,12 @@ using Zenject;
 public class PathIndicator : MonoBehaviour
 {
     [Inject] 
-    private MouseManager mm;
+    private CursorManager cursorManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        mm = FindObjectOfType<MouseManager>();
+       // mm = FindObjectOfType<MouseManager>();
         //transform.localScale = mm.selectedObject.gameObject.transform.localScale;
     }
 
@@ -21,10 +21,10 @@ public class PathIndicator : MonoBehaviour
 
     protected void OnCover()
     {
-        if (mm.GetSelectedUnit() != null && mm.SelectedObject != null && !mm.SelectedObject.CompareTag("Unit") &&
-            !mm.SelectedObject.CompareTag("Barrier") && !mm.GetSelectedUnit().isPathSet)
+        if (cursorManager.GetSelectedUnit() != null && cursorManager.SelectedObject != null && !cursorManager.SelectedObject.CompareTag("Unit") &&
+            !cursorManager.SelectedObject.CompareTag("Barrier") && !cursorManager.GetSelectedUnit().isPathSet)
         {
-            transform.position = mm.SelectedObject.transform.position;
+            transform.position = cursorManager.SelectedObject.transform.position;
         }
     }
 

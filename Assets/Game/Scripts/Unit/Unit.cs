@@ -6,14 +6,10 @@ using Zenject;
 public class Unit : MonoBehaviour
 {
     public int travelDistance;
-    
-
     //Speed and smooth movement on the screen
     public float speed;
-    [Inject]
-    private TileMap _map;
-    [Inject]
-    private GameController _controller;
+    [Inject] private TileMap _map;
+    [Inject] private GameController _controller;
     [NonSerialized] public bool isPathSet;
     public List<Node> CurrentPath { get; set; }
     [NonSerialized] public int tileX;
@@ -37,36 +33,53 @@ public class Unit : MonoBehaviour
     {
         if (IsSelected(this))
         {
-            if (CurrentPath != null)
+            if (_controller.CurrentState == GameController.GameState.UnitMovement)
             {
-                lineRenderer.positionCount = CurrentPath.Count;
-                lineRenderer.enabled = true;
-
-                for (var i = 0; i < CurrentPath.Count; i++)
-                {
-                    lineRenderer.SetPosition(i,
-                        _map.TileCoordToWorldCoord(CurrentPath[i].x, CurrentPath[i].y) + new Vector3(0, 0, -0.75f));
-                }
+                UnitMovement();
             }
-
-            var target = _map.TileCoordToWorldCoord(tileX, tileY);
-            var position = transform.position;
-            // Have we moved our visible piece close enough to the target tile that we can
-            // advance to the next step in our pathfinding?
-            if (Vector3.Distance(position, target) < 0.1f && isPathSet)
+            if (_controller.CurrentState == GameController.GameState.UnitAttack)
             {
-                AdvancePathing();
+                UnitAttack();
             }
-
-            if (CurrentPath == null)
-            {
-                isPathSet = false;
-            }
-
-            // Smoothly animate towards the correct map tile.
-            transform.rotation = Quaternion.Slerp(transform.rotation, Rotate(position, target), Time.deltaTime * speed);
-            transform.position = Vector3.Lerp(position, target, speed / 3.5f * Time.deltaTime);
         }
+    }
+
+    private void UnitAttack()
+    {
+        
+    }
+
+    private void UnitMovement()
+    {
+        if (CurrentPath != null)
+        {
+            lineRenderer.positionCount = CurrentPath.Count;
+            lineRenderer.enabled = true;
+
+            for (var i = 0; i < CurrentPath.Count; i++)
+            {
+                lineRenderer.SetPosition(i,
+                    _map.TileCoordToWorldCoord(CurrentPath[i].x, CurrentPath[i].y) + new Vector3(0, 0, -0.75f));
+            }
+        }
+
+        var target = _map.TileCoordToWorldCoord(tileX, tileY);
+        var position = transform.position;
+        // Have we moved our visible piece close enough to the target tile that we can
+        // advance to the next step in our pathfinding?
+        if (Vector3.Distance(position, target) < 0.1f && isPathSet)
+        {
+            AdvancePathing();
+        }
+
+        if (CurrentPath == null)
+        {
+            isPathSet = false;
+        }
+
+        // Smoothly animate towards the correct map tile.
+        transform.rotation = Quaternion.Slerp(transform.rotation, Rotate(position, target), Time.deltaTime * speed);
+        transform.position = Vector3.Lerp(position, target, speed / 3.5f * Time.deltaTime);
     }
 
     private Quaternion Rotate(Vector3 position, Vector3 target)
@@ -172,21 +185,21 @@ public class Unit : MonoBehaviour
     }
 
     // The "Next Turn" button calls this.
-    public void NextTurn()
-    {
-        //if (IsSelected(this))
-        //{
-            // Make sure to wrap-up any outstanding movement left over.
-            while (CurrentPath != null && remainingMovement > 0)
-            {
-                AdvancePathing();
-            }
+//    public void NextTurn()
+//    {
+//        //if (IsSelected(this))
+//        //{
+//        // Make sure to wrap-up any outstanding movement left over.
+//        while (CurrentPath != null && remainingMovement > 0)
+//        {
+//            AdvancePathing();
+//        }
+//
+//        // Reset our available movement points.
+//        remainingMovement = travelDistance;
+//        //}
+//    }
 
-            // Reset our available movement points.
-            remainingMovement = travelDistance;
-        //}
-    }
-    
     private bool IsSelected(Unit unit)
     {
         return _controller.SelectedUnit != null && unit == _controller.SelectedUnit;

@@ -1,17 +1,21 @@
 ﻿using UnityEngine;
 using Zenject;
 
-public class MouseManager : MonoBehaviour
+public class CursorManager : MonoBehaviour
 {
     public GameObject SelectedObject { get; set; }
     [Inject] private GameController _controller;
     public Texture2D cursorTexture;
     public CursorMode cursorMode = CursorMode.Auto;
     public Vector2 hotSpot = Vector2.zero;
+
+    private Unit _unit;
+
     // Start is called before the first frame update
     private void Start()
     {
         Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
+        _unit = FindObjectOfType<Unit>();
     }
 
     // Update is called once per frame
