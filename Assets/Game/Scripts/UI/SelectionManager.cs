@@ -7,7 +7,7 @@ public class SelectionManager : MonoBehaviour
 
 //    [Inject] private TileMap _tileMap;
 
-    [Inject] private GameController _controller;
+    [Inject] private GameManager _manager;
 
     private Unit _unit;
 
@@ -37,9 +37,9 @@ public class SelectionManager : MonoBehaviour
             //r.bounds.size.x
             transform.position = selectedObject.transform.position;
             var selectedUnit = selectedObject.GetComponent<Unit>();
-            if (_controller.IsUnitOfCurrentPlayer(selectedUnit) && Input.GetMouseButtonDown(0))
+            if (_manager.IsUnitOfCurrentPlayer(selectedUnit) && Input.GetMouseButtonDown(0))
             {
-                _controller.UnitSelect(selectedUnit);
+                _manager.UnitSelect(selectedUnit);
             }
         }
     }

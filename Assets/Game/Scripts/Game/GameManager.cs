@@ -1,7 +1,7 @@
 using System.Linq;
 using UnityEngine;
 
-public class GameController : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     private Player _player1;
     private Player _player2;
@@ -17,8 +17,8 @@ public class GameController : MonoBehaviour
 
     private void Start()
     {
-        _player1 = new Player("Player_1", firstPlayerUnitGroup);
-        _player2 = new Player("Player_2", secondPlayerUnitGroup);
+        _player1 = new Player("1", firstPlayerUnitGroup);
+        _player2 = new Player("2", secondPlayerUnitGroup);
         CurrentPlayer = _player1;
         ChangeGameState(GameState.UnitSelection);
     }
@@ -44,6 +44,7 @@ public class GameController : MonoBehaviour
     
     public void ButtonNextTurn()
     {
+        Debug.Log("Current player = " + CurrentPlayer.Name);
         CurrentPlayer = CurrentPlayer == _player1 ? _player2 : _player1;
     }
     

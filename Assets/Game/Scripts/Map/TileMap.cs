@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 public class TileMap : MonoBehaviour
 {
-    [Inject]
-    public GameController _controller;
+    [FormerlySerializedAs("_controller")] [Inject]
+    public GameManager manager;
 
     public TileType[] tileArray;
 
@@ -56,9 +57,9 @@ public class TileMap : MonoBehaviour
 
     private void SetUnitPosition()
     {
-        if (_controller.SelectedUnit != null)
+        if (manager.SelectedUnit != null)
         {
-            var unit = _controller.SelectedUnit.GetComponent<Unit>();
+            var unit = manager.SelectedUnit.GetComponent<Unit>();
             unit.tileX = (int) unit.transform.position.x;
             unit.tileY = (int) unit.transform.position.y;
             // unit.map = this;
@@ -179,7 +180,7 @@ public class TileMap : MonoBehaviour
             return;
         }
         
-        var unit = _controller.SelectedUnit.GetComponent<Unit>();
+        var unit = manager.SelectedUnit.GetComponent<Unit>();
         unit.CurrentPath = null;
         
         var unvisited = new List<Node>();

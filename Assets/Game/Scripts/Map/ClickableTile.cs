@@ -5,7 +5,7 @@ using Debug = UnityEngine.Debug;
 public class ClickableTile : MonoBehaviour
 {
     //TODO исправить что в этом классе GameController не инжектится, а TileMap инжектится
-    [Inject] private GameController _controller;
+    [Inject] private GameManager _manager;
     [Inject] public TileMap Map { get; set; }
 
     public int tileX;
@@ -17,9 +17,9 @@ public class ClickableTile : MonoBehaviour
     {
         Debug.Log("Click x = " + tileX + ", y = " + tileY);
         //set this tile as end of the path for unit
-        if (Map._controller.CurrentState == GameController.GameState.UnitMovement)
+        if (Map.manager.CurrentState == GameManager.GameState.UnitMovement)
         {
-            Map._controller.SelectedUnit.GetComponent<Unit>().isPathSet = true;
+            Map.manager.SelectedUnit.GetComponent<Unit>().isPathSet = true;
         }
 
         //map.SetPathTo(tileX, tileY);
@@ -28,8 +28,8 @@ public class ClickableTile : MonoBehaviour
     void OnMouseOver()
     {
         //show path to this tile
-        if (Map._controller.CurrentState == GameController.GameState.UnitMovement && Map._controller.SelectedUnit != null &&
-            !Map._controller.SelectedUnit.GetComponent<Unit>().isPathSet)
+        if (Map.manager.CurrentState == GameManager.GameState.UnitMovement && Map.manager.SelectedUnit != null &&
+            !Map.manager.SelectedUnit.GetComponent<Unit>().isPathSet)
         {
             Map.GeneratePathTo(tileX, tileY);
         }

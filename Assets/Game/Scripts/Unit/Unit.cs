@@ -9,7 +9,7 @@ public class Unit : MonoBehaviour
     //Speed and smooth movement on the screen
     public float speed;
     [Inject] private TileMap _map;
-    [Inject] private GameController _controller;
+    [Inject] private GameManager _manager;
     [NonSerialized] public bool isPathSet;
     public List<Node> CurrentPath { get; set; }
     [NonSerialized] public int tileX;
@@ -33,11 +33,11 @@ public class Unit : MonoBehaviour
     {
         if (IsSelected(this))
         {
-            if (_controller.CurrentState == GameController.GameState.UnitMovement)
+            if (_manager.CurrentState == GameManager.GameState.UnitMovement)
             {
                 UnitMovement();
             }
-            if (_controller.CurrentState == GameController.GameState.UnitAttack)
+            if (_manager.CurrentState == GameManager.GameState.UnitAttack)
             {
                 UnitAttack();
             }
@@ -202,6 +202,6 @@ public class Unit : MonoBehaviour
 
     private bool IsSelected(Unit unit)
     {
-        return _controller.SelectedUnit != null && unit == _controller.SelectedUnit;
+        return _manager.SelectedUnit != null && unit == _manager.SelectedUnit;
     }
 }
