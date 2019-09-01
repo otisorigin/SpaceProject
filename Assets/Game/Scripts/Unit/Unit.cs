@@ -44,6 +44,20 @@ public class Unit : MonoBehaviour
         }
     }
 
+//    private void OnMouseOver()
+//    {
+//        Debug.Log("On Mouse Over");
+//        var defaultPosition = transform.GetChild(1).transform.position;
+//        transform.GetChild(1).transform.position = new Vector3(defaultPosition.x, defaultPosition.y, 0.75f);
+//    }
+//
+//    private void OnMouseExit()
+//    {
+//        Debug.Log("On Mouse Exit");
+//        var defaultPosition = transform.GetChild(1).transform.position;
+//        transform.GetChild(1).transform.position = new Vector3(defaultPosition.x, defaultPosition.y, 1f);
+//    }
+
     private void UnitAttack()
     {
         

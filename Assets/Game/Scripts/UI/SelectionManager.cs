@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Linq;
+using UnityEngine;
 using Zenject;
 
 public class SelectionManager : MonoBehaviour
@@ -24,7 +26,7 @@ public class SelectionManager : MonoBehaviour
 //        if (_controller.CurrentState == GameController.GameState.UnitSelection ||
 //            _controller.CurrentState == GameController.GameState.UnitMovement)
 //        {
-            UnitSelection();
+        UnitSelection();
         //}
     }
 
@@ -33,14 +35,33 @@ public class SelectionManager : MonoBehaviour
         var selectedObject = _cursorManager.SelectedObject;
         if (selectedObject != null && selectedObject.CompareTag(_unit.tag))
         {
-            //Renderer r;
-            //r.bounds.size.x
-            transform.position = selectedObject.transform.position;
             var selectedUnit = selectedObject.GetComponent<Unit>();
-            if (_manager.IsUnitOfCurrentPlayer(selectedUnit) && Input.GetMouseButtonDown(0))
-            {
-                _manager.UnitSelect(selectedUnit);
-            }
+            OnUnitHover(selectedUnit);
+            OnUnitClick(selectedUnit);
         }
+    }
+
+    private void OnUnitHover(Unit unit)
+    {
+        transform.GetChild(0).GetComponent<MeshRenderer>().material.color =
+            _manager.IsUnitOfCurrentPlayer(unit) ? Color.cyan : Color.red;
+        transform.position = unit.transform.position;
+        var unitScale = unit.transform.localScale;
+        var selectionCircleScale = GetBiggerScale(unitScale.x, unitScale.y);
+        transform.localScale = new Vector3(selectionCircleScale,
+            selectionCircleScale, unitScale.z);
+    }
+
+    private void OnUnitClick(Unit unit)
+    {
+        if (_manager.IsUnitOfCurrentPlayer(unit) && Input.GetMouseButtonDown(0))
+        {
+            _manager.UnitSelect(unit);
+        }
+    }
+
+    private float GetBiggerScale(float x, float y)
+    {
+        return x > y ? x : y;
     }
 }

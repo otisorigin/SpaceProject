@@ -452,7 +452,7 @@ PrefabInstance:
     - target: {fileID: 5174981317769558241, guid: b7af5d7c82077e64b93cd65f2f05cfab,
         type: 3}
       propertyPath: m_Name
-      value: Small_Unit_Model
+      value: Unit_Model
       objectReference: {fileID: 0}
     - target: {fileID: 5174981317769558244, guid: b7af5d7c82077e64b93cd65f2f05cfab,
         type: 3}
@@ -1005,10 +1005,10 @@ RectTransform:
   m_Father: {fileID: 1565187137}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -235.1, y: 130.9}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 95.73999, y: -22.5}
+  m_SizeDelta: {x: 21.670013, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1409098807
 MonoBehaviour:
@@ -1036,7 +1036,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.29803923, g: 0.8509804, b: 0.9372549, a: 1}
+  m_Color: {r: 0.19215688, g: 0.8588236, b: 0.93725497, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1322,10 +1322,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a56c2ff2294f6564c90efbe71401e23a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  manager: {fileID: 1266028487}
+  controller: {fileID: 1266028487}
   mapPrefab: {fileID: 1789782817}
   cursorManagerPrefab: {fileID: 4384119206314729426, guid: c921eb88324d44449a42b909894b73dc,
     type: 3}
+  selectionManager: {fileID: 180397152}
 --- !u!114 &1869119011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1485,8 +1486,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 86.100006, y: -23.699951}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 45.751984, y: -22.099976}
+  m_SizeDelta: {x: 78.305, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1932723346
 MonoBehaviour:
@@ -1501,7 +1502,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2951673, g: 0.8478378, b: 0.9339623, a: 1}
+  m_Color: {r: 0.10980393, g: 0.8980393, b: 0.9607844, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -1521,7 +1522,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Player: '
+  m_Text: 'Player:'
 --- !u!222 &1932723347
 CanvasRenderer:
   m_ObjectHideFlags: 0
