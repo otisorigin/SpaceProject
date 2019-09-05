@@ -11,13 +11,13 @@ public class SelectionManager : MonoBehaviour
 
     [Inject] private GameManager _manager;
 
-    private Unit _unit;
+    private string _unitTag;
     private MeshRenderer _circleMeshRenderer;
 
     // Start is called before the first frame update
     void Start()
     {
-        _unit = FindObjectOfType<Unit>();
+        _unitTag = FindObjectOfType<Unit>().tag;
         _circleMeshRenderer = transform.GetChild(0).GetComponent<MeshRenderer>();
         _circleMeshRenderer.enabled = false;
         //gameObject.SetActive(false);
@@ -37,7 +37,7 @@ public class SelectionManager : MonoBehaviour
     private void UnitSelection()
     {
         var selectedObject = _cursorManager.SelectedObject;
-        if (selectedObject != null && selectedObject.CompareTag(_unit.tag))
+        if (selectedObject != null && selectedObject.CompareTag(_unitTag))
         {
             
             var selectedUnit = selectedObject.GetComponent<Unit>();
