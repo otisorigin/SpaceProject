@@ -12,11 +12,15 @@ public class SelectionManager : MonoBehaviour
     [Inject] private GameManager _manager;
 
     private Unit _unit;
+    private MeshRenderer _circleMeshRenderer;
 
     // Start is called before the first frame update
     void Start()
     {
         _unit = FindObjectOfType<Unit>();
+        _circleMeshRenderer = transform.GetChild(0).GetComponent<MeshRenderer>();
+        _circleMeshRenderer.enabled = false;
+        //gameObject.SetActive(false);
         //_mouseManager = FindObjectOfType<MouseManager>();
     }
 
@@ -35,21 +39,30 @@ public class SelectionManager : MonoBehaviour
         var selectedObject = _cursorManager.SelectedObject;
         if (selectedObject != null && selectedObject.CompareTag(_unit.tag))
         {
+            
             var selectedUnit = selectedObject.GetComponent<Unit>();
             OnUnitHover(selectedUnit);
             OnUnitClick(selectedUnit);
+        }
+        else
+        {
+            _circleMeshRenderer.enabled = false;
         }
     }
 
     private void OnUnitHover(Unit unit)
     {
-        transform.GetChild(0).GetComponent<MeshRenderer>().material.color =
-            _manager.IsUnitOfCurrentPlayer(unit) ? Color.cyan : Color.red;
-        transform.position = unit.transform.position;
-        var unitScale = unit.transform.localScale;
-        var selectionCircleScale = GetBiggerScale(unitScale.x, unitScale.y);
-        transform.localScale = new Vector3(selectionCircleScale,
-            selectionCircleScale, unitScale.z);
+        if (!_manager.IsThisUnitSelected(unit))
+        {
+            _circleMeshRenderer.enabled = true;
+            _circleMeshRenderer.material.color =
+                _manager.IsUnitOfCurrentPlayer(unit) ? Color.cyan : Color.red;
+            transform.position = unit.transform.position;
+            var unitScale = unit.transform.localScale;
+            var selectionCircleScale = UIUtils.GetBiggerScale(unitScale.x, unitScale.y);
+            transform.localScale = new Vector3(selectionCircleScale,
+                selectionCircleScale, unitScale.z);
+        }
     }
 
     private void OnUnitClick(Unit unit)
@@ -57,11 +70,9 @@ public class SelectionManager : MonoBehaviour
         if (_manager.IsUnitOfCurrentPlayer(unit) && Input.GetMouseButtonDown(0))
         {
             _manager.UnitSelect(unit);
+            _circleMeshRenderer.enabled = false;
         }
     }
 
-    private float GetBiggerScale(float x, float y)
-    {
-        return x > y ? x : y;
-    }
+    
 }

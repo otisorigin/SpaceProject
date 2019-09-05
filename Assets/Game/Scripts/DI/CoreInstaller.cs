@@ -19,5 +19,6 @@ public class CoreInstaller : MonoInstaller<CoreInstaller>
         Container.Bind<ClickableTile>().AsSingle();
         Container.Bind<SelectionManager>().FromInstance(selectionManager).AsSingle();
         Container.Bind<Unit>().AsSingle();
+        Container.Bind<SelectedUnitIndicator>().AsSingle();
     }
 }

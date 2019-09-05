@@ -65,4 +65,9 @@ public class GameManager : MonoBehaviour
     {
         return CurrentPlayer.UnitGroup.Contains(unit);
     }
+
+    public bool IsThisUnitSelected(Unit unit)
+    {
+        return SelectedUnit == unit;
+    }
 }
