@@ -1,37 +1,48 @@
 using UnityEngine;
 using Zenject;
 
-namespace Game.Scripts.UI.Indicators
+
+public class PathIndicator : MonoBehaviour
 {
-    public class PathIndicator : MonoBehaviour
+    [Inject] private CursorManager cursorManager;
+    [Inject] private GameManager _manager;
+
+    // Start is called before the first frame update
+    void Start()
     {
-        [Inject] 
-        private CursorManager cursorManager;
+        var indicatorMeshRenderer = transform.GetChild(0).GetComponent<MeshRenderer>();
+        indicatorMeshRenderer.material.color = Constants.Colors.DarkGreen;
+        // mm = FindObjectOfType<MouseManager>();
+        //transform.localScale = mm.selectedObject.gameObject.transform.localScale;
+    }
 
-        // Start is called before the first frame update
-        void Start()
-        {
-            // mm = FindObjectOfType<MouseManager>();
-            //transform.localScale = mm.selectedObject.gameObject.transform.localScale;
-        }
+    void Update()
+    {
+        SetIndicatorSize();
+        OnCover();
+        OnClick();
+    }
 
-        void Update()
+    private void SetIndicatorSize()
+    {
+        if (_manager.SelectedUnit != null)
         {
-            OnCover();
-            OnClick();
+            var selectedUnitLocalScale = _manager.SelectedUnit.transform.localScale;
+            transform.localScale = new Vector3(selectedUnitLocalScale.y, selectedUnitLocalScale.y, selectedUnitLocalScale.z);  
         }
+    }
 
-        protected void OnCover()
+    private void OnCover()
+    {
+        if (_manager.SelectedUnit != null && cursorManager.SelectedObject != null &&
+            !cursorManager.SelectedObject.CompareTag("Unit") &&
+            !cursorManager.SelectedObject.CompareTag("Barrier") && !_manager.SelectedUnit.isPathSet)
         {
-            if (cursorManager.GetSelectedUnit() != null && cursorManager.SelectedObject != null && !cursorManager.SelectedObject.CompareTag("Unit") &&
-                !cursorManager.SelectedObject.CompareTag("Barrier") && !cursorManager.GetSelectedUnit().isPathSet)
-            {
-                transform.position = cursorManager.SelectedObject.transform.position;
-            }
+            transform.position = cursorManager.SelectedObject.transform.position;
         }
+    }
 
-        protected void OnClick()
-        {
-        }
+    private void OnClick()
+    {
     }
 }

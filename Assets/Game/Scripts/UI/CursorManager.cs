@@ -59,9 +59,4 @@ public class CursorManager : MonoBehaviour
     {
         SelectedObject = null;
     }
-
-    public Unit GetSelectedUnit()
-    {
-        return _manager.SelectedUnit;
-    }
 }

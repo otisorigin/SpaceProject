@@ -26,7 +26,7 @@ public class Unit : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.enabled = false;
         lineRenderer.useWorldSpace = true;
-        lineRenderer.material.color = Color.green;
+        lineRenderer.material.color = Constants.Colors.DarkGreen;
     }
 
     void Update()

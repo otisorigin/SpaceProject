@@ -9,7 +9,7 @@ public class SelectedUnitIndicator : MonoBehaviour
     private void Start()
     {
         _circleMeshRenderer = transform.GetChild(0).GetComponent<MeshRenderer>();
-        _circleMeshRenderer.material.color = Color.green;
+        _circleMeshRenderer.material.color = Constants.Colors.DarkGreen;
         _circleMeshRenderer.enabled = false;
     }
 
