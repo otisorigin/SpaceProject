@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using Zenject;
 
@@ -6,6 +7,7 @@ public class PathIndicator : MonoBehaviour
 {
     [Inject] private CursorManager cursorManager;
     [Inject] private GameManager _manager;
+    [Inject] private TileMap _map;
 
     // Start is called before the first frame update
     void Start()
@@ -28,18 +30,61 @@ public class PathIndicator : MonoBehaviour
         if (_manager.SelectedUnit != null)
         {
             var selectedUnitLocalScale = _manager.SelectedUnit.transform.localScale;
-            transform.localScale = new Vector3(selectedUnitLocalScale.y, selectedUnitLocalScale.y, selectedUnitLocalScale.z);  
+            transform.localScale =
+                new Vector3(selectedUnitLocalScale.y, selectedUnitLocalScale.y, selectedUnitLocalScale.z);
         }
     }
 
     private void OnCover()
     {
-        if (_manager.SelectedUnit != null && cursorManager.SelectedObject != null &&
-            !cursorManager.SelectedObject.CompareTag("Unit") &&
-            !cursorManager.SelectedObject.CompareTag("Barrier") && !_manager.SelectedUnit.isPathSet)
+        if (_manager.SelectedUnit != null && CheckIndicatorCollision())
         {
             transform.position = cursorManager.SelectedObject.transform.position;
         }
+    }
+
+    private bool CheckIndicatorCollision()
+    {
+        if (cursorManager.SelectedObject != null)
+        {
+            var objTranform = cursorManager.SelectedObject.transform;
+            if (objTranform.localScale.x > 1.0 && objTranform.localScale.y > 1.0)
+            {
+                //Debug.Log("--------Start-------------");
+                for (int i = (int) objTranform.position.y - 1; i < objTranform.position.y - 1 + objTranform.localScale.y; i++)
+                {
+                    for (int j = (int) objTranform.position.x - 1; j < objTranform.position.x - 1 + objTranform.localScale.x; j++)
+                    {
+//                        Debug.Log("objTranform.position.x = " + (objTranform.position.x-1));
+//                        Debug.Log("objTranform.position.y = " + (objTranform.position.y-1));
+//                        Debug.Log("Y = " + i);
+//                        Debug.Log("X = " + j);
+                        if (j == -1 || i == -1)
+                        {
+                            Debug.Log("false");
+                            return false;
+                        }
+                    }
+                }
+                //Debug.Log("--------END-------------");
+//            for (int i = Convert.ToInt32(transform.position.y - 1f); i < transform.localScale.y; i++)
+//            {
+//                for (int j = Convert.ToInt32(transform.position.x - 1f); j < transform.localScale.x; j++)
+//                {
+//                    GameObject obj = _map.GetObjectFromCoord(j, i);
+//                    if (obj != null &&
+//                        obj.CompareTag("Unit") ||
+//                        obj.CompareTag("Barrier") || _manager.SelectedUnit.isPathSet)
+//                    {
+//                        return false;
+//                    }
+//                }
+//            }
+            }
+            return !cursorManager.SelectedObject.CompareTag("Unit") &&
+                   !cursorManager.SelectedObject.CompareTag("Barrier") && !_manager.SelectedUnit.isPathSet;
+        }
+        return false;
     }
 
     private void OnClick()

@@ -1934,12 +1934,22 @@ PrefabInstance:
     - target: {fileID: 5174981318423021911, guid: b7af5d7c82077e64b93cd65f2f05cfab,
         type: 3}
       propertyPath: travelDistance
-      value: 5
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5174981318423021911, guid: b7af5d7c82077e64b93cd65f2f05cfab,
         type: 3}
       propertyPath: isSelected
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174981317769558243, guid: b7af5d7c82077e64b93cd65f2f05cfab,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5174981317769558243, guid: b7af5d7c82077e64b93cd65f2f05cfab,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b7af5d7c82077e64b93cd65f2f05cfab, type: 3}

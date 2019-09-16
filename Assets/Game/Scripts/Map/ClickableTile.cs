@@ -28,6 +28,7 @@ public class ClickableTile : MonoBehaviour
     void OnMouseOver()
     {
         //show path to this tile
+        Debug.Log("x = " + tileX + ", y = " + tileY);
         if (Map.manager.CurrentState == GameManager.GameState.UnitMovement && Map.manager.SelectedUnit != null &&
             !Map.manager.SelectedUnit.GetComponent<Unit>().isPathSet)
         {

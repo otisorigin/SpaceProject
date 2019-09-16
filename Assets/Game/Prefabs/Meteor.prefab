@@ -106,4 +106,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileX: 0
   tileY: 0
-  map: {fileID: 0}
