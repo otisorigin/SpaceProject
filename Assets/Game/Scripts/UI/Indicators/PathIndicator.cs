@@ -37,55 +37,58 @@ public class PathIndicator : MonoBehaviour
 
     private void OnCover()
     {
-        if (_manager.SelectedUnit != null && CheckIndicatorCollision())
+        if (_manager.SelectedUnit != null && cursorManager.SelectedObject != null &&
+            !cursorManager.SelectedObject.CompareTag("Unit") &&
+            !cursorManager.SelectedObject.CompareTag("Barrier") && !_manager.SelectedUnit.isPathSet)
+
         {
             transform.position = cursorManager.SelectedObject.transform.position;
         }
     }
 
-    private bool CheckIndicatorCollision()
-    {
-        if (cursorManager.SelectedObject != null)
-        {
-            var objTranform = cursorManager.SelectedObject.transform;
-            if (objTranform.localScale.x > 1.0 && objTranform.localScale.y > 1.0)
-            {
-                //Debug.Log("--------Start-------------");
-                for (int i = (int) objTranform.position.y - 1; i < objTranform.position.y - 1 + objTranform.localScale.y; i++)
-                {
-                    for (int j = (int) objTranform.position.x - 1; j < objTranform.position.x - 1 + objTranform.localScale.x; j++)
-                    {
-//                        Debug.Log("objTranform.position.x = " + (objTranform.position.x-1));
-//                        Debug.Log("objTranform.position.y = " + (objTranform.position.y-1));
-//                        Debug.Log("Y = " + i);
-//                        Debug.Log("X = " + j);
-                        if (j == -1 || i == -1)
-                        {
-                            Debug.Log("false");
-                            return false;
-                        }
-                    }
-                }
-                //Debug.Log("--------END-------------");
-//            for (int i = Convert.ToInt32(transform.position.y - 1f); i < transform.localScale.y; i++)
+//    private bool CheckIndicatorCollision()
+//    {
+//        if (cursorManager.SelectedObject != null)
+//        {
+//            var objTranform = cursorManager.SelectedObject.transform;
+//            if (objTranform.localScale.x > 1.0 && objTranform.localScale.y > 1.0)
 //            {
-//                for (int j = Convert.ToInt32(transform.position.x - 1f); j < transform.localScale.x; j++)
+//                //Debug.Log("--------Start-------------");
+//                for (int i = (int) objTranform.position.y - 1; i < objTranform.position.y - 1 + objTranform.localScale.y; i++)
 //                {
-//                    GameObject obj = _map.GetObjectFromCoord(j, i);
-//                    if (obj != null &&
-//                        obj.CompareTag("Unit") ||
-//                        obj.CompareTag("Barrier") || _manager.SelectedUnit.isPathSet)
+//                    for (int j = (int) objTranform.position.x - 1; j < objTranform.position.x - 1 + objTranform.localScale.x; j++)
 //                    {
-//                        return false;
+////                        Debug.Log("objTranform.position.x = " + (objTranform.position.x-1));
+////                        Debug.Log("objTranform.position.y = " + (objTranform.position.y-1));
+////                        Debug.Log("Y = " + i);
+////                        Debug.Log("X = " + j);
+//                        if (j == -1 || i == -1)
+//                        {
+//                            Debug.Log("false");
+//                            return false;
+//                        }
 //                    }
 //                }
+//                //Debug.Log("--------END-------------");
+////            for (int i = Convert.ToInt32(transform.position.y - 1f); i < transform.localScale.y; i++)
+////            {
+////                for (int j = Convert.ToInt32(transform.position.x - 1f); j < transform.localScale.x; j++)
+////                {
+////                    GameObject obj = _map.GetObjectFromCoord(j, i);
+////                    if (obj != null &&
+////                        obj.CompareTag("Unit") ||
+////                        obj.CompareTag("Barrier") || _manager.SelectedUnit.isPathSet)
+////                    {
+////                        return false;
+////                    }
+////                }
+////            }
 //            }
-            }
-            return !cursorManager.SelectedObject.CompareTag("Unit") &&
-                   !cursorManager.SelectedObject.CompareTag("Barrier") && !_manager.SelectedUnit.isPathSet;
-        }
-        return false;
-    }
+//            return !cursorManager.SelectedObject.CompareTag("Unit") &&
+//                   !cursorManager.SelectedObject.CompareTag("Barrier") && !_manager.SelectedUnit.isPathSet;
+//        }
+//        return false;
+//    }
 
     private void OnClick()
     {

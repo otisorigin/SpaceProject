@@ -12,8 +12,8 @@ public class Unit : MonoBehaviour
     [Inject] private GameManager _manager;
     [NonSerialized] public bool isPathSet;
     public List<Node> CurrentPath { get; set; }
-    [NonSerialized] public int tileX;
-    [NonSerialized] public int tileY;
+    public int tileX { get; set; }
+    public int tileY { get; set; }
 
     private LineRenderer lineRenderer;
 
@@ -27,6 +27,8 @@ public class Unit : MonoBehaviour
         lineRenderer.enabled = false;
         lineRenderer.useWorldSpace = true;
         lineRenderer.material.color = Constants.Colors.DarkGreen;
+        tileX = (int)transform.position.x;
+        tileY = (int) transform.position.y;
     }
 
     void Update()
@@ -84,16 +86,21 @@ public class Unit : MonoBehaviour
         if (Vector3.Distance(position, target) < 0.1f && isPathSet)
         {
             AdvancePathing();
+            // Smoothly animate towards the correct map tile.
         }
+ 
+        if (!position.x.Equals(tileX) && !position.y.Equals(tileY) && Vector3.Distance(position, target) > 0.1f)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Rotate(position, target), Time.deltaTime * speed);
+        }
+        
+        transform.position = Vector3.Lerp(position, target, speed / 3.5f * Time.deltaTime);
 
         if (CurrentPath == null)
         {
             isPathSet = false;
         }
 
-        // Smoothly animate towards the correct map tile.
-        transform.rotation = Quaternion.Slerp(transform.rotation, Rotate(position, target), Time.deltaTime * speed);
-        transform.position = Vector3.Lerp(position, target, speed / 3.5f * Time.deltaTime);
     }
 
     private Quaternion Rotate(Vector3 position, Vector3 target)

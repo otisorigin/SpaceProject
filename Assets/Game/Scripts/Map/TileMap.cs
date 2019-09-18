@@ -14,21 +14,31 @@ public class TileMap : MonoBehaviour
     private int[,] _tiles;
 
     public int mapSizeX = 25;
-    public int mapSizeY  = 25;
-    
+    public int mapSizeY = 25;
+
     Node[,] _graph;
 
-    [Tooltip("Gameobjects not space")]
-    private GameObject[] _gameObjects;
-    
+    //[Tooltip("Gameobjects not space")] private GameObject[] _gameObjects;
+    private List<Node> _dynamicObstacleNodes;
+
     // Start is called before the first frame update
     void Start()
     {
         SetUnitPosition();
-        SetGameObjects();
+       // SetGameObjects();
         GenerateMapData();
         GeneratePathfindingGrapgh();
         GenerateMapVisual();
+        _dynamicObstacleNodes = new List<Node>();
+        _dynamicObstacleNodes.Add(_graph[2,2]);
+        _dynamicObstacleNodes.Add(_graph[1,1]);
+        _dynamicObstacleNodes.Add(_graph[1,2]);
+        _dynamicObstacleNodes.Add(_graph[1,3]);
+        _dynamicObstacleNodes.Add(_graph[2,1]);
+        _dynamicObstacleNodes.Add(_graph[2,3]);
+        _dynamicObstacleNodes.Add(_graph[3,1]);
+        _dynamicObstacleNodes.Add(_graph[3,2]);
+        _dynamicObstacleNodes.Add(_graph[3,3]);
     }
 
 //    public void UnitSelect(Unit unit)
@@ -41,16 +51,40 @@ public class TileMap : MonoBehaviour
 ////        GetSelectedUnit().isSelected = true;
 //    }    
 
-    public GameObject GetObjectFromCoord(int x, int y)
+//    public GameObject GetObjectFromCoord(int x, int y)
+//    {
+//        foreach (GameObject go in _gameObjects)
+//        {
+//            if (go.transform.position.x.Equals(x) && go.transform.position.y.Equals(y))
+//            {
+//                return go;
+//            }
+//        }
+//
+//        Debug.Log("return null");
+//        return null;
+//    }
+
+    private void SetDynamicObstacleNodes()
     {
-        foreach (GameObject go in _gameObjects) {
-            if (go.transform.position.x.Equals(x) && go.transform.position.y.Equals(y))
+        _dynamicObstacleNodes = new List<Node>();
+        var unitObjects = FindObjectsOfType<GameObject>().ToList().Where(obj => obj.tag.Equals("Unit")).ToArray();
+        foreach (var uObject in unitObjects)
+        {
+            var unit = uObject.GetComponent<Unit>();
+            var scale = unit.transform.localScale;
+            if(scale.x == 1.0f && scale.y == 1.0f)
             {
-                return go;
+                _dynamicObstacleNodes.Add(_graph[unit.tileX, unit.tileY]);  
+            }
+            if (scale.x > 1.0f || scale.y > 1.0f)
+            {
+                var unitScale = UIUtils.GetBiggerScale(scale.x, scale.y);
+                for(int i = unit.tileY != 0 ? unit.tileY-1 : 0; i < unitScale; i++)
+                    for (int j = unit.tileX != 0 ? unit.tileX-1 : 0; j < unitScale; j++)
+                        _dynamicObstacleNodes.Add(_graph[j, i]);
             }
         }
-        Debug.Log("return null");
-        return null;
     }
 
     public float CostToEnterTile(Node source, Node target)
@@ -61,7 +95,7 @@ public class TileMap : MonoBehaviour
         {
             return Mathf.Infinity;
         }
-        
+
         float cost = tileType.movementCost;
 
         if (source.x != target.x && source.y != target.y)
@@ -69,24 +103,26 @@ public class TileMap : MonoBehaviour
             //We are moving diagonally! Fudge the cost for tile-braking
             cost += 1.0f;
         }
+
         return cost;
     }
-    
-     public void GeneratePathTo(int x, int y)
+
+    public void GeneratePathTo(int x, int y)
     {
         if (!UnitCanEnterTile(x, y))
         {
             return;
         }
         
+        //SetDynamicObstacleNodes();
         var unit = manager.SelectedUnit.GetComponent<Unit>();
         unit.CurrentPath = null;
-        
+
         var unvisited = new List<Node>();
 
         var dist = new Dictionary<Node, float>();
         var prev = new Dictionary<Node, Node>();
-        
+
         Node source = _graph[unit.tileX, unit.tileY];
         Node target = _graph[x, y];
 
@@ -100,13 +136,16 @@ public class TileMap : MonoBehaviour
                 dist[node] = Mathf.Infinity;
                 prev[node] = null;
             }
-            
-            unvisited.Add(node);
+
+            //unvisited.Add(node);
+            if (/*node != source && */!_dynamicObstacleNodes.Contains(node))
+            {
+                unvisited.Add(node);
+            }
         }
 
         while (unvisited.Count > 0)
         {
-            
             //unvisited node with smallest distance
             Node u = null;
 
@@ -122,13 +161,13 @@ public class TileMap : MonoBehaviour
             {
                 break;
             }
-            
+
             unvisited.Remove(u);
 
             foreach (var v in u.neighbours)
             {
                 //float alt = dist[u] + u.DistanceTo(v);
-                float alt = dist[u] + CostToEnterTile(u,v);
+                float alt = dist[u] + CostToEnterTile(u, v);
                 if (alt < dist[v])
                 {
                     dist[v] = alt;
@@ -136,14 +175,14 @@ public class TileMap : MonoBehaviour
                 }
             }
         }
-        
+
         //we found shortest way to our target or there is no way to our target
         if (prev[target] == null)
         {
             //no way between our target and the source
             return;
         }
-        
+
         var currentPath = new List<Node>();
 
         Node curr = target;
@@ -157,7 +196,7 @@ public class TileMap : MonoBehaviour
         currentPath.Reverse();
         unit.CurrentPath = currentPath;
     }
-    
+
     public Vector3 TileCoordToWorldCoord(int x, int y)
     {
         return new Vector3(x, y, -1);
@@ -178,15 +217,15 @@ public class TileMap : MonoBehaviour
     {
         //Initialize the array of Nodes
         _graph = new Node[mapSizeX, mapSizeY];
-        
+
         //Initialize a Node for each spot in the array
         for (int x = 0; x < mapSizeX; x++)
         {
             for (int y = 0; y < mapSizeY; y++)
             {
-                _graph[x,y] = new Node();
+                _graph[x, y] = new Node();
                 _graph[x, y].x = x;
-                _graph[x, y].y = y;  
+                _graph[x, y].y = y;
             }
         }
 
@@ -198,41 +237,43 @@ public class TileMap : MonoBehaviour
                 //Left
                 if (x > 0)
                 {
-                    _graph[x,y].neighbours.Add( _graph[x-1, y] );
-                    if(y > 0)
-                        if (UnitCanEnterTile(x, y-1))
-                            if(UnitCanEnterTile(x-1,y))
-                                _graph[x,y].neighbours.Add(_graph[x-1,y-1]);
-                    if(y < mapSizeY - 1)
-                        if(UnitCanEnterTile(x,y+1))
-                            if(UnitCanEnterTile(x-1,y))
-                            _graph[x,y].neighbours.Add(_graph[x-1,y+1]);
-                }
-                //Right
-                if (x < mapSizeX-1)
-                {
-                    _graph[x,y].neighbours.Add( _graph[x+1, y] );
+                    _graph[x, y].neighbours.Add(_graph[x - 1, y]);
                     if (y > 0)
-                        if(UnitCanEnterTile(x,y-1))
-                            if(UnitCanEnterTile(x+1,y))
-                                _graph[x,y].neighbours.Add( _graph[x+1, y-1] );
-                    if (y < mapSizeX-1)
-                        if(UnitCanEnterTile(x,y+1))
-                            if(UnitCanEnterTile(x+1,y))
-                                _graph[x,y].neighbours.Add( _graph[x+1, y+1] );
+                        if (UnitCanEnterTile(x, y - 1))
+                            if (UnitCanEnterTile(x - 1, y))
+                                _graph[x, y].neighbours.Add(_graph[x - 1, y - 1]);
+                    if (y < mapSizeY - 1)
+                        if (UnitCanEnterTile(x, y + 1))
+                            if (UnitCanEnterTile(x - 1, y))
+                                _graph[x, y].neighbours.Add(_graph[x - 1, y + 1]);
                 }
+
+                //Right
+                if (x < mapSizeX - 1)
+                {
+                    _graph[x, y].neighbours.Add(_graph[x + 1, y]);
+                    if (y > 0)
+                        if (UnitCanEnterTile(x, y - 1))
+                            if (UnitCanEnterTile(x + 1, y))
+                                _graph[x, y].neighbours.Add(_graph[x + 1, y - 1]);
+                    if (y < mapSizeX - 1)
+                        if (UnitCanEnterTile(x, y + 1))
+                            if (UnitCanEnterTile(x + 1, y))
+                                _graph[x, y].neighbours.Add(_graph[x + 1, y + 1]);
+                }
+
                 //Up and down
                 if (y > 0)
                 {
-                    _graph[x,y].neighbours.Add( _graph[x, y-1] );
+                    _graph[x, y].neighbours.Add(_graph[x, y - 1]);
                 }
 
-                if (y < mapSizeX-1)
+                if (y < mapSizeX - 1)
                 {
-                    _graph[x,y].neighbours.Add( _graph[x, y+1] );
+                    _graph[x, y].neighbours.Add(_graph[x, y + 1]);
                 }
             }
-        } 
+        }
     }
 
     private void GenerateMapData()
@@ -245,15 +286,15 @@ public class TileMap : MonoBehaviour
             {
                 _tiles[x, y] = 0;
             }
-        } 
-        
+        }
+
         //setting test u-shape meteor barricade
         _tiles[4, 4] = 1;
         _tiles[5, 4] = 1;
         _tiles[6, 4] = 1;
         _tiles[7, 4] = 1;
         _tiles[5, 4] = 1;
-        
+
         _tiles[4, 5] = 1;
         _tiles[4, 6] = 1;
         _tiles[8, 5] = 1;
@@ -268,8 +309,8 @@ public class TileMap : MonoBehaviour
             for (int y = 0; y < mapSizeY; y++)
             {
                 var tileType = tileArray[_tiles[x, y]];
-                
-                var square = Instantiate(tileType.tileVisualPrefab, new Vector3(x,y,0), Quaternion.identity);
+
+                var square = Instantiate(tileType.tileVisualPrefab, new Vector3(x, y, 0), Quaternion.identity);
 
                 ClickableTile clickableTile = square.GetComponent<ClickableTile>();
                 clickableTile.tileX = x;
@@ -278,15 +319,15 @@ public class TileMap : MonoBehaviour
             }
         }
     }
-    
-    private void SetGameObjects()
-    {
-        var objects = FindObjectsOfType<GameObject>() ;
-        _gameObjects = objects.ToList().Where(obj => !obj.tag.Equals("Space")).ToArray();
-    }
+
+//    private void SetGameObjects()
+//    {
+//        var objects = FindObjectsOfType<GameObject>();
+//        _gameObjects = objects.ToList().Where(obj => !obj.tag.Equals("Unit")).ToArray();
+//    }
 
     private bool UnitCanEnterTile(int x, int y)
     {
-        return tileArray[_tiles[x,y]].isWalkable;
+        return tileArray[_tiles[x, y]].isWalkable;
     }
 }
