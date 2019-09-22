@@ -16,6 +16,8 @@ public class TileMap : MonoBehaviour
     public int mapSizeX = 25;
     public int mapSizeY = 25;
 
+    private Unit previousSelectedUnit;
+
     Node[,] _graph;
 
     //[Tooltip("Gameobjects not space")] private GameObject[] _gameObjects;
@@ -29,16 +31,33 @@ public class TileMap : MonoBehaviour
         GenerateMapData();
         GeneratePathfindingGrapgh();
         GenerateMapVisual();
-        _dynamicObstacleNodes = new List<Node>();
-        _dynamicObstacleNodes.Add(_graph[2,2]);
-        _dynamicObstacleNodes.Add(_graph[1,1]);
-        _dynamicObstacleNodes.Add(_graph[1,2]);
-        _dynamicObstacleNodes.Add(_graph[1,3]);
-        _dynamicObstacleNodes.Add(_graph[2,1]);
-        _dynamicObstacleNodes.Add(_graph[2,3]);
-        _dynamicObstacleNodes.Add(_graph[3,1]);
-        _dynamicObstacleNodes.Add(_graph[3,2]);
-        _dynamicObstacleNodes.Add(_graph[3,3]);
+//        _dynamicObstacleNodes = new List<Node>();
+//        _dynamicObstacleNodes.Add(_graph[2,2]);
+//        _dynamicObstacleNodes.Add(_graph[1,1]);
+//        _dynamicObstacleNodes.Add(_graph[1,2]);
+//        _dynamicObstacleNodes.Add(_graph[1,3]);
+//        _dynamicObstacleNodes.Add(_graph[2,1]);
+//        _dynamicObstacleNodes.Add(_graph[2,3]);
+//        _dynamicObstacleNodes.Add(_graph[3,1]);
+//        _dynamicObstacleNodes.Add(_graph[3,2]);
+//        _dynamicObstacleNodes.Add(_graph[3,3]);
+    }
+
+    private void Update()
+    {
+        if (manager.CurrentState == GameManager.GameState.UnitMovement)
+        {
+            if (previousSelectedUnit == null && manager.SelectedUnit != null)
+            {
+                previousSelectedUnit = manager.SelectedUnit;
+                SetDynamicObstacleNodes();
+            }
+            if (previousSelectedUnit != null && previousSelectedUnit != manager.SelectedUnit)
+            {
+                SetDynamicObstacleNodes();
+                previousSelectedUnit = manager.SelectedUnit;
+            } 
+        }
     }
 
 //    public void UnitSelect(Unit unit)
@@ -68,21 +87,30 @@ public class TileMap : MonoBehaviour
     private void SetDynamicObstacleNodes()
     {
         _dynamicObstacleNodes = new List<Node>();
-        var unitObjects = FindObjectsOfType<GameObject>().ToList().Where(obj => obj.tag.Equals("Unit")).ToArray();
+        var unitObjects = FindObjectsOfType<GameObject>()
+            .ToList()
+            .Where(obj => obj.tag.Equals("Unit"))
+            .Where(unit => !unit.GetComponent<Unit>().Equals(manager.SelectedUnit));
         foreach (var uObject in unitObjects)
         {
             var unit = uObject.GetComponent<Unit>();
             var scale = unit.transform.localScale;
-            if(scale.x == 1.0f && scale.y == 1.0f)
+            if(scale.x.Equals(1.0f) && scale.y.Equals(1.0f))
             {
                 _dynamicObstacleNodes.Add(_graph[unit.tileX, unit.tileY]);  
             }
             if (scale.x > 1.0f || scale.y > 1.0f)
             {
                 var unitScale = UIUtils.GetBiggerScale(scale.x, scale.y);
-                for(int i = unit.tileY != 0 ? unit.tileY-1 : 0; i < unitScale; i++)
-                    for (int j = unit.tileX != 0 ? unit.tileX-1 : 0; j < unitScale; j++)
-                        _dynamicObstacleNodes.Add(_graph[j, i]);
+                int startY = unit.tileY != 0 ? unit.tileY - 1 : 0;
+                int startX = unit.tileX != 0 ? unit.tileX - 1 : 0;
+                for (int i = startY; i < startY+unitScale; i++)
+                {
+                    for (int j = startX; j < startX+unitScale; j++)
+                    {
+                        _dynamicObstacleNodes.Add(_graph[j, i]); 
+                    }
+                }         
             }
         }
     }
@@ -109,12 +137,12 @@ public class TileMap : MonoBehaviour
 
     public void GeneratePathTo(int x, int y)
     {
+        Debug.Log("Setting path");
         if (!UnitCanEnterTile(x, y))
         {
             return;
         }
         
-        //SetDynamicObstacleNodes();
         var unit = manager.SelectedUnit.GetComponent<Unit>();
         unit.CurrentPath = null;
 

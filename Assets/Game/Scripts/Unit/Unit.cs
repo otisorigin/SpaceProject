@@ -81,6 +81,15 @@ public class Unit : MonoBehaviour
 
         var target = _map.TileCoordToWorldCoord(tileX, tileY);
         var position = transform.position;
+        
+        
+        if (/*!position.x.Equals(tileX) && !position.y.Equals(tileY) &&*/ Vector3.Distance(position, target) > 0.1f)
+        {
+            var rotation = position.x.Equals(tileX) && position.y.Equals(tileY)
+                ? Rotate(position, target,0)
+                : Rotate(position, target);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * speed);
+        }
         // Have we moved our visible piece close enough to the target tile that we can
         // advance to the next step in our pathfinding?
         if (Vector3.Distance(position, target) < 0.1f && isPathSet)
@@ -89,10 +98,6 @@ public class Unit : MonoBehaviour
             // Smoothly animate towards the correct map tile.
         }
  
-        if (!position.x.Equals(tileX) && !position.y.Equals(tileY) && Vector3.Distance(position, target) > 0.1f)
-        {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Rotate(position, target), Time.deltaTime * speed);
-        }
         
         transform.position = Vector3.Lerp(position, target, speed / 3.5f * Time.deltaTime);
 
@@ -103,12 +108,12 @@ public class Unit : MonoBehaviour
 
     }
 
-    private Quaternion Rotate(Vector3 position, Vector3 target)
+    private Quaternion Rotate(Vector3 position, Vector3 target, int zRotation = -90)
     {
         var relativePos = target - position;
         var angle = Mathf.Atan2(relativePos.y, relativePos.x) * Mathf.Rad2Deg;
         var rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-        rotation *= Quaternion.Euler(0, 0, -90); // this adds a 90 degrees Y rotation
+        rotation *= Quaternion.Euler(0, 0, zRotation); // this adds a 90 degrees Y rotation
         return rotation;
     }
 
