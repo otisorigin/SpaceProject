@@ -6,8 +6,7 @@ using Zenject;
 
 public class TileMap : MonoBehaviour
 {
-    [FormerlySerializedAs("_controller")] [Inject]
-    public GameManager manager;
+    [Inject] public GameManager manager;
 
     public TileType[] tileArray;
 
@@ -31,16 +30,6 @@ public class TileMap : MonoBehaviour
         GenerateMapData();
         GeneratePathfindingGrapgh();
         GenerateMapVisual();
-//        _dynamicObstacleNodes = new List<Node>();
-//        _dynamicObstacleNodes.Add(_graph[2,2]);
-//        _dynamicObstacleNodes.Add(_graph[1,1]);
-//        _dynamicObstacleNodes.Add(_graph[1,2]);
-//        _dynamicObstacleNodes.Add(_graph[1,3]);
-//        _dynamicObstacleNodes.Add(_graph[2,1]);
-//        _dynamicObstacleNodes.Add(_graph[2,3]);
-//        _dynamicObstacleNodes.Add(_graph[3,1]);
-//        _dynamicObstacleNodes.Add(_graph[3,2]);
-//        _dynamicObstacleNodes.Add(_graph[3,3]);
     }
 
     private void Update()
@@ -52,37 +41,13 @@ public class TileMap : MonoBehaviour
                 previousSelectedUnit = manager.SelectedUnit;
                 SetDynamicObstacleNodes();
             }
-            if (previousSelectedUnit != null && previousSelectedUnit != manager.SelectedUnit)
+            if (previousSelectedUnit != null && !previousSelectedUnit.Equals(manager.SelectedUnit))
             {
                 SetDynamicObstacleNodes();
                 previousSelectedUnit = manager.SelectedUnit;
             } 
         }
     }
-
-//    public void UnitSelect(Unit unit)
-//    {
-////        if (GetSelectedUnit() != null)
-////        {
-////            GetSelectedUnit().isSelected = false;
-////        }
-////        _unitGroup.SelectedUnit  = unit;
-////        GetSelectedUnit().isSelected = true;
-//    }    
-
-//    public GameObject GetObjectFromCoord(int x, int y)
-//    {
-//        foreach (GameObject go in _gameObjects)
-//        {
-//            if (go.transform.position.x.Equals(x) && go.transform.position.y.Equals(y))
-//            {
-//                return go;
-//            }
-//        }
-//
-//        Debug.Log("return null");
-//        return null;
-//    }
 
     private void SetDynamicObstacleNodes()
     {
@@ -137,7 +102,6 @@ public class TileMap : MonoBehaviour
 
     public void GeneratePathTo(int x, int y)
     {
-        Debug.Log("Setting path");
         if (!UnitCanEnterTile(x, y))
         {
             return;
@@ -165,7 +129,6 @@ public class TileMap : MonoBehaviour
                 prev[node] = null;
             }
 
-            //unvisited.Add(node);
             if (/*node != source && */!_dynamicObstacleNodes.Contains(node))
             {
                 unvisited.Add(node);
@@ -195,12 +158,16 @@ public class TileMap : MonoBehaviour
             foreach (var v in u.neighbours)
             {
                 //float alt = dist[u] + u.DistanceTo(v);
-                float alt = dist[u] + CostToEnterTile(u, v);
-                if (alt < dist[v])
+                if (!_dynamicObstacleNodes.Contains(v))
                 {
-                    dist[v] = alt;
-                    prev[v] = u;
+                    float alt = dist[u] + CostToEnterTile(u, v);
+                    if (alt < dist[v])
+                    {
+                        dist[v] = alt;
+                        prev[v] = u;
+                    } 
                 }
+                
             }
         }
 
@@ -357,5 +324,10 @@ public class TileMap : MonoBehaviour
     private bool UnitCanEnterTile(int x, int y)
     {
         return tileArray[_tiles[x, y]].isWalkable;
+    }
+
+    public bool IsObstaclePresentOnTile(Vector3 vector3)
+    {
+        return _dynamicObstacleNodes.Any(node => node.x == (int)vector3.x && node.y == (int)vector3.y);
     }
 }

@@ -37,13 +37,19 @@ public class PathIndicator : MonoBehaviour
 
     private void OnCover()
     {
-        if (_manager.SelectedUnit != null && cursorManager.SelectedObject != null &&
-            !cursorManager.SelectedObject.CompareTag("Unit") &&
-            !cursorManager.SelectedObject.CompareTag("Barrier") && !_manager.SelectedUnit.isPathSet)
-
+        if (MovePathIndicatorCondition())
         {
             transform.position = cursorManager.SelectedObject.transform.position;
         }
+    }
+
+    private bool MovePathIndicatorCondition()
+    {
+        return _manager.SelectedUnit != null && cursorManager.SelectedObject != null &&
+               !cursorManager.SelectedObject.CompareTag("Unit") &&
+               !cursorManager.SelectedObject.CompareTag("Barrier") &&
+               !_manager.SelectedUnit.isPathSet &&
+               !_map.IsObstaclePresentOnTile(cursorManager.SelectedObject.transform.position);
     }
 
 //    private bool CheckIndicatorCollision()

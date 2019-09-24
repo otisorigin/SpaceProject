@@ -82,8 +82,7 @@ public class Unit : MonoBehaviour
         var target = _map.TileCoordToWorldCoord(tileX, tileY);
         var position = transform.position;
         
-        
-        if (/*!position.x.Equals(tileX) && !position.y.Equals(tileY) &&*/ Vector3.Distance(position, target) > 0.1f)
+        if (Vector3.Distance(position, target) > 0.1f)
         {
             var rotation = position.x.Equals(tileX) && position.y.Equals(tileY)
                 ? Rotate(position, target,0)
@@ -98,14 +97,12 @@ public class Unit : MonoBehaviour
             // Smoothly animate towards the correct map tile.
         }
  
-        
         transform.position = Vector3.Lerp(position, target, speed / 3.5f * Time.deltaTime);
 
         if (CurrentPath == null)
         {
             isPathSet = false;
         }
-
     }
 
     private Quaternion Rotate(Vector3 position, Vector3 target, int zRotation = -90)
@@ -209,22 +206,6 @@ public class Unit : MonoBehaviour
 
         return pathLength;
     }
-
-    // The "Next Turn" button calls this.
-//    public void NextTurn()
-//    {
-//        //if (IsSelected(this))
-//        //{
-//        // Make sure to wrap-up any outstanding movement left over.
-//        while (CurrentPath != null && remainingMovement > 0)
-//        {
-//            AdvancePathing();
-//        }
-//
-//        // Reset our available movement points.
-//        remainingMovement = travelDistance;
-//        //}
-//    }
 
     private bool IsSelected(Unit unit)
     {

@@ -11,7 +11,6 @@ public class CursorManager : MonoBehaviour
 
     private Unit _unit;
 
-    // Start is called before the first frame update
     private void Start()
     {
         Cursor.SetCursor(cursorTexture, hotSpot, cursorMode);
