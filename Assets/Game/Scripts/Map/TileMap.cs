@@ -21,6 +21,7 @@ public class TileMap : MonoBehaviour
 
     //[Tooltip("Gameobjects not space")] private GameObject[] _gameObjects;
     private List<Node> _dynamicObstacleNodes;
+    //private List<Node> _diagonalNeighbourObstacleNodes;
 
     // Start is called before the first frame update
     void Start()
@@ -46,37 +47,6 @@ public class TileMap : MonoBehaviour
                 SetDynamicObstacleNodes();
                 previousSelectedUnit = manager.SelectedUnit;
             } 
-        }
-    }
-
-    private void SetDynamicObstacleNodes()
-    {
-        _dynamicObstacleNodes = new List<Node>();
-        var unitObjects = FindObjectsOfType<GameObject>()
-            .ToList()
-            .Where(obj => obj.tag.Equals("Unit"))
-            .Where(unit => !unit.GetComponent<Unit>().Equals(manager.SelectedUnit));
-        foreach (var uObject in unitObjects)
-        {
-            var unit = uObject.GetComponent<Unit>();
-            var scale = unit.transform.localScale;
-            if(scale.x.Equals(1.0f) && scale.y.Equals(1.0f))
-            {
-                _dynamicObstacleNodes.Add(_graph[unit.tileX, unit.tileY]);  
-            }
-            if (scale.x > 1.0f || scale.y > 1.0f)
-            {
-                var unitScale = UIUtils.GetBiggerScale(scale.x, scale.y);
-                int startY = unit.tileY != 0 ? unit.tileY - 1 : 0;
-                int startX = unit.tileX != 0 ? unit.tileX - 1 : 0;
-                for (int i = startY; i < startY+unitScale; i++)
-                {
-                    for (int j = startX; j < startX+unitScale; j++)
-                    {
-                        _dynamicObstacleNodes.Add(_graph[j, i]); 
-                    }
-                }         
-            }
         }
     }
 
@@ -129,7 +99,7 @@ public class TileMap : MonoBehaviour
                 prev[node] = null;
             }
 
-            if (/*node != source && */!_dynamicObstacleNodes.Contains(node))
+            if (!_dynamicObstacleNodes.Contains(node))
             {
                 unvisited.Add(node);
             }
@@ -157,8 +127,7 @@ public class TileMap : MonoBehaviour
 
             foreach (var v in u.neighbours)
             {
-                //float alt = dist[u] + u.DistanceTo(v);
-                if (!_dynamicObstacleNodes.Contains(v))
+                if (!_dynamicObstacleNodes.Contains(v) /*&& !_diagonalNeighbourObstacleNodes.Contains(v)*/)
                 {
                     float alt = dist[u] + CostToEnterTile(u, v);
                     if (alt < dist[v])
@@ -196,6 +165,65 @@ public class TileMap : MonoBehaviour
     {
         return new Vector3(x, y, -1);
     }
+    
+    public bool IsObstaclePresentOnTile(Vector3 vector3)
+    {
+        return _dynamicObstacleNodes.Any(node => node.x == (int)vector3.x && node.y == (int)vector3.y);
+    }
+    
+    private void SetDynamicObstacleNodes()
+    {
+        _dynamicObstacleNodes = new List<Node>();
+       // _diagonalNeighbourObstacleNodes = new List<Node>();
+        var unitObjects = FindObjectsOfType<GameObject>()
+            .ToList()
+            .Where(obj => obj.tag.Equals("Unit"))
+            .Where(unit => !unit.GetComponent<Unit>().Equals(manager.SelectedUnit));
+        foreach (var uObject in unitObjects)
+        {
+            var unit = uObject.GetComponent<Unit>();
+            var scale = unit.transform.localScale;
+            if(scale.x.Equals(1.0f) && scale.y.Equals(1.0f))
+            {
+                _dynamicObstacleNodes.Add(_graph[unit.tileX, unit.tileY]);  
+            }
+            if (scale.x > 1.0f || scale.y > 1.0f)
+            {
+                var unitScale = UIUtils.GetBiggerScale(scale.x, scale.y);
+                int startY = unit.tileY != 0 ? unit.tileY - 1 : 0;
+                int startX = unit.tileX != 0 ? unit.tileX - 1 : 0;
+                for (int i = startY; i < startY+unitScale; i++)
+                {
+                    for (int j = startX; j < startX+unitScale; j++)
+                    {
+                        _dynamicObstacleNodes.Add(_graph[j, i]); 
+                    }
+                }         
+            }
+        }
+//        _dynamicObstacleNodes.ForEach(SetDiagonalNeighbours);
+//        Debug.Log("-----------Start--------------");
+//        _diagonalNeighbourObstacleNodes.ForEach(node => Debug.Log("Node x: " + node.x + " y: " + node.y + "\n"));
+//        Debug.Log("-----------End-------------------");
+    }
+
+//    private void SetDiagonalNeighbours(Node node)
+//    {
+//        node.neighbours.ForEach(neighbour => TrySetDiagonalNeighbour(node, neighbour));
+//    }
+    
+//    private void TrySetDiagonalNeighbour(Node sourceNode, Node neighbourNode)
+//    {
+//        var diagonalLeftDownCondition = sourceNode.x - 1 == neighbourNode.x && sourceNode.y - 1 == neighbourNode.y;
+//        var diagonalLeftUpCondition = sourceNode.x - 1 == neighbourNode.x && sourceNode.y + 1 == neighbourNode.y;
+//        var diagonalRightUpCondition = sourceNode.x + 1 == neighbourNode.x && sourceNode.y + 1 == neighbourNode.y;
+//        var diagonalRightDownCondition = sourceNode.x + 1 == neighbourNode.x && sourceNode.y - 1 == neighbourNode.y;
+//        if (diagonalLeftDownCondition || diagonalLeftUpCondition ||
+//            diagonalRightUpCondition || diagonalRightDownCondition)
+//        {
+//            _diagonalNeighbourObstacleNodes.Add(neighbourNode);
+//        }
+//    }
 
     private void SetUnitPosition()
     {
@@ -324,10 +352,5 @@ public class TileMap : MonoBehaviour
     private bool UnitCanEnterTile(int x, int y)
     {
         return tileArray[_tiles[x, y]].isWalkable;
-    }
-
-    public bool IsObstaclePresentOnTile(Vector3 vector3)
-    {
-        return _dynamicObstacleNodes.Any(node => node.x == (int)vector3.x && node.y == (int)vector3.y);
     }
 }
