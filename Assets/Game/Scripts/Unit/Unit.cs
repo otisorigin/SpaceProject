@@ -10,12 +10,14 @@ public class Unit : MonoBehaviour
     public float speed;
     [Inject] private TileMap _map;
     [Inject] private GameManager _manager;
+    [Inject] private UnitManager _unitManager;
     [NonSerialized] public bool isPathSet;
     public List<Node> CurrentPath { get; set; }
     public int tileX { get; set; }
     public int tileY { get; set; }
 
     private LineRenderer lineRenderer;
+    //public IPathFindingGraph Graph { get; set; }
 
     // How far this unit can move in one turn. Note that some tiles cost extra.
     int remainingMovement;
@@ -59,6 +61,13 @@ public class Unit : MonoBehaviour
 //        var defaultPosition = transform.GetChild(1).transform.position;
 //        transform.GetChild(1).transform.position = new Vector3(defaultPosition.x, defaultPosition.y, 1f);
 //    }
+
+    public int GetSize()
+    {
+        var xScale = (int)transform.localScale.x;
+        var yScale = (int)transform.localScale.y;
+        return xScale > yScale ? xScale : yScale;
+    }
 
     private void UnitAttack()
     {
@@ -209,6 +218,6 @@ public class Unit : MonoBehaviour
 
     private bool IsSelected(Unit unit)
     {
-        return _manager.SelectedUnit != null && unit == _manager.SelectedUnit;
+        return _unitManager.SelectedUnit != null && unit == _unitManager.SelectedUnit;
     }
 }

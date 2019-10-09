@@ -4,6 +4,7 @@ using Zenject;
 public class SelectedUnitIndicator : MonoBehaviour
 {
     [Inject] private GameManager _manager;
+    [Inject] private UnitManager _unitManager;
     private MeshRenderer _circleMeshRenderer;
 
     private void Start()
@@ -19,7 +20,7 @@ public class SelectedUnitIndicator : MonoBehaviour
             _manager.CurrentState == GameManager.GameState.UnitAttack)
         {
             _circleMeshRenderer.enabled = true;
-            var selectedUnitTransform = _manager.SelectedUnit.transform;
+            var selectedUnitTransform = _unitManager.SelectedUnit.transform;
             var unitScale = selectedUnitTransform.localScale;
             var selectionCircleScale = UIUtils.GetBiggerScale(unitScale.x, unitScale.y);
             transform.localScale = new Vector3(selectionCircleScale,

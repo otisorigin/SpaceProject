@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Unit
   - Barrier
+  - Space
   layers:
   - Default
   - TransparentFX

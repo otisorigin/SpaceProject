@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Zenject;
@@ -6,11 +7,9 @@ public class GameManager : MonoBehaviour
 {
     private Player _player1;
     private Player _player2;
+    [Inject] private UnitManager _unitManager;
+    [Inject] private TileMap _tileMap;
     public Player CurrentPlayer { get; private set; }
-    
-    public Unit SelectedUnit { get; private set; }
-    public Unit[] firstPlayerUnitGroup;
-    public Unit[] secondPlayerUnitGroup;
     
     public enum GameState {UnitSelection, UnitMovement, UnitAttack};
 
@@ -18,15 +17,22 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        _player1 = new Player("1", firstPlayerUnitGroup);
-        _player2 = new Player("2", secondPlayerUnitGroup);
+        _tileMap.InitTileMap();
+        _unitManager.InitPlayerUnits();
+        _player1 = new Player("1", _unitManager.firstPlayerUnitGroup);
+        _player2 = new Player("2", _unitManager.secondPlayerUnitGroup);
         CurrentPlayer = _player1;
         ChangeGameState(GameState.UnitSelection);
+        //SetUnitPosition();
+        
     }
 
     void Update()
     {
-        //_currentGameState.
+        if (CurrentState == GameState.UnitMovement)
+        {
+            //смотреть не null ли предыдущий выбранный юнит и в зависимости от типа юнита генерить dynamicObstacles
+        }
     }
 
     public void ButtonAttack()
@@ -36,10 +42,10 @@ public class GameManager : MonoBehaviour
 
     public void ButtonResetPath()
     {
-        if (SelectedUnit != null)
+        if (_unitManager.SelectedUnit != null)
         {
-            SelectedUnit.CurrentPath = null;
-            SelectedUnit.isPathSet = false;
+            _unitManager.SelectedUnit.CurrentPath = null;
+            _unitManager.SelectedUnit.isPathSet = false;
         }
     }
     
@@ -47,12 +53,6 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Current player = " + CurrentPlayer.Name);
         CurrentPlayer = CurrentPlayer == _player1 ? _player2 : _player1;
-    }
-    
-    public void UnitSelect(Unit selectedUnit)
-    {
-        ChangeGameState(GameState.UnitMovement);
-        SelectedUnit = selectedUnit;
     }
 
     public void ChangeGameState(GameState newState)
@@ -66,8 +66,18 @@ public class GameManager : MonoBehaviour
         return CurrentPlayer.UnitGroup.Contains(unit);
     }
 
-    public bool IsThisUnitSelected(Unit unit)
-    {
-        return SelectedUnit == unit;
-    }
+
+    
+//    private void SetUnitPosition()
+//    {
+//        if (SelectedUnit != null)
+//        {
+//            var unit = SelectedUnit.GetComponent<Unit>();
+//            unit.tileX = (int) unit.transform.position.x;
+//            unit.tileY = (int) unit.transform.position.y;
+//            // unit.map = this;
+//        }
+//    }
+
+ 
 }

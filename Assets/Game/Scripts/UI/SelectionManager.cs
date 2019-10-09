@@ -6,6 +6,7 @@ public class SelectionManager : MonoBehaviour
     [Inject] private CursorManager _cursorManager;
 
     [Inject] private GameManager _manager;
+    [Inject] private UnitManager _unitManager;
 
     private string _unitTag;
     private MeshRenderer _circleMeshRenderer;
@@ -39,7 +40,7 @@ public class SelectionManager : MonoBehaviour
 
     private void OnUnitHover(Unit unit)
     {
-        if (!_manager.IsThisUnitSelected(unit))
+        if (!_unitManager.IsThisUnitSelected(unit))
         {
             _circleMeshRenderer.enabled = true;
             _circleMeshRenderer.material.color =
@@ -56,7 +57,7 @@ public class SelectionManager : MonoBehaviour
     {
         if (_manager.IsUnitOfCurrentPlayer(unit) && Input.GetMouseButtonDown(0))
         {
-            _manager.UnitSelect(unit);
+            _unitManager.UnitSelect(unit);
             _circleMeshRenderer.enabled = false;
         }
     }

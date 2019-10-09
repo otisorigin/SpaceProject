@@ -7,6 +7,7 @@ public class PathIndicator : MonoBehaviour
 {
     [Inject] private CursorManager cursorManager;
     [Inject] private GameManager _manager;
+    [Inject] private UnitManager _unitManager;
     [Inject] private TileMap _map;
 
     // Start is called before the first frame update
@@ -27,9 +28,9 @@ public class PathIndicator : MonoBehaviour
 
     private void SetIndicatorSize()
     {
-        if (_manager.SelectedUnit != null)
+        if (_unitManager.SelectedUnit != null)
         {
-            var selectedUnitLocalScale = _manager.SelectedUnit.transform.localScale;
+            var selectedUnitLocalScale = _unitManager.SelectedUnit.transform.localScale;
             transform.localScale =
                 new Vector3(selectedUnitLocalScale.y, selectedUnitLocalScale.y, selectedUnitLocalScale.z);
         }
@@ -45,10 +46,10 @@ public class PathIndicator : MonoBehaviour
 
     private bool MovePathIndicatorCondition()
     {
-        return _manager.SelectedUnit != null && cursorManager.SelectedObject != null &&
+        return _unitManager.SelectedUnit != null && cursorManager.SelectedObject != null &&
                !cursorManager.SelectedObject.CompareTag("Unit") &&
                !cursorManager.SelectedObject.CompareTag("Barrier") &&
-               !_manager.SelectedUnit.isPathSet &&
+               !_unitManager.SelectedUnit.isPathSet &&
                !_map.IsObstaclePresentOnTile(cursorManager.SelectedObject.transform.position);
     }
 
