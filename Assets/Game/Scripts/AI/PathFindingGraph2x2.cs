@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
 {
-//    private void Start()
-//    {
-//        GeneratePathfindingGrapgh();
-//    }
+    [Inject] private TileMap _map;
+    [Inject] private GameManager _manager;
+    [Inject] private UnitManager _unitManager;
+
+    private List<Node> _dynamicObstacleNodes;
+    Node[,] _graph;
     
     public void GeneratePathTo(int x, int y)
     {
@@ -20,7 +23,7 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
 
     public List<Node> GetDynamicObstacleNodes()
     {
-        throw new System.NotImplementedException();
+        return _dynamicObstacleNodes;
     }
 
     public void GeneratePathfindingGrapgh()

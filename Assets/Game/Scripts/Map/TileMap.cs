@@ -33,14 +33,13 @@ public class TileMap : MonoBehaviour
     void Start()
     {
         //SetUnitPosition();
-       // SetGameObjects();
-        
+        // SetGameObjects();
     }
 
     public void InitTileMap()
     {
         GenerateMapData();
-        GenerateMapVisual(); 
+        GenerateMapVisual();
         _graph1x1.GeneratePathfindingGrapgh();
         _graph2x2.GeneratePathfindingGrapgh();
         _graph3x3.GeneratePathfindingGrapgh();
@@ -67,10 +66,18 @@ public class TileMap : MonoBehaviour
     {
         switch (size)
         {
-            case 1: CurrentGraph = _graph1x1; break;
-            case 2: CurrentGraph = _graph2x2; break;
-            case 3: CurrentGraph = _graph3x3; break;
-            default: CurrentGraph = _graph1x1; break;
+            case 1:
+                CurrentGraph = _graph1x1;
+                break;
+            case 2:
+                CurrentGraph = _graph2x2;
+                break;
+            case 3:
+                CurrentGraph = _graph3x3;
+                break;
+            default:
+                CurrentGraph = _graph1x1;
+                break;
         }
     }
 
@@ -93,22 +100,76 @@ public class TileMap : MonoBehaviour
 
         return cost;
     }
-    
-    public bool UnitCanEnterTile(int x, int y)
+
+    public bool UnitCanEnterTile(int x, int y, int size = 1)
     {
-        return tileArray[_tiles[x, y]].isWalkable;
+        if (size == 1)
+        {
+            return tileArray[_tiles[x, y]].isWalkable;
+        }
+
+        if (size % 2 == 0)
+        {
+            return false;
+        }
+
+        return UnitCanEnterTileWithSize(x, y, size);
     }
-    
+
+    private bool UnitCanEnterTileWithSize(int x, int y, int size)
+    {
+        int startY = 0;
+        int finishY;
+        int startX = 0;
+        int finishX ;
+        if (y != 0)
+        {
+            startY = y - 1;
+            finishY = startY + size;
+        }
+        else
+        {
+            finishY = startY + size - 1;
+        }
+        if (x != 0)
+        {
+            startX = x - 1;
+            finishX = startX + size;
+        }
+        else
+        {
+            finishX = startX + size - 1;
+        }
+        for (int i = startY; i < finishY; i++)
+        {
+            for (int j = startX; j < finishX; j++)
+            {
+                //Debug.Log("x = " + j + " y = " + i);
+                if (j == mapSizeX || i == mapSizeY || !tileArray[_tiles[j, i]].isWalkable)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+//    public bool UnitCanEnterTile(int x, int y)
+//    {
+//        return tileArray[_tiles[x, y]].isWalkable;
+//    }
+
     public Vector3 TileCoordToWorldCoord(int x, int y)
     {
         return new Vector3(x, y, -1);
     }
-    
+
     public bool IsObstaclePresentOnTile(Vector3 vector3)
     {
-        return CurrentGraph.GetDynamicObstacleNodes().Any(node => node.x == (int)vector3.x && node.y == (int)vector3.y);
+        return CurrentGraph.GetDynamicObstacleNodes()
+            .Any(node => node.x == (int) vector3.x && node.y == (int) vector3.y);
     }
-    
+
     private void GenerateMapData()
     {
         _tiles = new int[mapSizeX, mapSizeY];
@@ -244,8 +305,7 @@ public class TileMap : MonoBehaviour
 //        unit.CurrentPath = currentPath;
 //    }
 
-    
-    
+
     private void SetDynamicObstacleNodes()
     {
 //        _dynamicObstacleNodes = new List<Node>();
@@ -286,7 +346,7 @@ public class TileMap : MonoBehaviour
 //    {
 //        node.neighbours.ForEach(neighbour => TrySetDiagonalNeighbour(node, neighbour));
 //    }
-    
+
 //    private void TrySetDiagonalNeighbour(Node sourceNode, Node neighbourNode)
 //    {
 //        var diagonalLeftDownCondition = sourceNode.x - 1 == neighbourNode.x && sourceNode.y - 1 == neighbourNode.y;
@@ -374,14 +434,10 @@ public class TileMap : MonoBehaviour
 //        }
 //    }
 
-    
 
 //    private void SetGameObjects()
 //    {
 //        var objects = FindObjectsOfType<GameObject>();
 //        _gameObjects = objects.ToList().Where(obj => !obj.tag.Equals("Unit")).ToArray();
 //    }
-
-    
-    
 }

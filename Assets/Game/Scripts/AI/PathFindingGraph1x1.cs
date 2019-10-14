@@ -10,11 +10,6 @@ public class PathFindingGraph1x1 : MonoBehaviour, IPathFindingGraph
 
     private List<Node> _dynamicObstacleNodes;
     Node[,] _graph;
-
-//    private void Start()
-//    {
-//        GeneratePathfindingGrapgh();
-//    }
     
     public void GeneratePathTo(int x, int y)
     {
@@ -121,6 +116,7 @@ public class PathFindingGraph1x1 : MonoBehaviour, IPathFindingGraph
              if (scale.x > 1.0f || scale.y > 1.0f)
              {
                  var unitScale = UIUtils.GetBiggerScale(scale.x, scale.y);
+                 //TODO возможно тут ещё стоит проверить по верхней границе? (mapSize)
                  int startY = unit.tileY != 0 ? unit.tileY - 1 : 0;
                  int startX = unit.tileX != 0 ? unit.tileX - 1 : 0;
                  for (int i = startY; i < startY+unitScale; i++)
