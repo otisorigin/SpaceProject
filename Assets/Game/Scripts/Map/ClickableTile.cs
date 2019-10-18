@@ -30,7 +30,7 @@ public class ClickableTile : MonoBehaviour
     {
         //TODO сделать не по clicable tile (потому что для 2х2 мы нажимаем не на тайлы а между ними)
         //show path to this tile
-        Debug.Log("x = " + tileX + ", y = " + tileY);
+        //Debug.Log("x = " + tileX + ", y = " + tileY);
         if (Map.manager.CurrentState == GameManager.GameState.UnitMovement && Map.unitManager.SelectedUnit != null &&
             !Map.unitManager.SelectedUnit.GetComponent<Unit>().isPathSet)
         {

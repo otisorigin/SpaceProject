@@ -21,28 +21,110 @@ public class PathFindingGraph3x3 : MonoBehaviour, IPathFindingGraph
     public void SetDynamicObstacleNodes()
     {
         _dynamicObstacleNodes = new List<Node>();
-//        foreach (var uObject in _unitManager.GetUnitObjects())
-//        {
-//            var unit = uObject.GetComponent<Unit>();
-//            var scale = unit.transform.localScale;
-//            if(scale.x.Equals(1.0f) && scale.y.Equals(1.0f))
-//            {
-//                _dynamicObstacleNodes.Add(_graph[unit.tileX, unit.tileY]);  
-//            }
-//            if (scale.x > 1.0f || scale.y > 1.0f)
-//            {
-//                var unitScale = UIUtils.GetBiggerScale(scale.x, scale.y);
-//                int startY = unit.tileY != 0 ? unit.tileY - 1 : 0;
-//                int startX = unit.tileX != 0 ? unit.tileX - 1 : 0;
-//                for (int i = startY; i < startY+unitScale; i++)
-//                {
-//                    for (int j = startX; j < startX+unitScale; j++)
-//                    {
-//                        _dynamicObstacleNodes.Add(_graph[j, i]); 
-//                    }
-//                }         
-//            }
-//        }
+        foreach (var uObject in _unitManager.GetUnitObjects())
+        {
+            var unit = uObject.GetComponent<Unit>();
+            var scale = unit.transform.localScale;
+            var unitScale = UIUtils.GetBiggerScale(scale.x, scale.y);
+            if(unitScale.Equals(1.0f))
+            {
+                SetUnitObstacle1X1(unit.tileX, unit.tileY, unitScale);
+            }
+           
+            //TODO заглушка пока не реализуются нормально юниты 2х2
+            ////////////////////////////////////////////////////
+            if (unitScale.Equals(2.0f))
+            {
+                continue;
+            }
+            //////////////////////////////////////////////////////
+            if (unitScale.Equals(3.0f))
+            {
+                SetUnitObstacle3X3(unit.tileX, unit.tileY, unitScale);
+            }
+        }
+    }
+
+    private void SetUnitObstacle1X1(int tileX, int tileY, float unitScale)
+    {
+        int startX = 0;
+        int startY = 0;
+        int finishX;
+        int finishY;
+        if (tileX != 0)
+        {
+            startX = tileX - 1;
+            finishX = startX + (int)unitScale + 2;
+        }
+        else
+        {
+            finishX = startX + (int) unitScale + 1;
+        }
+        if (tileY != 0)
+        {
+            startY = tileY - 1;
+            finishY = startY + (int)unitScale + 2;
+        }
+        else
+        {
+            finishY = startY + (int) unitScale + 1;
+        }
+        if (tileY == _map.mapSizeY - 1)
+        {
+            finishY = _map.mapSizeY;
+        }
+        if (tileX == _map.mapSizeX - 1)
+        {
+            finishX = _map.mapSizeX;
+        }
+        for (int i = startY; i < finishY; i++)
+        {
+            for (int j = startX; j < finishX; j++)
+            {
+                _dynamicObstacleNodes.Add(_graph[j, i]); 
+            }
+        }        
+    }
+
+    private void SetUnitObstacle3X3(int tileX, int tileY, float unitScale)
+    {
+        int startY = 0;
+        int startX = 0;
+        int finishY;
+        int finishX;
+        if (tileY != 1)
+        {
+            startY = tileY - 2;
+            finishY = startY + (int)unitScale + 2;
+        }
+        else
+        {
+            finishY = startY + (int) unitScale + 1;
+        }
+        if (tileX != 1)
+        {
+            startX = tileX - 2;
+            finishX = startX + (int)unitScale + 2;
+        }
+        else
+        {
+            finishX = startX + (int) unitScale + 1;
+        }
+        if (tileY == _map.mapSizeY - 2)
+        {
+            finishY = _map.mapSizeY;
+        }
+        if (tileX == _map.mapSizeX - 2)
+        {
+            finishX = _map.mapSizeX;
+        }
+        for (int i = startY; i < finishY; i++)
+        {
+            for (int j = startX; j < finishX; j++)
+            {
+                _dynamicObstacleNodes.Add(_graph[j, i]); 
+            }
+        }         
     }
 
     public List<Node> GetDynamicObstacleNodes()

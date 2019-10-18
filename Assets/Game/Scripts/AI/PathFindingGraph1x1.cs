@@ -23,13 +23,13 @@ public class PathFindingGraph1x1 : MonoBehaviour, IPathFindingGraph
          {
              var unit = uObject.GetComponent<Unit>();
              var scale = unit.transform.localScale;
-             if(scale.x.Equals(1.0f) && scale.y.Equals(1.0f))
+             var unitScale = UIUtils.GetBiggerScale(scale.x, scale.y);
+             if(unitScale.Equals(1.0f))
              {
                  _dynamicObstacleNodes.Add(_graph[unit.tileX, unit.tileY]);  
              }
-             if (scale.x > 1.0f || scale.y > 1.0f)
+             if (unitScale > 1.0f)
              {
-                 var unitScale = UIUtils.GetBiggerScale(scale.x, scale.y);
                  //TODO возможно тут ещё стоит проверить по верхней границе? (mapSize)
                  int startY = unit.tileY != 0 ? unit.tileY - 1 : 0;
                  int startX = unit.tileX != 0 ? unit.tileX - 1 : 0;
