@@ -34,6 +34,9 @@ public class UnitManager : MonoBehaviour
         firstPlayerUnitGroup[0] = units[0];
         firstPlayerUnitGroup[1] = units[1];
         firstPlayerUnitGroup[2] = units[2];
+        //secondPlayerUnitGroup[0] = units[2];
+
+        //secondPlayerUnitGroup[0] = units[2];
         //firstPlayerUnitGroup[0] = Instantiate(units[0]);
         //firstPlayerUnitGroup[1] = Instantiate(units[1]);
         //firstPlayerUnitGroup[2] = Instantiate(units[2]);
@@ -83,7 +86,7 @@ public class UnitManager : MonoBehaviour
     public void UnitSelect(Unit selectedUnit)
     {
         _manager.ChangeGameState(GameManager.GameState.UnitMovement);
-        _map.SetCurrentGraph(selectedUnit.GetSize());
+        _map.SetCurrentGraph(selectedUnit.GetScale());
         SelectedUnit = selectedUnit;
     }
 

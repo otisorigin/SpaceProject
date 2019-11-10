@@ -20,12 +20,13 @@ public class SelectedUnitIndicator : MonoBehaviour
             _manager.CurrentState == GameManager.GameState.UnitAttack)
         {
             _circleMeshRenderer.enabled = true;
-            var selectedUnitTransform = _unitManager.SelectedUnit.transform;
-            var unitScale = selectedUnitTransform.localScale;
-            var selectionCircleScale = UIUtils.GetBiggerScale(unitScale.x, unitScale.y);
-            transform.localScale = new Vector3(selectionCircleScale,
-                selectionCircleScale, unitScale.z);
-            transform.position = selectedUnitTransform.position;
+            GameUtils.SetUnitScaleForObject(this, _unitManager.SelectedUnit);
+            GameUtils.SetUnitPositionForObject(this, _unitManager.SelectedUnit);
+//            var selectionCircleScale = _unitManager.SelectedUnit.GetScale();
+//            transform.localScale = new Vector3(selectionCircleScale,
+//                selectionCircleScale, 1.0f);
+//            var position = _unitManager.SelectedUnit.transform.position;
+//            transform.position = new Vector3(position.x, position.y, Constants.Coordinates.ZAxisUI);
         }
         else
         {

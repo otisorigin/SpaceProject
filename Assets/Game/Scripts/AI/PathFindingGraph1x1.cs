@@ -49,7 +49,7 @@ public class PathFindingGraph1x1 : MonoBehaviour, IPathFindingGraph
          return _dynamicObstacleNodes;
      }
 
-     public void GeneratePathfindingGrapgh()
+     public void GeneratePathFindingGraph()
     {
         //Initialize the array of Nodes
         _graph = new Node[_map.mapSizeX, _map.mapSizeY];
@@ -59,9 +59,7 @@ public class PathFindingGraph1x1 : MonoBehaviour, IPathFindingGraph
         {
             for (int y = 0; y < _map.mapSizeY; y++)
             {
-                _graph[x, y] = new Node();
-                _graph[x, y].x = x;
-                _graph[x, y].y = y;
+                _graph[x, y] = new Node {x = x, y = y};
             }
         }
 

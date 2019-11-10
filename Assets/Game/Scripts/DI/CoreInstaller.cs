@@ -15,10 +15,10 @@ public class CoreInstaller : MonoInstaller<CoreInstaller>
     
     public override void InstallBindings()
     {
+        Container.Bind<GameManager>().FromInstance(controller).AsSingle();
         Container.Bind<Unit>().AsSingle();
         Container.Bind<ClickableTile>().AsSingle();
         Container.Bind<SelectedUnitIndicator>().AsSingle();
-        Container.Bind<GameManager>().FromInstance(controller).AsSingle();
         Container.Bind<TileMap>().FromComponentInNewPrefab(mapPrefab).AsSingle();
         Container.Bind<CursorManager>().FromComponentInNewPrefab(cursorManagerPrefab).AsSingle();
         Container.Bind<SelectionManager>().FromInstance(selectionManager).AsSingle();

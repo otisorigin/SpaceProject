@@ -1,40 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 public class Unit : MonoBehaviour
 {
-    public int travelDistance;
-    //Speed and smooth movement on the screen
-    public float speed;
+    //-------------------------------------------
     [Inject] private TileMap _map;
     [Inject] private GameManager _manager;
     [Inject] private UnitManager _unitManager;
+    //-------------------------------------------
+    public int travelDistance;
+    //Speed and smooth movement on the screen
+    public float speed;
     [NonSerialized] public bool isPathSet;
     public List<Node> CurrentPath { get; set; }
     public int tileX { get; set; }
     public int tileY { get; set; }
-
-    private LineRenderer lineRenderer;
-    //public IPathFindingGraph Graph { get; set; }
-
     // How far this unit can move in one turn. Note that some tiles cost extra.
-    int remainingMovement;
+    private int _remainingMovement;
+    private float _previousRotation;
+    //----------------------------------------------------
+    [SerializeField] private int maxHealth;
+    private int _currentHealth;
+    private Text _healthCounter;
+    public event Action<float> OnHealthPctChanged = delegate { };
+    //----------------------------------------------------
+    private LineRenderer _lineRenderer;
+    //public IPathFindingGraph Graph { get; set; }
 
     private void Start()
     {
-        remainingMovement = travelDistance;
-        lineRenderer = GetComponent<LineRenderer>();
-        lineRenderer.enabled = false;
-        lineRenderer.useWorldSpace = true;
-        lineRenderer.material.color = Constants.Colors.DarkGreen;
+        _currentHealth = maxHealth;
+        InitHealthCounter();
+        _remainingMovement = travelDistance;
+        //GetComponent<Canvas>().enabled = true;
+        _lineRenderer = GetComponent<LineRenderer>();
+        _lineRenderer.enabled = false;
+        _lineRenderer.useWorldSpace = true;
+        _lineRenderer.material.color = Constants.Colors.DarkGreen;
         tileX = (int)transform.position.x;
         tileY = (int) transform.position.y;
+        _previousRotation = transform.GetChild(0).rotation.z;
+        SetHealthBarColor();
+        _manager.OnNextTurn += NextTurn;
     }
-
+    
     void Update()
     {
+        //------------------------------
+        if(Input.GetKeyDown(KeyCode.Minus))
+            ModifyHealth(-10);
+        //---------------------------
+        HealthBarPosition();
         if (IsSelected(this))
         {
             if (_manager.CurrentState == GameManager.GameState.UnitMovement)
@@ -47,26 +67,69 @@ public class Unit : MonoBehaviour
             }
         }
     }
-
-//    private void OnMouseOver()
-//    {
-//        Debug.Log("On Mouse Over");
-//        var defaultPosition = transform.GetChild(1).transform.position;
-//        transform.GetChild(1).transform.position = new Vector3(defaultPosition.x, defaultPosition.y, 0.75f);
-//    }
-//
-//    private void OnMouseExit()
-//    {
-//        Debug.Log("On Mouse Exit");
-//        var defaultPosition = transform.GetChild(1).transform.position;
-//        transform.GetChild(1).transform.position = new Vector3(defaultPosition.x, defaultPosition.y, 1f);
-//    }
-
-    public int GetSize()
+    
+    public int GetScale()
     {
-        var xScale = (int)transform.localScale.x;
-        var yScale = (int)transform.localScale.y;
+        var xScale = (int)transform.GetChild(0).localScale.x;
+        var yScale = (int)transform.GetChild(0).localScale.y;
         return xScale > yScale ? xScale : yScale;
+    }
+    
+    public void ModifyHealth(int amount)
+    {
+        var updatedHealth = _currentHealth + amount;
+        if (updatedHealth >= 0 && updatedHealth <= maxHealth)
+        {
+            _currentHealth = updatedHealth;
+            float currentHealthPct = _currentHealth / (float)maxHealth;
+            OnHealthPctChanged(currentHealthPct);
+            UpdateHealthCounter();
+        }
+    }
+
+    private void NextTurn()
+    {
+        SetHealthBarColor();
+    }
+
+    private void InitHealthCounter()
+    {
+        _healthCounter = transform.GetComponentInChildren<Text>();
+        UpdateHealthCounter();
+    }
+
+    private void UpdateHealthCounter()
+    {
+        _healthCounter.text = _currentHealth + "/" + maxHealth; 
+    }
+
+    private void SetHealthBarColor()
+    {
+        transform.GetComponentsInChildren<Image>()[1].color = _manager.IsUnitOfCurrentPlayer(this) ?
+            Constants.Colors.LightGreen : Constants.Colors.Red;
+    }
+
+    private void HealthBarPosition()
+    {
+        var unitRotation = transform.GetChild(0).transform.rotation;
+        if (unitRotation.z < -0.9f && _previousRotation > -0.9f)
+        {
+            ChangeHealthBarPosition(2.0f);
+        }
+        if (unitRotation.z > -0.7f && _previousRotation < -0.7f)
+        {
+           ChangeHealthBarPosition(-2.0f);
+        }
+        if (!_previousRotation.Equals(unitRotation.z))
+        {
+            _previousRotation = unitRotation.z;
+        }
+    }
+
+    private void ChangeHealthBarPosition(float delta)
+    {
+        var healthBarTransform = transform.GetChild(1).transform;
+        healthBarTransform.position = new Vector3(transform.position.x, transform.position.y + delta, transform.position.z);
     }
 
     private void UnitAttack()
@@ -78,13 +141,13 @@ public class Unit : MonoBehaviour
     {
         if (CurrentPath != null)
         {
-            lineRenderer.positionCount = CurrentPath.Count;
-            lineRenderer.enabled = true;
+            _lineRenderer.positionCount = CurrentPath.Count;
+            _lineRenderer.enabled = true;
 
             for (var i = 0; i < CurrentPath.Count; i++)
             {
-                lineRenderer.SetPosition(i,
-                    _map.TileCoordToWorldCoord(CurrentPath[i].x, CurrentPath[i].y) + new Vector3(0, 0, -0.75f));
+                _lineRenderer.SetPosition(i,
+                    _map.TileCoordToWorldCoord((int)CurrentPath[i].x, (int)CurrentPath[i].y) + new Vector3(0, 0, Constants.Coordinates.ZAxisUI));
             }
         }
 
@@ -96,7 +159,7 @@ public class Unit : MonoBehaviour
             var rotation = position.x.Equals(tileX) && position.y.Equals(tileY)
                 ? Rotate(position, target,0)
                 : Rotate(position, target);
-            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * speed);
+            transform.GetChild(0).rotation = Quaternion.Slerp(transform.GetChild(0).rotation, rotation, Time.deltaTime * speed);
         }
         // Have we moved our visible piece close enough to the target tile that we can
         // advance to the next step in our pathfinding?
@@ -127,7 +190,7 @@ public class Unit : MonoBehaviour
     // Advances our pathfinding progress by one tile.
     private void AdvancePathing()
     {
-        if (CurrentPath == null || remainingMovement <= 0)
+        if (CurrentPath == null || _remainingMovement <= 0)
         {
             return;
         }
@@ -142,20 +205,20 @@ public class Unit : MonoBehaviour
         for (int i = 1; i < pathLength + 1; i++)
         {
             var cost = (int) _map.CostToEnterTile(CurrentPath[0], CurrentPath[i]);
-            if (remainingMovement - cost > 0)
+            if (_remainingMovement - cost > 0)
             {
-                remainingMovement -= cost;
+                _remainingMovement -= cost;
                 continue;
             }
 
-            if (remainingMovement - cost == 0)
+            if (_remainingMovement - cost == 0)
             {
-                remainingMovement -= cost;
+                _remainingMovement -= cost;
                 pathLength = i;
                 break;
             }
 
-            if (remainingMovement - cost < 0)
+            if (_remainingMovement - cost < 0)
             {
                 pathLength = i - 1;
                 break;
@@ -167,14 +230,14 @@ public class Unit : MonoBehaviour
         if (pathLength > 0)
         {
             // Move us to the next tile in the sequence
-            tileX = CurrentPath[pathLength].x;
-            tileY = CurrentPath[pathLength].y;
+            tileX = (int)CurrentPath[pathLength].x;
+            tileY = (int)CurrentPath[pathLength].y;
             // Remove the old "current" tile from the pathfinding list
             CurrentPath.RemoveRange(0, pathLength);
         }
         else
         {
-            remainingMovement = 0;
+            _remainingMovement = 0;
         }
 
         if (CurrentPath.Count == 1)
@@ -182,7 +245,7 @@ public class Unit : MonoBehaviour
             // We only have one tile left in the path, and that tile MUST be our ultimate
             // destination -- and we are standing on it!
             // So let's just clear our pathfinding info.
-            lineRenderer.enabled = false;
+            _lineRenderer.enabled = false;
             CurrentPath = null;
         }
     }
@@ -191,22 +254,22 @@ public class Unit : MonoBehaviour
     private int CalculatePathLength()
     {
         var possiblePathLength =
-            CurrentPath.Count > remainingMovement ? (int) remainingMovement : CurrentPath.Count - 1;
+            CurrentPath.Count > _remainingMovement ? (int) _remainingMovement : CurrentPath.Count - 1;
         int pathLength;
         for (pathLength = 1; pathLength <= possiblePathLength - 1; pathLength++)
         {
-            var horizontalMoving = CurrentPath[pathLength - 1].x == CurrentPath[pathLength].x &&
-                                   CurrentPath[pathLength].x == CurrentPath[pathLength + 1].x &&
-                                   CurrentPath[pathLength - 1].y != CurrentPath[pathLength].y &&
-                                   CurrentPath[pathLength].y != CurrentPath[pathLength + 1].y;
-            var verticalMoving = CurrentPath[pathLength - 1].y == CurrentPath[pathLength].y &&
-                                 CurrentPath[pathLength].y == CurrentPath[pathLength + 1].y &&
-                                 CurrentPath[pathLength - 1].x != CurrentPath[pathLength].x &&
-                                 CurrentPath[pathLength].x != CurrentPath[pathLength + 1].x;
-            var diagonalMoving = CurrentPath[pathLength - 1].y != CurrentPath[pathLength].y &&
-                                 CurrentPath[pathLength].y != CurrentPath[pathLength + 1].y &&
-                                 CurrentPath[pathLength - 1].x != CurrentPath[pathLength].x &&
-                                 CurrentPath[pathLength].x != CurrentPath[pathLength + 1].x;
+            var horizontalMoving = CurrentPath[pathLength - 1].x.Equals(CurrentPath[pathLength].x) &&
+                                   CurrentPath[pathLength].x.Equals(CurrentPath[pathLength + 1].x) &&
+                                   !CurrentPath[pathLength - 1].y.Equals(CurrentPath[pathLength].y) &&
+                                   !CurrentPath[pathLength].y.Equals(CurrentPath[pathLength + 1].y);
+            var verticalMoving = CurrentPath[pathLength - 1].y.Equals(CurrentPath[pathLength].y) &&
+                                 CurrentPath[pathLength].y.Equals(CurrentPath[pathLength + 1].y) &&
+                                 !CurrentPath[pathLength - 1].x.Equals(CurrentPath[pathLength].x) &&
+                                 !CurrentPath[pathLength].x.Equals(CurrentPath[pathLength + 1].x);
+            var diagonalMoving = !CurrentPath[pathLength - 1].y.Equals(CurrentPath[pathLength].y) &&
+                                 !CurrentPath[pathLength].y.Equals(CurrentPath[pathLength + 1].y) &&
+                                 !CurrentPath[pathLength - 1].x.Equals(CurrentPath[pathLength].x) &&
+                                 !CurrentPath[pathLength].x.Equals(CurrentPath[pathLength + 1].x);
             if (!horizontalMoving && !verticalMoving && !diagonalMoving)
             {
                 return pathLength;

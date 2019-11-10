@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -12,10 +13,12 @@ public class GameManager : MonoBehaviour
     public Player CurrentPlayer { get; private set; }
     
     public enum GameState {UnitSelection, UnitMovement, UnitAttack};
+    
+    public event Action OnNextTurn = delegate { };
 
     public GameState CurrentState { get; private set; }
 
-    private void Start()
+    private void Awake()
     {
         _tileMap.InitTileMap();
         _unitManager.InitPlayerUnits();
@@ -53,6 +56,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Current player = " + CurrentPlayer.Name);
         CurrentPlayer = CurrentPlayer == _player1 ? _player2 : _player1;
+        OnNextTurn();
     }
 
     public void ChangeGameState(GameState newState)

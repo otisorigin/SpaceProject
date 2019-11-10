@@ -40,9 +40,9 @@ public class TileMap : MonoBehaviour
     {
         GenerateMapData();
         GenerateMapVisual();
-        _graph1x1.GeneratePathfindingGrapgh();
-        _graph2x2.GeneratePathfindingGrapgh();
-        _graph3x3.GeneratePathfindingGrapgh();
+        _graph1x1.GeneratePathFindingGraph();
+        _graph2x2.GeneratePathFindingGraph();
+        _graph3x3.GeneratePathFindingGraph();
     }
 
     private void Update()
@@ -83,9 +83,9 @@ public class TileMap : MonoBehaviour
 
     public float CostToEnterTile(Node source, Node target)
     {
-        var tileType = tileArray[_tiles[target.x, target.y]];
+        var tileType = tileArray[_tiles[(int)target.x, (int)target.y]];
 
-        if (UnitCanEnterTile(target.x, target.y) == false)
+        if (UnitCanEnterTile((int)target.x, (int)target.y) == false)
         {
             return Mathf.Infinity;
         }

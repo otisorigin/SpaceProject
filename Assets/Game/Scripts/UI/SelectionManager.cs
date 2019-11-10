@@ -45,11 +45,13 @@ public class SelectionManager : MonoBehaviour
             _circleMeshRenderer.enabled = true;
             _circleMeshRenderer.material.color =
                 _manager.IsUnitOfCurrentPlayer(unit) ? Color.cyan : Color.red;
-            transform.position = unit.transform.position;
-            var unitScale = unit.transform.localScale;
-            var selectionCircleScale = UIUtils.GetBiggerScale(unitScale.x, unitScale.y);
-            transform.localScale = new Vector3(selectionCircleScale,
-                selectionCircleScale, unitScale.z);
+            GameUtils.SetUnitScaleForObject(this, unit);
+            GameUtils.SetUnitPositionForObject(this, unit);
+//            var position = unit.transform.position;
+//            transform.position = new Vector3(position.x, position.y, Constants.Coordinates.ZAxisUI);
+//            var selectionCircleScale = unit.GetScale();
+//            transform.localScale = new Vector3(selectionCircleScale,
+//                selectionCircleScale, 1.0f);
         }
     }
 

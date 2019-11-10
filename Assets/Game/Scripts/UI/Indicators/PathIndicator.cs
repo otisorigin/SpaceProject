@@ -19,17 +19,18 @@ public class PathIndicator : MonoBehaviour
     {
         if (_unitManager.SelectedUnit != null)
         {
-            SetIndicatorSize();
+            GameUtils.SetUnitScaleForObject(this, _unitManager.SelectedUnit);
+            //SetIndicatorSize();
             SetIndicatorPosition();
         }
     }
 
-    private void SetIndicatorSize()
-    {
-        var selectedUnitLocalScale = _unitManager.SelectedUnit.transform.localScale;
-        transform.localScale =
-            new Vector3(selectedUnitLocalScale.y, selectedUnitLocalScale.y, selectedUnitLocalScale.z);
-    }
+//    private void SetIndicatorSize()
+//    {
+//        var selectedUnitLocalScale = _unitManager.SelectedUnit.transform.localScale;
+//        transform.localScale =
+//            new Vector3(selectedUnitLocalScale.y, selectedUnitLocalScale.y, selectedUnitLocalScale.z);
+//    }
 
     private void SetIndicatorPosition()
     {
