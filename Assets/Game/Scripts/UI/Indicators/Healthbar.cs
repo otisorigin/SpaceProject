@@ -13,11 +13,6 @@ public class Healthbar : MonoBehaviour
         GetComponentInParent<Unit>().OnHealthPctChanged += HandleHealthChanged;
     }
 
-    private void Update()
-    {
-        
-    }
-
     private void HandleHealthChanged(float pct)
     {
         StartCoroutine(ChangeToPct(pct));
@@ -38,19 +33,4 @@ public class Healthbar : MonoBehaviour
 
         image.fillAmount = pct;
     }
-
-//    void Start()
-//    {
-//        //transform.GetComponent<Canvas>().enabled = true;
-//    }
-//
-//    // Update is called once per frame
-//    void Update()
-//    {
-////        var unitRotation = transform.parent.transform.rotation;
-////        if (unitRotation.z > 90.0f || unitRotation.z < -90.0f)
-////        {
-////            Debug.Log("!!!");
-////        }
-//    }
 }

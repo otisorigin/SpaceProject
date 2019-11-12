@@ -21,7 +21,6 @@ public class Unit : MonoBehaviour
     public int tileY { get; set; }
     // How far this unit can move in one turn. Note that some tiles cost extra.
     private int _remainingMovement;
-    private float _previousRotation;
     //----------------------------------------------------
     [SerializeField] private int maxHealth;
     private int _currentHealth;
@@ -43,7 +42,6 @@ public class Unit : MonoBehaviour
         _lineRenderer.material.color = Constants.Colors.DarkGreen;
         tileX = (int)transform.position.x;
         tileY = (int) transform.position.y;
-        _previousRotation = transform.GetChild(0).rotation.z;
         SetHealthBarColor();
         _manager.OnNextTurn += NextTurn;
     }
@@ -112,24 +110,23 @@ public class Unit : MonoBehaviour
     private void HealthBarPosition()
     {
         var unitRotation = transform.GetChild(0).transform.rotation;
-        if (unitRotation.z < -0.9f && _previousRotation > -0.9f)
+        if (unitRotation.z <= 1.0f && unitRotation.z >= 0.7 || unitRotation.z <= -0.7f)
         {
             ChangeHealthBarPosition(2.0f);
         }
-        if (unitRotation.z > -0.7f && _previousRotation < -0.7f)
+        if (unitRotation.z <= 0.7f && unitRotation.z >= 0.0f || unitRotation.z >= -0.7f && unitRotation.z <= 0.0f)
         {
            ChangeHealthBarPosition(-2.0f);
-        }
-        if (!_previousRotation.Equals(unitRotation.z))
-        {
-            _previousRotation = unitRotation.z;
         }
     }
 
     private void ChangeHealthBarPosition(float delta)
     {
         var healthBarTransform = transform.GetChild(1).transform;
-        healthBarTransform.position = new Vector3(transform.position.x, transform.position.y + delta, transform.position.z);
+        if (!healthBarTransform.position.y.Equals(transform.position.y + delta))
+        {
+            healthBarTransform.position = new Vector3(transform.position.x, transform.position.y + delta, transform.position.z-1);
+        }
     }
 
     private void UnitAttack()
