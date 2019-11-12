@@ -109,14 +109,15 @@ public class Unit : MonoBehaviour
 
     private void HealthBarPosition()
     {
+        var healthbar = transform.GetComponentInChildren<Healthbar>();
         var unitRotation = transform.GetChild(0).transform.rotation;
         if (unitRotation.z <= 1.0f && unitRotation.z >= 0.7 || unitRotation.z <= -0.7f)
         {
-            ChangeHealthBarPosition(2.0f);
+            ChangeHealthBarPosition(healthbar.distance);
         }
         if (unitRotation.z <= 0.7f && unitRotation.z >= 0.0f || unitRotation.z >= -0.7f && unitRotation.z <= 0.0f)
         {
-           ChangeHealthBarPosition(-2.0f);
+           ChangeHealthBarPosition(-healthbar.distance);
         }
     }
 

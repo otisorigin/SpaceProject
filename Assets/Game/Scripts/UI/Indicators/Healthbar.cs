@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class Healthbar : MonoBehaviour
 {
     [SerializeField] private float updateSpeedSeconds = 0.5f;
+    [SerializeField] public float distance = 1.0f;
 
     private void Awake()
     {

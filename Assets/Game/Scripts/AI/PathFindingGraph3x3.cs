@@ -24,7 +24,7 @@ public class PathFindingGraph3x3 : MonoBehaviour, IPathFindingGraph
         foreach (var uObject in _unitManager.GetUnitObjects())
         {
             var unit = uObject.GetComponent<Unit>();
-            var scale = unit.transform.localScale;
+            var scale = uObject.transform.GetChild(0).transform.localScale;
             var unitScale = UIUtils.GetBiggerScale(scale.x, scale.y);
             if(unitScale.Equals(1.0f))
             {
