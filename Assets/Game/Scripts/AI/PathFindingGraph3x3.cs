@@ -13,9 +13,9 @@ public class PathFindingGraph3x3 : MonoBehaviour, IPathFindingGraph
     private List<Node> _dynamicObstacleNodes;
     Node[,] _graph;
     
-    public void GeneratePathTo(int x, int y)
+    public void GeneratePathTo(float x, float y)
     {
-        PathFindingUtils.GeneratePathTo(x,y,_dynamicObstacleNodes,_graph,_map, _unitManager);
+        PathFindingUtils.GeneratePathTo((int)x,(int)y,_dynamicObstacleNodes,_graph,_map, _unitManager);
     }
 
     public void SetDynamicObstacleNodes()
@@ -28,7 +28,7 @@ public class PathFindingGraph3x3 : MonoBehaviour, IPathFindingGraph
             var unitScale = UIUtils.GetBiggerScale(scale.x, scale.y);
             if(unitScale.Equals(1.0f))
             {
-                SetUnitObstacle1X1(unit.tileX, unit.tileY, unitScale);
+                SetUnitObstacle1X1((int)unit.tileX, (int)unit.tileY, unitScale);
             }
            
             //TODO заглушка пока не реализуются нормально юниты 2х2
@@ -40,7 +40,7 @@ public class PathFindingGraph3x3 : MonoBehaviour, IPathFindingGraph
             //////////////////////////////////////////////////////
             if (unitScale.Equals(3.0f))
             {
-                SetUnitObstacle3X3(unit.tileX, unit.tileY, unitScale);
+                SetUnitObstacle3X3((int)unit.tileX, (int)unit.tileY, unitScale);
             }
         }
     }

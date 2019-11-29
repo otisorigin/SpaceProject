@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,7 +19,7 @@ public class PathFindingUtils
         var dist = new Dictionary<Node, float>();
         var prev = new Dictionary<Node, Node>();
 
-        Node source = graph[unit.tileX, unit.tileY];
+        Node source = graph[(int)unit.tileX, (int)unit.tileY];
         Node target = graph[x, y];
 
         dist[source] = 0;

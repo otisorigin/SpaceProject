@@ -32,6 +32,8 @@ public class UnitManager : MonoBehaviour
         firstPlayerUnitGroup = new Unit[10];
         secondPlayerUnitGroup = new Unit[10];
         firstPlayerUnitGroup[0] = units[0];
+        //var middleUnit = units[1];
+        //middleUnit.tileX = middleUnit.tileX + 0.5f;
         firstPlayerUnitGroup[1] = units[1];
         firstPlayerUnitGroup[2] = units[2];
         //secondPlayerUnitGroup[0] = units[2];

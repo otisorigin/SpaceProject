@@ -17,8 +17,8 @@ public class Unit : MonoBehaviour
     public float speed;
     [NonSerialized] public bool isPathSet;
     public List<Node> CurrentPath { get; set; }
-    public int tileX { get; set; }
-    public int tileY { get; set; }
+    public float tileX { get; set; }
+    public float tileY { get; set; }
     // How far this unit can move in one turn. Note that some tiles cost extra.
     private int _remainingMovement;
     //----------------------------------------------------
@@ -40,8 +40,8 @@ public class Unit : MonoBehaviour
         _lineRenderer.enabled = false;
         _lineRenderer.useWorldSpace = true;
         _lineRenderer.material.color = Constants.Colors.DarkGreen;
-        tileX = (int)transform.position.x;
-        tileY = (int) transform.position.y;
+        tileX = transform.position.x;
+        tileY = transform.position.y;
         SetHealthBarColor();
         _manager.OnNextTurn += NextTurn;
     }
@@ -145,7 +145,7 @@ public class Unit : MonoBehaviour
             for (var i = 0; i < CurrentPath.Count; i++)
             {
                 _lineRenderer.SetPosition(i,
-                    _map.TileCoordToWorldCoord((int)CurrentPath[i].x, (int)CurrentPath[i].y) + new Vector3(0, 0, Constants.Coordinates.ZAxisUI));
+                    _map.TileCoordToWorldCoord(CurrentPath[i].x, CurrentPath[i].y) + new Vector3(0, 0, Constants.Coordinates.ZAxisUI));
             }
         }
 
@@ -228,8 +228,8 @@ public class Unit : MonoBehaviour
         if (pathLength > 0)
         {
             // Move us to the next tile in the sequence
-            tileX = (int)CurrentPath[pathLength].x;
-            tileY = (int)CurrentPath[pathLength].y;
+            tileX = CurrentPath[pathLength].x;
+            tileY = CurrentPath[pathLength].y;
             // Remove the old "current" tile from the pathfinding list
             CurrentPath.RemoveRange(0, pathLength);
         }

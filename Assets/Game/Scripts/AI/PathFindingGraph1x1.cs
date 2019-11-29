@@ -11,9 +11,9 @@ public class PathFindingGraph1x1 : MonoBehaviour, IPathFindingGraph
     private List<Node> _dynamicObstacleNodes;
     Node[,] _graph;
     
-    public void GeneratePathTo(int x, int y)
+    public void GeneratePathTo(float x, float y)
     {
-        PathFindingUtils.GeneratePathTo(x,y,_dynamicObstacleNodes,_graph,_map, _unitManager);
+        PathFindingUtils.GeneratePathTo((int)x,(int)y,_dynamicObstacleNodes,_graph,_map, _unitManager);
     }
      
      public void SetDynamicObstacleNodes()
@@ -26,13 +26,13 @@ public class PathFindingGraph1x1 : MonoBehaviour, IPathFindingGraph
              var unitScale = UIUtils.GetBiggerScale(scale.x, scale.y);
              if(unitScale.Equals(1.0f))
              {
-                 _dynamicObstacleNodes.Add(_graph[unit.tileX, unit.tileY]);  
+                 _dynamicObstacleNodes.Add(_graph[(int)unit.tileX, (int)unit.tileY]);  
              }
              if (unitScale > 1.0f)
              {
                  //TODO возможно тут ещё стоит проверить по верхней границе? (mapSize)
-                 int startY = unit.tileY != 0 ? unit.tileY - 1 : 0;
-                 int startX = unit.tileX != 0 ? unit.tileX - 1 : 0;
+                 int startY = (int)unit.tileY != 0 ? (int)unit.tileY - 1 : 0;
+                 int startX = (int)unit.tileX != 0 ? (int)unit.tileX - 1 : 0;
                  for (int i = startY; i < startY+unitScale; i++)
                  {
                      for (int j = startX; j < startX+unitScale; j++)

@@ -106,6 +106,14 @@ public class TileMap : MonoBehaviour
         return tileArray[_tiles[x, y]].isWalkable;
     }
 
+    public bool UnitCanEnterNode(float x, float y)
+    {
+        return tileArray[_tiles[(int) (x - 0.5f), (int) (y - 0.5f)]].isWalkable &&
+               tileArray[_tiles[(int) (x + 0.5f), (int) (y + 0.5f)]].isWalkable &&
+               tileArray[_tiles[(int) (x + 0.5f), (int) (y - 0.5f)]].isWalkable &&
+               tileArray[_tiles[(int) (x - 0.5f), (int) (y + 0.5f)]].isWalkable;
+    }
+
     public bool UnitCanEnterTile(int x, int y, int size)
     {
         int startY = 0;
@@ -149,7 +157,7 @@ public class TileMap : MonoBehaviour
 //        return tileArray[_tiles[x, y]].isWalkable;
 //    }
 
-    public Vector3 TileCoordToWorldCoord(int x, int y)
+    public Vector3 TileCoordToWorldCoord(float x, float y)
     {
         return new Vector3(x, y, -1);
     }
