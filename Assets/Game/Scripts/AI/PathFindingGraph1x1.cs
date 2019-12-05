@@ -28,7 +28,11 @@ public class PathFindingGraph1x1 : MonoBehaviour, IPathFindingGraph
              {
                  _dynamicObstacleNodes.Add(_graph[(int)unit.tileX, (int)unit.tileY]);  
              }
-             if (unitScale > 1.0f)
+             if(unitScale.Equals(2.0f))
+             {
+                 PathFindingUtils.AddObstacleNode(unit.tileX, unit.tileY, _dynamicObstacleNodes, _graph);
+             }
+             if (unitScale.Equals(3.0f))
              {
                  //TODO возможно тут ещё стоит проверить по верхней границе? (mapSize)
                  int startY = (int)unit.tileY != 0 ? (int)unit.tileY - 1 : 0;
@@ -109,4 +113,6 @@ public class PathFindingGraph1x1 : MonoBehaviour, IPathFindingGraph
             }
         }
     }
+     
+     
 }

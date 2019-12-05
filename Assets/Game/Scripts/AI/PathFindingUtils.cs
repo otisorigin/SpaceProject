@@ -94,4 +94,12 @@ public class PathFindingUtils
         currentPath.Reverse();
         unit.CurrentPath = currentPath;
     }
+
+    public static void AddObstacleNode(float x, float y, List<Node> obstacles, Node[,] graph)
+    {
+        obstacles.Add(graph[(int)(x-0.5f), (int)(y-0.5f)]);  
+        obstacles.Add(graph[(int)(x+0.5f), (int)(y+0.5f)]);  
+        obstacles.Add(graph[(int)(x-0.5f), (int)(y+0.5f)]);
+        obstacles.Add(graph[(int)(x+0.5f), (int)(y-0.5f)]);
+    }
 }

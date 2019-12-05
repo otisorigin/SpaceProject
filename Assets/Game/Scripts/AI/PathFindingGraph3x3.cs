@@ -30,14 +30,10 @@ public class PathFindingGraph3x3 : MonoBehaviour, IPathFindingGraph
             {
                 SetUnitObstacle1X1((int)unit.tileX, (int)unit.tileY, unitScale);
             }
-           
-            //TODO заглушка пока не реализуются нормально юниты 2х2
-            ////////////////////////////////////////////////////
             if (unitScale.Equals(2.0f))
             {
-                continue;
+                SetUnitObstacle2X2(unit.tileX, unit.tileY);
             }
-            //////////////////////////////////////////////////////
             if (unitScale.Equals(3.0f))
             {
                 SetUnitObstacle3X3((int)unit.tileX, (int)unit.tileY, unitScale);
@@ -86,6 +82,47 @@ public class PathFindingGraph3x3 : MonoBehaviour, IPathFindingGraph
         }        
     }
 
+    private void SetUnitObstacle2X2(float tileX, float tileY)
+    {
+        PathFindingUtils.AddObstacleNode(tileX, tileY, _dynamicObstacleNodes, _graph);
+        if (tileY > 1)
+        {
+            _dynamicObstacleNodes.Add(_graph[(int)(tileX - 0.5f), (int)(tileY - 1.5f)]); 
+            _dynamicObstacleNodes.Add(_graph[(int)(tileX + 0.5f), (int)(tileY - 1.5f)]); 
+        }
+        if (_map.mapSizeY - 1.5f > tileY)
+        {
+            _dynamicObstacleNodes.Add(_graph[(int)(tileX - 0.5f), (int)(tileY + 1.5f)]); 
+            _dynamicObstacleNodes.Add(_graph[(int)(tileX + 0.5f), (int)(tileY + 1.5f)]); 
+        }
+        if (tileX > 1)
+        {
+            _dynamicObstacleNodes.Add(_graph[(int)(tileX - 1.5f), (int)(tileY + 0.5f)]); 
+            _dynamicObstacleNodes.Add(_graph[(int)(tileX - 1.5f), (int)(tileY - 0.5f)]);
+            if (tileY > 1)
+            {
+                _dynamicObstacleNodes.Add(_graph[(int)(tileX - 1.5f), (int)(tileY - 1.5f)]);
+            }
+            if (_map.mapSizeY - 1.5f > tileY)
+            {
+                _dynamicObstacleNodes.Add(_graph[(int)(tileX - 1.5f), (int)(tileY + 1.5f)]);
+            }
+        }
+        if (_map.mapSizeX - 1.5f > tileX)
+        {
+            _dynamicObstacleNodes.Add(_graph[(int)(tileX + 1.5f), (int)(tileY + 0.5f)]); 
+            _dynamicObstacleNodes.Add(_graph[(int)(tileX + 1.5f), (int)(tileY - 0.5f)]); 
+            if (tileY > 1)
+            {
+                _dynamicObstacleNodes.Add(_graph[(int)(tileX + 1.5f), (int)(tileY - 1.5f)]);
+            }
+            if (_map.mapSizeY - 1.5f > tileY)
+            {
+                _dynamicObstacleNodes.Add(_graph[(int)(tileX + 1.5f), (int)(tileY + 1.5f)]);
+            }
+        }
+    }
+    
     private void SetUnitObstacle3X3(int tileX, int tileY, float unitScale)
     {
         int startY = 0;
