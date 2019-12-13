@@ -4,7 +4,6 @@ using Zenject;
 public class SelectionManager : MonoBehaviour
 {
     [Inject] private CursorManager _cursorManager;
-
     [Inject] private GameManager _manager;
     [Inject] private UnitManager _unitManager;
 
@@ -26,11 +25,11 @@ public class SelectionManager : MonoBehaviour
     private void UnitSelection()
     {
         var selectedObject = _cursorManager.SelectedObject;
-        if (selectedObject != null && selectedObject.CompareTag(_unitTag))
+        if ((_unitManager.SelectedUnit == null || !_unitManager.SelectedUnit.IsMoving) && selectedObject != null && selectedObject.CompareTag(_unitTag))
         {
             var selectedUnit = selectedObject.GetComponent<Unit>();
             OnUnitHover(selectedUnit);
-            OnUnitClick(selectedUnit);
+            OnUnitClick(selectedUnit);  
         }
         else
         {
@@ -47,11 +46,6 @@ public class SelectionManager : MonoBehaviour
                 _manager.IsUnitOfCurrentPlayer(unit) ? Color.cyan : Color.red;
             GameUtils.SetUnitScaleForObject(this, unit);
             GameUtils.SetUnitPositionForObject(this, unit);
-//            var position = unit.transform.position;
-//            transform.position = new Vector3(position.x, position.y, Constants.Coordinates.ZAxisUI);
-//            var selectionCircleScale = unit.GetScale();
-//            transform.localScale = new Vector3(selectionCircleScale,
-//                selectionCircleScale, 1.0f);
         }
     }
 
@@ -63,6 +57,5 @@ public class SelectionManager : MonoBehaviour
             _circleMeshRenderer.enabled = false;
         }
     }
-
     
 }

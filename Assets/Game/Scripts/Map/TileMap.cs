@@ -7,7 +7,7 @@ using Zenject;
 public class TileMap : MonoBehaviour
 {
     [Inject] public GameManager manager;
-    [Inject] public UnitManager unitManager;
+    [Inject] public UnitManager _unitManager;
     [Inject] private PathFindingGraph1x1 _graph1x1;
     [Inject] private PathFindingGraph2x2 _graph2x2;
     [Inject] private PathFindingGraph3x3 _graph3x3;
@@ -34,6 +34,11 @@ public class TileMap : MonoBehaviour
     {
         //SetUnitPosition();
         // SetGameObjects();
+    }
+    
+    private void Awake()
+    {
+        _unitManager.OnUnitSelect += HandleUnitSelect;
     }
 
     public void InitTileMap()
@@ -62,9 +67,9 @@ public class TileMap : MonoBehaviour
 //        }
     }
 
-    public void SetCurrentGraph(int size)
+    private void HandleUnitSelect(Unit selectedUnit)
     {
-        switch (size)
+        switch (selectedUnit.GetScale())
         {
             case 1:
                 CurrentGraph = _graph1x1;

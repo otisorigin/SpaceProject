@@ -20,10 +20,10 @@ public class ClickableTile : MonoBehaviour
         //set this tile as end of the path for unit
         if (Map.manager.CurrentState == GameManager.GameState.UnitMovement)
         {
-            Map.unitManager.SelectedUnit.GetComponent<Unit>().isPathSet = true;
+            var unit = Map._unitManager.SelectedUnit.GetComponent<Unit>();
+            unit.isPathSet = true;
+            unit.IsMoving = true;
         }
-
-        //map.SetPathTo(tileX, tileY);
     }
 
     void OnMouseOver()
@@ -31,10 +31,10 @@ public class ClickableTile : MonoBehaviour
         //TODO сделать не по clicable tile (потому что для 2х2 мы нажимаем не на тайлы а между ними)
         //show path to this tile
         //Debug.Log("x = " + tileX + ", y = " + tileY);
-        if (Map.manager.CurrentState == GameManager.GameState.UnitMovement && Map.unitManager.SelectedUnit != null &&
-            !Map.unitManager.SelectedUnit.GetComponent<Unit>().isPathSet)
+        if (Map.manager.CurrentState == GameManager.GameState.UnitMovement && Map._unitManager.SelectedUnit != null &&
+            !Map._unitManager.SelectedUnit.GetComponent<Unit>().isPathSet)
         {
-            Map.unitManager.GeneratePathTo(tileX, tileY);
+            Map._unitManager.GeneratePathTo(tileX, tileY);
         }
     }
 }

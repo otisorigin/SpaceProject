@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Zenject;
@@ -13,13 +14,10 @@ public class UnitManager : MonoBehaviour
     [Inject] private GameManager _manager;
     [Inject] private TileMap _map;
     
+    public event Action<Unit> OnUnitSelect = delegate { };
+    
     private Unit previousSelectedUnit;
     // Start is called before the first frame update
-    void Start()
-    {
-        //PathGraphInjection();
-        //SetPlayersUnits();
-    }
 
     public void InitPlayerUnits()
     {
@@ -87,9 +85,13 @@ public class UnitManager : MonoBehaviour
     
     public void UnitSelect(Unit selectedUnit)
     {
+        if (SelectedUnit != null)
+        {
+            SelectedUnit.ClearCurrentPath();
+        }
         _manager.ChangeGameState(GameManager.GameState.UnitMovement);
-        _map.SetCurrentGraph(selectedUnit.GetScale());
         SelectedUnit = selectedUnit;
+        OnUnitSelect(SelectedUnit);
     }
 
     public void GeneratePathTo(int x, int y)

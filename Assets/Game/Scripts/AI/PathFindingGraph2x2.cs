@@ -125,13 +125,10 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
             {
                 SetUnitObstacle1X1(unit.tileX, unit.tileY);
             }
-            //TODO заглушка пока не реализуются нормально юниты 2х2
-            ////////////////////////////////////////////////////
             if (unitScale.Equals(2.0f))
             {
                 SetUnitObstacle2X2(unit.tileX, unit.tileY);
             }
-            //////////////////////////////////////////////////////
             if (unitScale.Equals(3.0f))
             {
                 SetUnitObstacle3X3(unit.tileX, unit.tileY);
@@ -256,8 +253,6 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
     {
         //Initialize collection with Nodes
         _graph = new DoubleKeyDictionary<float, float, Node>();
-        //_graph = new Dictionary<float, Dictionary<float, Node>>();
-
         //Initialize a Node for each spot in the array
         for (float x = 0 + ShiftFactor; x < _map.mapSizeX; x++)
         {
@@ -315,21 +310,4 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
             }
         }
     }
-    
-//    void OnDrawGizmos()
-//    {
-//        Gizmos.color = Color.yellow;
-//        _graph.Values.ToList().ForEach(node =>
-//        {
-//            Gizmos.DrawSphere(new Vector3(node.x, node.y, -1), 0.2f);
-//        });
-//    }
-//
-//    private void Draw(List<Node> nodes)
-//    {
-//        nodes.ToList().ForEach(neighbour =>
-//        {
-//            Gizmos.DrawSphere(new Vector3(neighbour.x, neighbour.y, -1), 0.2f);
-//        });
-//    }
 }

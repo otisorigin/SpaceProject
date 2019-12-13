@@ -8,6 +8,11 @@ public class PathIndicator : MonoBehaviour
     [Inject] private GameManager _manager;
     [Inject] private UnitManager _unitManager;
     [Inject] private TileMap _map;
+    
+    private void Awake()
+    {
+        _unitManager.OnUnitSelect += HandleUnitSelect;
+    }
 
     void Start()
     {
@@ -20,17 +25,9 @@ public class PathIndicator : MonoBehaviour
         if (_unitManager.SelectedUnit != null)
         {
             GameUtils.SetUnitScaleForObject(this, _unitManager.SelectedUnit);
-            //SetIndicatorSize();
             SetIndicatorPosition();
         }
     }
-
-//    private void SetIndicatorSize()
-//    {
-//        var selectedUnitLocalScale = _unitManager.SelectedUnit.transform.localScale;
-//        transform.localScale =
-//            new Vector3(selectedUnitLocalScale.y, selectedUnitLocalScale.y, selectedUnitLocalScale.z);
-//    }
 
     private void SetIndicatorPosition()
     {
@@ -40,5 +37,10 @@ public class PathIndicator : MonoBehaviour
             var node = currentPath[currentPath.Count - 1];
             transform.position = new Vector3(node.x, node.y, _unitManager.SelectedUnit.transform.position.z);
         }
+    }
+    
+    private void HandleUnitSelect(Unit selectedUnit)
+    {
+        transform.position = new Vector3(selectedUnit.tileX, selectedUnit.tileY, selectedUnit.transform.position.z);
     }
 }

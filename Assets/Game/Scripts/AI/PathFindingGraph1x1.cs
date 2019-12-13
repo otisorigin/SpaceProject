@@ -34,7 +34,6 @@ public class PathFindingGraph1x1 : MonoBehaviour, IPathFindingGraph
              }
              if (unitScale.Equals(3.0f))
              {
-                 //TODO возможно тут ещё стоит проверить по верхней границе? (mapSize)
                  int startY = (int)unit.tileY != 0 ? (int)unit.tileY - 1 : 0;
                  int startX = (int)unit.tileX != 0 ? (int)unit.tileX - 1 : 0;
                  for (int i = startY; i < startY+unitScale; i++)

@@ -7,11 +7,11 @@ using Zenject;
 
 public class Unit : MonoBehaviour
 {
-    //-------------------------------------------
+    //----------------Injections-----------------
     [Inject] private TileMap _map;
     [Inject] private GameManager _manager;
     [Inject] private UnitManager _unitManager;
-    //-------------------------------------------
+    //-----------------Movement-System-----------------
     public int travelDistance;
     //Speed and smooth movement on the screen
     public float speed;
@@ -19,16 +19,17 @@ public class Unit : MonoBehaviour
     public List<Node> CurrentPath { get; set; }
     public float tileX { get; set; }
     public float tileY { get; set; }
+    public bool IsMoving { get; set; }
     // How far this unit can move in one turn. Note that some tiles cost extra.
     private int _remainingMovement;
-    //----------------------------------------------------
+    //--------------------Health-System--------------------------
     [SerializeField] private int maxHealth;
     private int _currentHealth;
     private Text _healthCounter;
+    //--------------------Events---------------------------------
     public event Action<float> OnHealthPctChanged = delegate { };
-    //----------------------------------------------------
+    //------------------------------------------------------------
     private LineRenderer _lineRenderer;
-    //public IPathFindingGraph Graph { get; set; }
 
     private void Start()
     {
@@ -44,6 +45,7 @@ public class Unit : MonoBehaviour
         tileY = transform.position.y;
         SetHealthBarColor();
         _manager.OnNextTurn += NextTurn;
+        IsMoving = false;
     }
     
     void Update()
@@ -137,6 +139,8 @@ public class Unit : MonoBehaviour
 
     private void UnitMovement()
     {
+
+        
         if (CurrentPath != null)
         {
             _lineRenderer.positionCount = CurrentPath.Count;
@@ -151,6 +155,11 @@ public class Unit : MonoBehaviour
 
         var target = _map.TileCoordToWorldCoord(tileX, tileY);
         var position = transform.position;
+        
+        if (Vector3.Distance(position, target) < 0.1f && !isPathSet && CurrentPath == null)
+        {
+            IsMoving = false;
+        }
         
         if (Vector3.Distance(position, target) > 0.1f)
         {
@@ -190,6 +199,8 @@ public class Unit : MonoBehaviour
     {
         if (CurrentPath == null || _remainingMovement <= 0)
         {
+            Debug.Log("isMoving = false");
+            IsMoving = false;
             return;
         }
 
@@ -280,5 +291,12 @@ public class Unit : MonoBehaviour
     private bool IsSelected(Unit unit)
     {
         return _unitManager.SelectedUnit != null && unit == _unitManager.SelectedUnit;
+    }
+
+    public void ClearCurrentPath()
+    {
+        CurrentPath = null;
+        isPathSet = false;
+        _lineRenderer.enabled = false;
     }
 }
