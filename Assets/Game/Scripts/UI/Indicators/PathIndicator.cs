@@ -24,7 +24,7 @@ public class PathIndicator : MonoBehaviour
     {
         if (_unitManager.SelectedUnit != null)
         {
-            GameUtils.SetUnitScaleForObject(this, _unitManager.SelectedUnit);
+            GameUtils.SetUnitScaleForObject(this, _unitManager.SelectedUnit, -0.15f);
             SetIndicatorPosition();
         }
     }

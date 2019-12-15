@@ -20,7 +20,7 @@ public class SelectedUnitIndicator : MonoBehaviour
             _manager.CurrentState == GameManager.GameState.UnitAttack)
         {
             _circleMeshRenderer.enabled = true;
-            GameUtils.SetUnitScaleForObject(this, _unitManager.SelectedUnit);
+            GameUtils.SetUnitScaleForObject(this, _unitManager.SelectedUnit, 0.2f);
             GameUtils.SetUnitPositionForObject(this, _unitManager.SelectedUnit);
 //            var selectionCircleScale = _unitManager.SelectedUnit.GetScale();
 //            transform.localScale = new Vector3(selectionCircleScale,

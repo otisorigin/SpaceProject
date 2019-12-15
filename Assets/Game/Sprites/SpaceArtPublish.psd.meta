@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: e8544c9280891de4ca84a52d4014340e
 labels:
-- ExportPath|Game/Materials
+- ExportPath|Game/Materials/export
 - ImportAnchorCenter
 - ImportPTU|100
 - ImportPackTag|

@@ -22,17 +22,16 @@ public class PathFindingGraph1x1 : MonoBehaviour, IPathFindingGraph
          foreach (var uObject in _unitManager.GetUnitObjects())
          {
              var unit = uObject.GetComponent<Unit>();
-             var scale = uObject.transform.GetChild(0).transform.localScale;
-             var unitScale = UIUtils.GetBiggerScale(scale.x, scale.y);
-             if(unitScale.Equals(1.0f))
+             var unitScale = unit.GetScale();
+             if(unitScale == 1)
              {
                  _dynamicObstacleNodes.Add(_graph[(int)unit.tileX, (int)unit.tileY]);  
              }
-             if(unitScale.Equals(2.0f))
+             if(unitScale == 2)
              {
                  PathFindingUtils.AddObstacleNode(unit.tileX, unit.tileY, _dynamicObstacleNodes, _graph);
              }
-             if (unitScale.Equals(3.0f))
+             if (unitScale == 3)
              {
                  int startY = (int)unit.tileY != 0 ? (int)unit.tileY - 1 : 0;
                  int startX = (int)unit.tileX != 0 ? (int)unit.tileX - 1 : 0;

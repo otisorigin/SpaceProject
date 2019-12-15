@@ -15,6 +15,8 @@ public class Unit : MonoBehaviour
     public int travelDistance;
     //Speed and smooth movement on the screen
     public float speed;
+
+    [SerializeField] private int scale;
     [NonSerialized] public bool isPathSet;
     public List<Node> CurrentPath { get; set; }
     public float tileX { get; set; }
@@ -70,9 +72,7 @@ public class Unit : MonoBehaviour
     
     public int GetScale()
     {
-        var xScale = (int)transform.GetChild(0).localScale.x;
-        var yScale = (int)transform.GetChild(0).localScale.y;
-        return xScale > yScale ? xScale : yScale;
+        return scale;
     }
     
     public void ModifyHealth(int amount)

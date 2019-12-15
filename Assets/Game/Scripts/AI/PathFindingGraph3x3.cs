@@ -24,17 +24,16 @@ public class PathFindingGraph3x3 : MonoBehaviour, IPathFindingGraph
         foreach (var uObject in _unitManager.GetUnitObjects())
         {
             var unit = uObject.GetComponent<Unit>();
-            var scale = uObject.transform.GetChild(0).transform.localScale;
-            var unitScale = UIUtils.GetBiggerScale(scale.x, scale.y);
-            if(unitScale.Equals(1.0f))
+            var unitScale = unit.GetScale();
+            if(unitScale == 1)
             {
                 SetUnitObstacle1X1((int)unit.tileX, (int)unit.tileY, unitScale);
             }
-            if (unitScale.Equals(2.0f))
+            if(unitScale == 2)
             {
                 SetUnitObstacle2X2(unit.tileX, unit.tileY);
             }
-            if (unitScale.Equals(3.0f))
+            if (unitScale == 3)
             {
                 SetUnitObstacle3X3((int)unit.tileX, (int)unit.tileY, unitScale);
             }

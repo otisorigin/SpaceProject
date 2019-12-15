@@ -44,7 +44,7 @@ public class SelectionManager : MonoBehaviour
             _circleMeshRenderer.enabled = true;
             _circleMeshRenderer.material.color =
                 _manager.IsUnitOfCurrentPlayer(unit) ? Color.cyan : Color.red;
-            GameUtils.SetUnitScaleForObject(this, unit);
+            GameUtils.SetUnitScaleForObject(this, unit, 0.2f);
             GameUtils.SetUnitPositionForObject(this, unit);
         }
     }

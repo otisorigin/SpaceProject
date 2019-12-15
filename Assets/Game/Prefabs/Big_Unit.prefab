@@ -263,6 +263,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   updateSpeedSeconds: 0.5
+  distance: 2
 --- !u!1 &1927882406
 GameObject:
   m_ObjectHideFlags: 0
@@ -404,6 +405,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   travelDistance: 15
   speed: 5
+  scale: 3
   maxHealth: 100
 --- !u!120 &3596657939299841551
 LineRenderer:
