@@ -13,6 +13,7 @@ public class UnitManager : MonoBehaviour
     
     [Inject] private GameManager _manager;
     [Inject] private TileMap _map;
+    public int UnitSpawnZoneLength;
     
     public event Action<Unit> OnUnitSelect = delegate { };
     

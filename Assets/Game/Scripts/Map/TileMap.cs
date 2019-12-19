@@ -185,18 +185,31 @@ public class TileMap : MonoBehaviour
             }
         }
 
+        GenerateAsteroids();
         //setting test u-shape meteor barricade
-        _tiles[4, 4] = 1;
-        _tiles[5, 4] = 1;
-        _tiles[6, 4] = 1;
-        _tiles[7, 4] = 1;
-        _tiles[5, 4] = 1;
-
-        _tiles[4, 5] = 1;
-        _tiles[4, 6] = 1;
-        _tiles[8, 5] = 1;
-        _tiles[8, 6] = 1;
+//        _tiles[4, 4] = 1;
+//        _tiles[5, 4] = 1;
+//        _tiles[6, 4] = 1;
+//        _tiles[7, 4] = 1;
+//        _tiles[5, 4] = 1;
+//
+//        _tiles[4, 5] = 1;
+//        _tiles[4, 6] = 1;
+//        _tiles[8, 5] = 1;
+//        _tiles[8, 6] = 1;
         /////////////////////////////////////
+    }
+
+    private void GenerateAsteroids()
+    {
+        var numberAsteroids = Random.Range(8, mapSizeX);
+        var maxCoordAxisY = mapSizeY - _unitManager.UnitSpawnZoneLength;
+        var minCoordAxisY = 0 + _unitManager.UnitSpawnZoneLength;
+        for (int i = 0; i < numberAsteroids; i++)
+        {
+            var asteroidType = Random.Range(1, 15);
+            _tiles[Random.Range(0, mapSizeX), Random.Range(minCoordAxisY, maxCoordAxisY)] = asteroidType;
+        }
     }
 
     private void GenerateMapVisual()
@@ -206,13 +219,16 @@ public class TileMap : MonoBehaviour
             for (int y = 0; y < mapSizeY; y++)
             {
                 var tileType = tileArray[_tiles[x, y]];
-
                 var square = Instantiate(tileType.tileVisualPrefab, new Vector3(x, y, 0), Quaternion.identity);
 
                 ClickableTile clickableTile = square.GetComponent<ClickableTile>();
                 clickableTile.tileX = x;
                 clickableTile.tileY = y;
                 clickableTile.Map = this;
+                if (_tiles[x, y] != 0)
+                {
+                    //clickableTile.transform.Rotate(0, 0, Random.Range(0, 360));
+                }
             }
         }
     }
