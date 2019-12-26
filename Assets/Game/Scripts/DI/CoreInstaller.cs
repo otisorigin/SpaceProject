@@ -1,5 +1,3 @@
-using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
 public class CoreInstaller : MonoInstaller<CoreInstaller>

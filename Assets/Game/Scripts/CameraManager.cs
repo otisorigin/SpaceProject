@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using Zenject;
 
-public class CameraController : MonoBehaviour
+public class CameraManager : MonoBehaviour
 {
-    public TileMap map;
+    [Inject] private TileMap _tileMap;
     public float panSpeed = 0.20f;
     public float panBorderThickness = 10f;
 
@@ -13,10 +14,9 @@ public class CameraController : MonoBehaviour
     public float maxSize = 8;
 //    private readonly Vector2 _panLimit;
 //
-    void Start()
+    public void InitCamera()
     {
-//        var transform1 = transform;
-//        transform1.position = new Vector3(map.mapSizeX / 2.0f, map.mapSizeY / 2.0f, transform1.position.z);
+       // transform.position = new Vector3(7.0f, _tileMap.mapSizeX / 2.0f, transform.position.z);
     }
 
     // Update is called once per frame
@@ -57,8 +57,8 @@ public class CameraController : MonoBehaviour
         //pos.z = Mathf.Clamp(pos.z, -minZ, -maxZ);
 //        float scroll = Input.GetAxis("Mouse ScrollWheel");
 //        cam.orthographicSize -= scroll * scrollSpeed * 100f * Time.deltaTime;
-//        pos.x = Mathf.Clamp(pos.x, -map.mapSizeX / 2.0f, map.mapSizeX / 2.0f);
-//        pos.y = Mathf.Clamp(pos.y, -map.mapSizeY / 2.0f, map.mapSizeY / 2.0f);
+        pos.x = Mathf.Clamp(pos.x, 12, 22);
+        pos.y = Mathf.Clamp(pos.y, 4, 30);
        
         transform.position = pos;
 

@@ -1,13 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Zenject;
+using Random = UnityEngine.Random;
 
 public class TileMap : MonoBehaviour
 {
-    [Inject] public GameManager manager;
-    [Inject] public UnitManager _unitManager;
+    [Inject] [NonSerialized] public GameManager manager;
+    [Inject] [NonSerialized] public UnitManager _unitManager;
     [Inject] private PathFindingGraph1x1 _graph1x1;
     [Inject] private PathFindingGraph2x2 _graph2x2;
     [Inject] private PathFindingGraph3x3 _graph3x3;
@@ -18,8 +20,8 @@ public class TileMap : MonoBehaviour
 
     private int[,] _tiles;
 
-    public int mapSizeX = 25;
-    public int mapSizeY = 25;
+    [NonSerialized] public int mapSizeX = 35;
+    [NonSerialized] public int mapSizeY = 35;
 
     private Unit previousSelectedUnit;
 
@@ -207,7 +209,7 @@ public class TileMap : MonoBehaviour
         var minCoordAxisY = 0 + _unitManager.UnitSpawnZoneLength;
         for (int i = 0; i < numberAsteroids; i++)
         {
-            var asteroidType = Random.Range(1, 15);
+            var asteroidType = Random.Range(1, 7);
             _tiles[Random.Range(0, mapSizeX), Random.Range(minCoordAxisY, maxCoordAxisY)] = asteroidType;
         }
     }
