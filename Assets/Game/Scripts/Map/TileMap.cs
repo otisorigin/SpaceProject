@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -17,8 +18,11 @@ public class TileMap : MonoBehaviour
     public IPathFindingGraph CurrentGraph { get; set; }
 
     public TileType[] tileArray;
+    public SpriteRenderer[] nebulaArray;
+    public SpriteRenderer[] planetArray;
 
     private int[,] _tiles;
+    private int minAsteroidsNumber = 13;
 
     [NonSerialized] public int mapSizeX = 35;
     [NonSerialized] public int mapSizeY = 35;
@@ -188,23 +192,11 @@ public class TileMap : MonoBehaviour
         }
 
         GenerateAsteroids();
-        //setting test u-shape meteor barricade
-//        _tiles[4, 4] = 1;
-//        _tiles[5, 4] = 1;
-//        _tiles[6, 4] = 1;
-//        _tiles[7, 4] = 1;
-//        _tiles[5, 4] = 1;
-//
-//        _tiles[4, 5] = 1;
-//        _tiles[4, 6] = 1;
-//        _tiles[8, 5] = 1;
-//        _tiles[8, 6] = 1;
-        /////////////////////////////////////
     }
 
     private void GenerateAsteroids()
     {
-        var numberAsteroids = Random.Range(8, mapSizeX);
+        var numberAsteroids = Random.Range(minAsteroidsNumber, mapSizeX);
         var maxCoordAxisY = mapSizeY - _unitManager.UnitSpawnZoneLength;
         var minCoordAxisY = 0 + _unitManager.UnitSpawnZoneLength;
         for (int i = 0; i < numberAsteroids; i++)
@@ -215,6 +207,13 @@ public class TileMap : MonoBehaviour
     }
 
     private void GenerateMapVisual()
+    {
+        GenerateTileVisual();
+        GenerateNebulaObjects();
+        GeneratePlanetsObjects();
+    }
+
+    private void GenerateTileVisual()
     {
         for (int x = 0; x < mapSizeX; x++)
         {
@@ -227,12 +226,47 @@ public class TileMap : MonoBehaviour
                 clickableTile.tileX = x;
                 clickableTile.tileY = y;
                 clickableTile.Map = this;
-                if (_tiles[x, y] != 0)
-                {
-                    //clickableTile.transform.Rotate(0, 0, Random.Range(0, 360));
-                }
             }
+        } 
+    }
+
+    private void GenerateNebulaObjects()
+    {
+        var objectsNumber = Random.Range(0,6);
+        for (int i = 0; i < objectsNumber; i++)
+        {
+            var objectType = nebulaArray[Random.Range(0, nebulaArray.Length-1)];
+            var xCoord = Random.Range(-3.0f, mapSizeX+3);
+            var yCoord = Random.Range(-3.0f, mapSizeY+3);
+            Instantiate(objectType, new Vector3(xCoord, yCoord, 2), Quaternion.identity);
         }
+    }
+
+    private void GeneratePlanetsObjects()
+    {
+        var planetsNumber = Random.Range(0,5);
+        var planets = planetArray.ToList();
+        for (int i = 1; i <= planetsNumber; i++)
+        {
+            var index = Random.Range(0,planets.Count - 1);
+            var planetType = planets[index];
+            planets.RemoveAt(index);
+            var xCoord = Random.Range(GetMinPlanetCoord(i,planetsNumber) , GetMaxPlanetCoord(i, planetsNumber));
+            var yCoord = Random.Range(GetMinPlanetCoord(i,planetsNumber) , GetMaxPlanetCoord(i, planetsNumber));
+            var scale = Random.Range(0.3f, 1.2f);
+            planetType.transform.localScale = new Vector3(scale,scale,planetType.transform.localScale.z);
+            Instantiate(planetType, new Vector3(xCoord, yCoord, 2), Quaternion.identity);
+        }
+    }
+
+    private float GetMinPlanetCoord(int iterator, int planetsNumber)
+    {
+        return -3.0f/planetsNumber*Random.Range((float)iterator,planetsNumber);
+    }
+    
+    private float GetMaxPlanetCoord(int iterator, int planetsNumber)
+    {
+        return (mapSizeX+3.0f)/planetsNumber*Random.Range((float)iterator,planetsNumber);
     }
 
 //    private void SetGameObjects()

@@ -2605,6 +2605,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4453433788844581997, guid: d9a87fcc6d481964e90794a737d6bd39,
         type: 3}
+      propertyPath: nebulaArray.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4453433788844581997, guid: d9a87fcc6d481964e90794a737d6bd39,
+        type: 3}
+      propertyPath: planetArray.Array.size
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4453433788844581997, guid: d9a87fcc6d481964e90794a737d6bd39,
+        type: 3}
       propertyPath: tileArray.Array.data[1].tileVisualPrefab
       value: 
       objectReference: {fileID: 2467689874506792026, guid: 20dbc837a04613f44bf844b786b1f560,
@@ -2863,6 +2873,84 @@ PrefabInstance:
       propertyPath: tileArray.Array.data[8].isWalkable
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4453433788844581997, guid: d9a87fcc6d481964e90794a737d6bd39,
+        type: 3}
+      propertyPath: nebulaArray.Array.data[0]
+      value: 
+      objectReference: {fileID: 3229137049535837778, guid: 0175433d02de2f545969df10805f9da4,
+        type: 3}
+    - target: {fileID: 4453433788844581997, guid: d9a87fcc6d481964e90794a737d6bd39,
+        type: 3}
+      propertyPath: nebulaArray.Array.data[1]
+      value: 
+      objectReference: {fileID: 6812377667419229088, guid: bc5a6c56da4a8ab46b8a24d520cd5305,
+        type: 3}
+    - target: {fileID: 4453433788844581997, guid: d9a87fcc6d481964e90794a737d6bd39,
+        type: 3}
+      propertyPath: nebulaArray.Array.data[2]
+      value: 
+      objectReference: {fileID: 6812377667419229088, guid: 50f41f7700048ae45b143a2c10fc888f,
+        type: 3}
+    - target: {fileID: 4453433788844581997, guid: d9a87fcc6d481964e90794a737d6bd39,
+        type: 3}
+      propertyPath: nebulaArray.Array.data[3]
+      value: 
+      objectReference: {fileID: 6812377667419229088, guid: 90863769a0f1a4045badbd3c7db1b55c,
+        type: 3}
+    - target: {fileID: 4453433788844581997, guid: d9a87fcc6d481964e90794a737d6bd39,
+        type: 3}
+      propertyPath: nebulaArray.Array.data[4]
+      value: 
+      objectReference: {fileID: 6812377667419229088, guid: 64324175570be5249a7834fd82126454,
+        type: 3}
+    - target: {fileID: 4453433788844581997, guid: d9a87fcc6d481964e90794a737d6bd39,
+        type: 3}
+      propertyPath: nebulaArray.Array.data[5]
+      value: 
+      objectReference: {fileID: 6812377667419229088, guid: 0afc3fcb0f301bc46b040d97cf50733c,
+        type: 3}
+    - target: {fileID: 4453433788844581997, guid: d9a87fcc6d481964e90794a737d6bd39,
+        type: 3}
+      propertyPath: planetArray.Array.data[0]
+      value: 
+      objectReference: {fileID: 3229137049535837778, guid: 59bea3b43d47ce54aa45dc1cd24d03c0,
+        type: 3}
+    - target: {fileID: 4453433788844581997, guid: d9a87fcc6d481964e90794a737d6bd39,
+        type: 3}
+      propertyPath: planetArray.Array.data[1]
+      value: 
+      objectReference: {fileID: 3229137049535837778, guid: cbca224f72fb0af479016f9767e00d96,
+        type: 3}
+    - target: {fileID: 4453433788844581997, guid: d9a87fcc6d481964e90794a737d6bd39,
+        type: 3}
+      propertyPath: planetArray.Array.data[2]
+      value: 
+      objectReference: {fileID: 3229137049535837778, guid: 874922bb2314f4b48a132c2ba7efd2f8,
+        type: 3}
+    - target: {fileID: 4453433788844581997, guid: d9a87fcc6d481964e90794a737d6bd39,
+        type: 3}
+      propertyPath: planetArray.Array.data[3]
+      value: 
+      objectReference: {fileID: 3229137049535837778, guid: d852552d0dffa4545838480ec047caf0,
+        type: 3}
+    - target: {fileID: 4453433788844581997, guid: d9a87fcc6d481964e90794a737d6bd39,
+        type: 3}
+      propertyPath: planetArray.Array.data[4]
+      value: 
+      objectReference: {fileID: 3229137049535837778, guid: adb913a1faa2b0f40b7b502c1358fb88,
+        type: 3}
+    - target: {fileID: 4453433788844581997, guid: d9a87fcc6d481964e90794a737d6bd39,
+        type: 3}
+      propertyPath: planetArray.Array.data[5]
+      value: 
+      objectReference: {fileID: 3229137049535837778, guid: 0451e2d76eea2e94b9aa08571b02642f,
+        type: 3}
+    - target: {fileID: 4453433788844581997, guid: d9a87fcc6d481964e90794a737d6bd39,
+        type: 3}
+      propertyPath: planetArray.Array.data[6]
+      value: 
+      objectReference: {fileID: 3229137049535837778, guid: 1309337f37a25af48b902b400b3a659a,
+        type: 3}
     - target: {fileID: 4453433788844581996, guid: d9a87fcc6d481964e90794a737d6bd39,
         type: 3}
       propertyPath: m_LocalPosition.x
