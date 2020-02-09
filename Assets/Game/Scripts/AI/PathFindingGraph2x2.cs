@@ -135,6 +135,12 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
         }
     }
     
+    public List<Node> GetAvailableNodes()
+    {
+        Debug.Log("GetAvailableNodes not implemented for PathFindingGrapgh3x3");
+        return null;
+    }
+    
     private void SetUnitObstacle1X1(float tileX, float tileY)
     {
         if (tileX + 1 <= _map.mapSizeX)

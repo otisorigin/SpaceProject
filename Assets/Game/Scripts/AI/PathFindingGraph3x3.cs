@@ -232,4 +232,10 @@ public class PathFindingGraph3x3 : MonoBehaviour, IPathFindingGraph
             }
         }
     }
+    
+    public List<Node> GetAvailableNodes()
+    {
+        Debug.Log("GetAvailableNodes not implemented for PathFindingGrapgh3x3");
+        return null;
+    }
 }

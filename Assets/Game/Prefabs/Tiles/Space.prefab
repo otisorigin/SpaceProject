@@ -104,5 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a9f79b97acfc754c9756bce9ed46335, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Container: {fileID: 7479362306270698943, guid: f0afa9fa038786547a24137bcdaa48df,
+    type: 3}
   tileX: 0
   tileY: 0

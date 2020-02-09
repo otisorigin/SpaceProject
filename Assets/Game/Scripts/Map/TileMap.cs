@@ -1,47 +1,31 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 using Random = UnityEngine.Random;
 
 public class TileMap : MonoBehaviour
 {
-    [Inject] [NonSerialized] public GameManager manager;
-    [Inject] [NonSerialized] public UnitManager _unitManager;
+    [Inject] [NonSerialized] private GameManager manager;
+    [Inject] [NonSerialized] private UnitManager _unitManager;
     [Inject] private PathFindingGraph1x1 _graph1x1;
     [Inject] private PathFindingGraph2x2 _graph2x2;
     [Inject] private PathFindingGraph3x3 _graph3x3;
-
     public IPathFindingGraph CurrentGraph { get; set; }
 
     public TileType[] tileArray;
     public SpriteRenderer[] nebulaArray;
     public SpriteRenderer[] planetArray;
-
     private int[,] _tiles;
-    private int minAsteroidsNumber = 13;
+    private List<ClickableTile> _availablePathTiles;
+    public int minAsteroidsNumber = 13;
 
     [NonSerialized] public int mapSizeX = 35;
     [NonSerialized] public int mapSizeY = 35;
 
-    private Unit previousSelectedUnit;
-
     Node[,] _graph;
 
-    //[Tooltip("Gameobjects not space")] private GameObject[] _gameObjects;
-    //private List<Node> _dynamicObstacleNodes;
-    //private List<Node> _diagonalNeighbourObstacleNodes;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        //SetUnitPosition();
-        // SetGameObjects();
-    }
-    
     private void Awake()
     {
         _unitManager.OnUnitSelect += HandleUnitSelect;
@@ -54,23 +38,6 @@ public class TileMap : MonoBehaviour
         _graph1x1.GeneratePathFindingGraph();
         _graph2x2.GeneratePathFindingGraph();
         _graph3x3.GeneratePathFindingGraph();
-    }
-
-    private void Update()
-    {
-//        if (manager.CurrentState == GameManager.GameState.UnitMovement)
-//        {
-//            if (previousSelectedUnit == null && manager.SelectedUnit != null)
-//            {
-//                previousSelectedUnit = manager.SelectedUnit;
-//                SetDynamicObstacleNodes();
-//            }
-//            if (previousSelectedUnit != null && !previousSelectedUnit.Equals(manager.SelectedUnit))
-//            {
-//                SetDynamicObstacleNodes();
-//                previousSelectedUnit = manager.SelectedUnit;
-//            } 
-//        }
     }
 
     private void HandleUnitSelect(Unit selectedUnit)
@@ -96,7 +63,7 @@ public class TileMap : MonoBehaviour
     {
         var tileType = tileArray[_tiles[(int)target.x, (int)target.y]];
 
-        if (UnitCanEnterTile((int)target.x, (int)target.y) == false)
+        if (!UnitCanEnterTile((int)target.x, (int)target.y))
         {
             return Mathf.Infinity;
         }
@@ -110,6 +77,25 @@ public class TileMap : MonoBehaviour
         }
 
         return cost;
+    }
+
+    public void ShowAvailablePathTiles(List<Node> nodes)
+    {    
+        ClearAvailablePathTiles();
+        foreach (var node in nodes)
+        {
+            var pathTile = Instantiate(tileArray[8].tileVisualPrefab, new Vector3(node.x, node.y, 1), Quaternion.identity);
+            // pathTile.Map = this;
+            // pathTile.GameManager = manager;
+            // pathTile.UnitManager = _unitManager;
+            _availablePathTiles.Add(pathTile);
+        }
+    }
+
+    private void ClearAvailablePathTiles()
+    {
+        _availablePathTiles.ForEach(tile => Destroy(tile.gameObject));
+        _availablePathTiles.Clear();
     }
 
     public bool UnitCanEnterTile(int x, int y)
@@ -182,7 +168,7 @@ public class TileMap : MonoBehaviour
     private void GenerateMapData()
     {
         _tiles = new int[mapSizeX, mapSizeY];
-
+        _availablePathTiles = new List<ClickableTile>();
         for (int x = 0; x < mapSizeX; x++)
         {
             for (int y = 0; y < mapSizeY; y++)
@@ -221,11 +207,13 @@ public class TileMap : MonoBehaviour
             {
                 var tileType = tileArray[_tiles[x, y]];
                 var square = Instantiate(tileType.tileVisualPrefab, new Vector3(x, y, 0), Quaternion.identity);
-
-                ClickableTile clickableTile = square.GetComponent<ClickableTile>();
+                
+                ClickableTile clickableTile = square;
                 clickableTile.tileX = x;
                 clickableTile.tileY = y;
                 clickableTile.Map = this;
+                clickableTile.GameManager = manager;
+                clickableTile.UnitManager = _unitManager;
             }
         } 
     }
@@ -268,10 +256,4 @@ public class TileMap : MonoBehaviour
     {
         return (mapSizeX+3.0f)/planetsNumber*Random.Range((float)iterator,planetsNumber);
     }
-
-//    private void SetGameObjects()
-//    {
-//        var objects = FindObjectsOfType<GameObject>();
-//        _gameObjects = objects.ToList().Where(obj => !obj.tag.Equals("Unit")).ToArray();
-//    }
 }

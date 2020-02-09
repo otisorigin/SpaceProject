@@ -51,7 +51,7 @@ public class SelectionManager : MonoBehaviour
 
     private void OnUnitClick(Unit unit)
     {
-        if (_manager.IsUnitOfCurrentPlayer(unit) && Input.GetMouseButtonDown(0))
+        if (_manager.IsUnitOfCurrentPlayer(unit) && !_unitManager.IsThisUnitSelected(unit) && Input.GetMouseButtonDown(0))
         {
             _unitManager.UnitSelect(unit);
             _circleMeshRenderer.enabled = false;

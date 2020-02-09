@@ -10,48 +10,57 @@ public class PathFindingGraph1x1 : MonoBehaviour, IPathFindingGraph
 
     private List<Node> _dynamicObstacleNodes;
     Node[,] _graph;
-    
+
     public void GeneratePathTo(float x, float y)
     {
-        PathFindingUtils.GeneratePathTo((int)x,(int)y,_dynamicObstacleNodes,_graph,_map, _unitManager);
+        PathFindingUtils.GeneratePathTo((int) x, (int) y, _dynamicObstacleNodes, _graph, _map, _unitManager);
     }
-     
-     public void SetDynamicObstacleNodes()
-     {
-         _dynamicObstacleNodes = new List<Node>();
-         foreach (var uObject in _unitManager.GetUnitObjects())
-         {
-             var unit = uObject.GetComponent<Unit>();
-             var unitScale = unit.GetScale();
-             if(unitScale == 1)
-             {
-                 _dynamicObstacleNodes.Add(_graph[(int)unit.tileX, (int)unit.tileY]);  
-             }
-             if(unitScale == 2)
-             {
-                 PathFindingUtils.AddObstacleNode(unit.tileX, unit.tileY, _dynamicObstacleNodes, _graph);
-             }
-             if (unitScale == 3)
-             {
-                 int startY = (int)unit.tileY != 0 ? (int)unit.tileY - 1 : 0;
-                 int startX = (int)unit.tileX != 0 ? (int)unit.tileX - 1 : 0;
-                 for (int i = startY; i < startY+unitScale; i++)
-                 {
-                     for (int j = startX; j < startX+unitScale; j++)
-                     {
-                         _dynamicObstacleNodes.Add(_graph[j, i]); 
-                     }
-                 }         
-             }
-         }
-     }
 
-     public List<Node> GetDynamicObstacleNodes()
-     {
-         return _dynamicObstacleNodes;
-     }
+    public void SetDynamicObstacleNodes()
+    {
+        _dynamicObstacleNodes = new List<Node>();
+        foreach (var uObject in _unitManager.GetUnitObjects())
+        {
+            var unit = uObject.GetComponent<Unit>();
+            var unitScale = unit.GetScale();
+            if (unitScale == 1)
+            {
+                _dynamicObstacleNodes.Add(_graph[(int) unit.tileX, (int) unit.tileY]);
+            }
 
-     public void GeneratePathFindingGraph()
+            if (unitScale == 2)
+            {
+                PathFindingUtils.AddObstacleNode(unit.tileX, unit.tileY, _dynamicObstacleNodes, _graph);
+            }
+
+            if (unitScale == 3)
+            {
+                int startY = (int) unit.tileY != 0 ? (int) unit.tileY - 1 : 0;
+                int startX = (int) unit.tileX != 0 ? (int) unit.tileX - 1 : 0;
+                for (int i = startY; i < startY + unitScale; i++)
+                {
+                    for (int j = startX; j < startX + unitScale; j++)
+                    {
+                        _dynamicObstacleNodes.Add(_graph[j, i]);
+                    }
+                }
+            }
+        }
+    }
+
+    public List<Node> GetDynamicObstacleNodes()
+    {
+        return _dynamicObstacleNodes;
+    }
+
+    public List<Node> GetAvailableNodes()
+    {
+        //_unitManager.SelectedUnit.availableNodesToMove = nodes;
+        //_map.ShowAvailableTilesToMove(nodes);
+        return PathFindingUtils.GetAvailableNodes(_dynamicObstacleNodes, _graph, _unitManager, _map);
+    }
+
+    public void GeneratePathFindingGraph()
     {
         //Initialize the array of Nodes
         _graph = new Node[_map.mapSizeX, _map.mapSizeY];
@@ -111,6 +120,4 @@ public class PathFindingGraph1x1 : MonoBehaviour, IPathFindingGraph
             }
         }
     }
-     
-     
 }

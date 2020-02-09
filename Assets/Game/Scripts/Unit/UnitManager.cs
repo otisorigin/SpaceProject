@@ -10,15 +10,38 @@ public class UnitManager : MonoBehaviour
     public Unit[] firstPlayerUnitGroup { get; set; }
     public Unit[] secondPlayerUnitGroup { get; set; }
     public Unit SelectedUnit { get; private set; }
-    
+
     [Inject] private GameManager _manager;
     [Inject] private TileMap _map;
     public int UnitSpawnZoneLength;
-    
+
     public event Action<Unit> OnUnitSelect = delegate { };
-    
+
     private Unit previousSelectedUnit;
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        OnUnitSelect += HandleUnitSelect;
+    }
+
+    private void HandleUnitSelect(Unit selectedUnit)
+    {
+        if (_manager.CurrentState == GameManager.GameState.UnitMovement)
+        {
+            if (previousSelectedUnit == null && SelectedUnit != null)
+            {
+                previousSelectedUnit = SelectedUnit;
+                _map.CurrentGraph.SetDynamicObstacleNodes();
+            }
+
+            if (previousSelectedUnit != null && !previousSelectedUnit.Equals(SelectedUnit))
+            {
+                _map.CurrentGraph.SetDynamicObstacleNodes();
+                previousSelectedUnit = SelectedUnit;
+            }
+        }
+    }
 
     public void InitPlayerUnits()
     {
@@ -56,26 +79,14 @@ public class UnitManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (_manager.CurrentState == GameManager.GameState.UnitMovement)
-        {
-            if (previousSelectedUnit == null && SelectedUnit != null)
-            {
-                previousSelectedUnit = SelectedUnit;
-                _map.CurrentGraph.SetDynamicObstacleNodes();
-            }
-            if (previousSelectedUnit != null && !previousSelectedUnit.Equals(SelectedUnit))
-            {
-                _map.CurrentGraph.SetDynamicObstacleNodes();
-                previousSelectedUnit = SelectedUnit;
-            } 
-        }
+        
     }
-    
+
     public bool IsThisUnitSelected(Unit unit)
     {
         return SelectedUnit == unit;
     }
-    
+
     public IEnumerable<GameObject> GetUnitObjects()
     {
         return FindObjectsOfType<GameObject>()
@@ -83,20 +94,24 @@ public class UnitManager : MonoBehaviour
             .Where(obj => obj.tag.Equals("Unit"))
             .Where(unit => !unit.GetComponent<Unit>().Equals(SelectedUnit));
     }
-    
+
     public void UnitSelect(Unit selectedUnit)
     {
+        Debug.Log("Unit selected");
         if (SelectedUnit != null)
         {
             SelectedUnit.ClearCurrentPath();
         }
+
         _manager.ChangeGameState(GameManager.GameState.UnitMovement);
         SelectedUnit = selectedUnit;
+
         OnUnitSelect(SelectedUnit);
+        SelectedUnit.ShowAvailableTilesToMove();
     }
 
     public void GeneratePathTo(int x, int y)
     {
-        _map.CurrentGraph.GeneratePathTo(x,y);
+        _map.CurrentGraph.GeneratePathTo(x, y);
     }
 }

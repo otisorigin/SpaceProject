@@ -10,9 +10,12 @@ public class Unit : MonoBehaviour
     //----------------Injections-----------------
     [Inject] private TileMap _map;
     [Inject] private GameManager _manager;
+
     [Inject] private UnitManager _unitManager;
+
     //-----------------Movement-System-----------------
     public int travelDistance;
+
     //Speed and smooth movement on the screen
     public float speed;
 
@@ -21,15 +24,23 @@ public class Unit : MonoBehaviour
     public List<Node> CurrentPath { get; set; }
     public float tileX { get; set; }
     public float tileY { get; set; }
+
+    public List<Node> availableNodesToMove { get; set; }
+
     public bool IsMoving { get; set; }
+
     // How far this unit can move in one turn. Note that some tiles cost extra.
-    private int _remainingMovement;
+    public int RemainingMovement { get; private set; }
+
     //--------------------Health-System--------------------------
     [SerializeField] private int maxHealth;
     private int _currentHealth;
+
     private Text _healthCounter;
+
     //--------------------Events---------------------------------
     public event Action<float> OnHealthPctChanged = delegate { };
+
     //------------------------------------------------------------
     private LineRenderer _lineRenderer;
 
@@ -37,7 +48,7 @@ public class Unit : MonoBehaviour
     {
         _currentHealth = maxHealth;
         InitHealthCounter();
-        _remainingMovement = travelDistance;
+        RemainingMovement = travelDistance;
         //GetComponent<Canvas>().enabled = true;
         _lineRenderer = GetComponent<LineRenderer>();
         _lineRenderer.enabled = false;
@@ -49,11 +60,11 @@ public class Unit : MonoBehaviour
         _manager.OnNextTurn += NextTurn;
         IsMoving = false;
     }
-    
+
     void Update()
     {
         //------------------------------
-        if(Input.GetKeyDown(KeyCode.Minus))
+        if (Input.GetKeyDown(KeyCode.Minus))
             ModifyHealth(-10);
         //---------------------------
         HealthBarPosition();
@@ -63,25 +74,26 @@ public class Unit : MonoBehaviour
             {
                 UnitMovement();
             }
+
             if (_manager.CurrentState == GameManager.GameState.UnitAttack)
             {
                 UnitAttack();
             }
         }
     }
-    
+
     public int GetScale()
     {
         return scale;
     }
-    
+
     public void ModifyHealth(int amount)
     {
         var updatedHealth = _currentHealth + amount;
         if (updatedHealth >= 0 && updatedHealth <= maxHealth)
         {
             _currentHealth = updatedHealth;
-            float currentHealthPct = _currentHealth / (float)maxHealth;
+            float currentHealthPct = _currentHealth / (float) maxHealth;
             OnHealthPctChanged(currentHealthPct);
             UpdateHealthCounter();
         }
@@ -100,13 +112,14 @@ public class Unit : MonoBehaviour
 
     private void UpdateHealthCounter()
     {
-        _healthCounter.text = _currentHealth + "/" + maxHealth; 
+        _healthCounter.text = _currentHealth + "/" + maxHealth;
     }
 
     private void SetHealthBarColor()
     {
-        transform.GetComponentsInChildren<Image>()[1].color = _manager.IsUnitOfCurrentPlayer(this) ?
-            Constants.Colors.LightGreen : Constants.Colors.Red;
+        transform.GetComponentsInChildren<Image>()[1].color = _manager.IsUnitOfCurrentPlayer(this)
+            ? Constants.Colors.LightGreen
+            : Constants.Colors.Red;
     }
 
     private void HealthBarPosition()
@@ -117,9 +130,10 @@ public class Unit : MonoBehaviour
         {
             ChangeHealthBarPosition(healthbar.distance);
         }
+
         if (unitRotation.z <= 0.7f && unitRotation.z >= 0.0f || unitRotation.z >= -0.7f && unitRotation.z <= 0.0f)
         {
-           ChangeHealthBarPosition(-healthbar.distance);
+            ChangeHealthBarPosition(-healthbar.distance);
         }
     }
 
@@ -128,19 +142,17 @@ public class Unit : MonoBehaviour
         var healthBarTransform = transform.GetChild(1).transform;
         if (!healthBarTransform.position.y.Equals(transform.position.y + delta))
         {
-            healthBarTransform.position = new Vector3(transform.position.x, transform.position.y + delta, transform.position.z-1);
+            healthBarTransform.position = new Vector3(transform.position.x, transform.position.y + delta,
+                transform.position.z - 1);
         }
     }
 
     private void UnitAttack()
     {
-        
     }
 
     private void UnitMovement()
     {
-
-        
         if (CurrentPath != null)
         {
             _lineRenderer.positionCount = CurrentPath.Count;
@@ -149,25 +161,30 @@ public class Unit : MonoBehaviour
             for (var i = 0; i < CurrentPath.Count; i++)
             {
                 _lineRenderer.SetPosition(i,
-                    _map.TileCoordToWorldCoord(CurrentPath[i].x, CurrentPath[i].y) + new Vector3(0, 0, Constants.Coordinates.ZAxisUI));
+                    _map.TileCoordToWorldCoord(CurrentPath[i].x, CurrentPath[i].y) +
+                    new Vector3(0, 0, Constants.Coordinates.ZAxisUI));
             }
         }
 
         var target = _map.TileCoordToWorldCoord(tileX, tileY);
         var position = transform.position;
-        
-        if (Vector3.Distance(position, target) < 0.1f && !isPathSet && CurrentPath == null)
+
+        if (Vector3.Distance(position, target) < 0.1f && !isPathSet && CurrentPath == null && IsMoving)
         {
+           // Debug.Log("isMoving = false");
             IsMoving = false;
+            ShowAvailableTilesToMove();
         }
-        
+
         if (Vector3.Distance(position, target) > 0.1f)
         {
             var rotation = position.x.Equals(tileX) && position.y.Equals(tileY)
-                ? Rotate(position, target,0)
+                ? Rotate(position, target, 0)
                 : Rotate(position, target);
-            transform.GetChild(0).rotation = Quaternion.Slerp(transform.GetChild(0).rotation, rotation, Time.deltaTime * speed);
+            transform.GetChild(0).rotation =
+                Quaternion.Slerp(transform.GetChild(0).rotation, rotation, Time.deltaTime * speed);
         }
+
         // Have we moved our visible piece close enough to the target tile that we can
         // advance to the next step in our pathfinding?
         if (Vector3.Distance(position, target) < 0.1f && isPathSet)
@@ -175,7 +192,7 @@ public class Unit : MonoBehaviour
             AdvancePathing();
             // Smoothly animate towards the correct map tile.
         }
- 
+
         transform.position = Vector3.Lerp(position, target, speed / 3.5f * Time.deltaTime);
 
         if (CurrentPath == null)
@@ -194,13 +211,13 @@ public class Unit : MonoBehaviour
     }
 
     // Advances our pathfinding progress by one tile.
-    // Advances our pathfinding progress by one tile.
     private void AdvancePathing()
     {
-        if (CurrentPath == null || _remainingMovement <= 0)
+        if (CurrentPath == null || RemainingMovement <= 0)
         {
             Debug.Log("isMoving = false");
             IsMoving = false;
+            ShowAvailableTilesToMove();
             return;
         }
 
@@ -214,20 +231,20 @@ public class Unit : MonoBehaviour
         for (int i = 1; i < pathLength + 1; i++)
         {
             var cost = (int) _map.CostToEnterTile(CurrentPath[0], CurrentPath[i]);
-            if (_remainingMovement - cost > 0)
+            if (RemainingMovement - cost > 0)
             {
-                _remainingMovement -= cost;
+                RemainingMovement -= cost;
                 continue;
             }
 
-            if (_remainingMovement - cost == 0)
+            if (RemainingMovement - cost == 0)
             {
-                _remainingMovement -= cost;
+                RemainingMovement -= cost;
                 pathLength = i;
                 break;
             }
 
-            if (_remainingMovement - cost < 0)
+            if (RemainingMovement - cost < 0)
             {
                 pathLength = i - 1;
                 break;
@@ -246,7 +263,7 @@ public class Unit : MonoBehaviour
         }
         else
         {
-            _remainingMovement = 0;
+            RemainingMovement = 0;
         }
 
         if (CurrentPath.Count == 1)
@@ -263,7 +280,7 @@ public class Unit : MonoBehaviour
     private int CalculatePathLength()
     {
         var possiblePathLength =
-            CurrentPath.Count > _remainingMovement ? (int) _remainingMovement : CurrentPath.Count - 1;
+            CurrentPath.Count > RemainingMovement ? (int) RemainingMovement : CurrentPath.Count - 1;
         int pathLength;
         for (pathLength = 1; pathLength <= possiblePathLength - 1; pathLength++)
         {
@@ -298,5 +315,12 @@ public class Unit : MonoBehaviour
         CurrentPath = null;
         isPathSet = false;
         _lineRenderer.enabled = false;
+    }
+
+    public void ShowAvailableTilesToMove()
+    {
+        var nodes = _map.CurrentGraph.GetAvailableNodes();
+        availableNodesToMove = nodes;
+        _map.ShowAvailablePathTiles(nodes);
     }
 }
