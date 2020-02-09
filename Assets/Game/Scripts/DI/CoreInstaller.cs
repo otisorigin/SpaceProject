@@ -10,7 +10,7 @@ public class CoreInstaller : MonoInstaller<CoreInstaller>
     public PathFindingGraph1x1 graph1X1;
     public PathFindingGraph2x2 graph2X2;
     public PathFindingGraph3x3 graph3X3;
-    
+
     public override void InstallBindings()
     {
         Container.Bind<GameManager>().FromInstance(controller).AsSingle();
