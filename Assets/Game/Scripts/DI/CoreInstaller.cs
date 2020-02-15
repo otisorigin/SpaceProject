@@ -15,6 +15,7 @@ public class CoreInstaller : MonoInstaller<CoreInstaller>
     {
         Container.Bind<GameManager>().FromInstance(controller).AsSingle();
         Container.Bind<Unit>().AsSingle();
+        Container.Bind<HealthSystem>().AsSingle();
         Container.Bind<ClickableTile>().AsSingle();
         Container.Bind<SelectedUnitIndicator>().AsSingle();
         Container.Bind<TileMap>().FromComponentInNewPrefab(mapPrefab).AsSingle();

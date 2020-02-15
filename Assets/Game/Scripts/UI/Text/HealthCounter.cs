@@ -6,16 +6,17 @@ using UnityEngine.UI;
 public class HealthCounter : MonoBehaviour
 {
     public Text Counter;
+
     private void Awake()
     {
-        GetComponentInParent<Unit>().OnHealthPctChanged += HandleHealthChanged;
+        transform.GetComponentInParent<Unit>().transform.GetComponentInChildren<HealthSystem>().OnHealthPctChanged +=
+            HandleHealthChanged;
     }
 
     public void InitHealthCounter(int maxHealth)
     {
-        
     }
-    
+
     private void HandleHealthChanged(float pct)
     {
         //StartCoroutine(ChangeToPct(pct));
@@ -24,6 +25,5 @@ public class HealthCounter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 }

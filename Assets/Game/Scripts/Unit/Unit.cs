@@ -10,16 +10,15 @@ public class Unit : MonoBehaviour
     //----------------Injections-----------------
     [Inject] private TileMap _map;
     [Inject] private GameManager _manager;
-
     [Inject] private UnitManager _unitManager;
 
-    //-----------------Movement-System-----------------
+    //-----------------Parameters-----------------
     public int travelDistance;
-
     //Speed and smooth movement on the screen
     public float speed;
-
+    [SerializeField] private int maxHealth;
     [SerializeField] private int scale;
+    //----------------------------------------------------------
     [NonSerialized] public bool isPathSet;
     public List<Node> CurrentPath { get; set; }
     public float tileX { get; set; }
@@ -33,21 +32,22 @@ public class Unit : MonoBehaviour
     public int RemainingMovement { get; private set; }
 
     //--------------------Health-System--------------------------
-    [SerializeField] private int maxHealth;
-    private int _currentHealth;
+    // [SerializeField] private int maxHealth;
+    // private int _currentHealth;
+    //
+    // private Text _healthCounter;
 
-    private Text _healthCounter;
-
-    //--------------------Events---------------------------------
-    public event Action<float> OnHealthPctChanged = delegate { };
+    // //--------------------Events---------------------------------
+    // public event Action<float> OnHealthPctChanged = delegate { };
 
     //------------------------------------------------------------
     private LineRenderer _lineRenderer;
 
     private void Start()
     {
-        _currentHealth = maxHealth;
-        InitHealthCounter();
+        // _currentHealth = maxHealth;
+        // InitHealthCounter();
+        transform.GetComponentInChildren<HealthSystem>().InitHealth(maxHealth);
         RemainingMovement = travelDistance;
         //GetComponent<Canvas>().enabled = true;
         _lineRenderer = GetComponent<LineRenderer>();
@@ -56,18 +56,18 @@ public class Unit : MonoBehaviour
         _lineRenderer.material.color = Constants.Colors.DarkGreen;
         tileX = transform.position.x;
         tileY = transform.position.y;
-        SetHealthBarColor();
+        // SetHealthBarColor();
         _manager.OnNextTurn += NextTurn;
         IsMoving = false;
     }
 
     void Update()
     {
-        //------------------------------
-        if (Input.GetKeyDown(KeyCode.Minus))
-            ModifyHealth(-10);
-        //---------------------------
-        HealthBarPosition();
+        // //------------------------------
+        // if (Input.GetKeyDown(KeyCode.Minus))
+        //     ModifyHealth(-10);
+        // //---------------------------
+        // HealthBarPosition();
         if (IsSelected(this))
         {
             if (_manager.CurrentState == GameManager.GameState.UnitMovement)
@@ -87,65 +87,65 @@ public class Unit : MonoBehaviour
         return scale;
     }
 
-    public void ModifyHealth(int amount)
-    {
-        var updatedHealth = _currentHealth + amount;
-        if (updatedHealth >= 0 && updatedHealth <= maxHealth)
-        {
-            _currentHealth = updatedHealth;
-            float currentHealthPct = _currentHealth / (float) maxHealth;
-            OnHealthPctChanged(currentHealthPct);
-            UpdateHealthCounter();
-        }
-    }
+    // public void ModifyHealth(int amount)
+    // {
+    //     var updatedHealth = _currentHealth + amount;
+    //     if (updatedHealth >= 0 && updatedHealth <= maxHealth)
+    //     {
+    //         _currentHealth = updatedHealth;
+    //         float currentHealthPct = _currentHealth / (float) maxHealth;
+    //         OnHealthPctChanged(currentHealthPct);
+    //         UpdateHealthCounter();
+    //     }
+    // }
 
     private void NextTurn()
     {
-        SetHealthBarColor();
+        //transform.GetComponent<UnitHealth>().SetHealthBarColor();
     }
 
-    private void InitHealthCounter()
-    {
-        _healthCounter = transform.GetComponentInChildren<Text>();
-        UpdateHealthCounter();
-    }
+    // private void InitHealthCounter()
+    // {
+    //     _healthCounter = transform.GetComponentInChildren<Text>();
+    //     UpdateHealthCounter();
+    // }
+    //
+    // private void UpdateHealthCounter()
+    // {
+    //     _healthCounter.text = _currentHealth + "/" + maxHealth;
+    // }
+    //
+    // private void SetHealthBarColor()
+    // {
+    //     transform.GetComponentsInChildren<Image>()[1].color = _manager.IsUnitOfCurrentPlayer(this)
+    //         ? Constants.Colors.LightGreen
+    //         : Constants.Colors.Red;
+    // }
 
-    private void UpdateHealthCounter()
-    {
-        _healthCounter.text = _currentHealth + "/" + maxHealth;
-    }
-
-    private void SetHealthBarColor()
-    {
-        transform.GetComponentsInChildren<Image>()[1].color = _manager.IsUnitOfCurrentPlayer(this)
-            ? Constants.Colors.LightGreen
-            : Constants.Colors.Red;
-    }
-
-    private void HealthBarPosition()
-    {
-        var healthbar = transform.GetComponentInChildren<Healthbar>();
-        var unitRotation = transform.GetChild(0).transform.rotation;
-        if (unitRotation.z <= 1.0f && unitRotation.z >= 0.7 || unitRotation.z <= -0.7f)
-        {
-            ChangeHealthBarPosition(healthbar.distance);
-        }
-
-        if (unitRotation.z <= 0.7f && unitRotation.z >= 0.0f || unitRotation.z >= -0.7f && unitRotation.z <= 0.0f)
-        {
-            ChangeHealthBarPosition(-healthbar.distance);
-        }
-    }
-
-    private void ChangeHealthBarPosition(float delta)
-    {
-        var healthBarTransform = transform.GetChild(1).transform;
-        if (!healthBarTransform.position.y.Equals(transform.position.y + delta))
-        {
-            healthBarTransform.position = new Vector3(transform.position.x, transform.position.y + delta,
-                transform.position.z - 1);
-        }
-    }
+    // private void HealthBarPosition()
+    // {
+    //     var healthbar = transform.GetComponentInChildren<Healthbar>();
+    //     var unitRotation = transform.GetChild(0).transform.rotation;
+    //     if (unitRotation.z <= 1.0f && unitRotation.z >= 0.7 || unitRotation.z <= -0.7f)
+    //     {
+    //         ChangeHealthBarPosition(healthbar.distance);
+    //     }
+    //
+    //     if (unitRotation.z <= 0.7f && unitRotation.z >= 0.0f || unitRotation.z >= -0.7f && unitRotation.z <= 0.0f)
+    //     {
+    //         ChangeHealthBarPosition(-healthbar.distance);
+    //     }
+    // }
+    //
+    // private void ChangeHealthBarPosition(float delta)
+    // {
+    //     var healthBarTransform = transform.GetChild(1).transform;
+    //     if (!healthBarTransform.position.y.Equals(transform.position.y + delta))
+    //     {
+    //         healthBarTransform.position = new Vector3(transform.position.x, transform.position.y + delta,
+    //             transform.position.z - 1);
+    //     }
+    // }
 
     private void UnitAttack()
     {
@@ -171,7 +171,7 @@ public class Unit : MonoBehaviour
 
         if (Vector3.Distance(position, target) < 0.1f && !isPathSet && CurrentPath == null && IsMoving)
         {
-           // Debug.Log("isMoving = false");
+            // Debug.Log("isMoving = false");
             IsMoving = false;
             ShowAvailableTilesToMove();
         }
