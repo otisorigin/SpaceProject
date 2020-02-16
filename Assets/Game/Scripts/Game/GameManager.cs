@@ -47,8 +47,9 @@ public class GameManager : MonoBehaviour
     {
         if (_unitManager.SelectedUnit != null)
         {
-            _unitManager.SelectedUnit.CurrentPath = null;
-            _unitManager.SelectedUnit.isPathSet = false;
+            var unit = _unitManager.SelectedUnit.GetComponentInChildren<MovementSystem>();
+            unit.CurrentPath = null;
+            unit.isPathSet = false;
         }
     }
     

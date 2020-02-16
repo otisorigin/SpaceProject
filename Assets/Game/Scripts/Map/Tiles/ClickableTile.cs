@@ -8,13 +8,13 @@ public class ClickableTile : MonoBehaviour
 
     public int tileX;
     public int tileY;
-    
+
     // Start is called before the first frame update
     void OnMouseUp()
     {
         if (GameManager.CurrentState == GameManager.GameState.UnitMovement)
         {
-            var unit = UnitManager.SelectedUnit.GetComponent<Unit>();
+            var unit = UnitManager.SelectedUnit.GetComponent<Unit>().GetComponentInChildren<MovementSystem>();
             unit.isPathSet = true;
             unit.IsMoving = true;
         }
@@ -25,7 +25,7 @@ public class ClickableTile : MonoBehaviour
         //Debug.Log("Mouse over x: " + tileX + " y: " + tileY);
         if (Map != null && GameManager.CurrentState == GameManager.GameState.UnitMovement &&
             UnitManager.SelectedUnit != null &&
-            !UnitManager.SelectedUnit.GetComponent<Unit>().isPathSet)
+            !UnitManager.SelectedUnit.GetComponent<Unit>().GetComponentInChildren<MovementSystem>().isPathSet)
         {
             UnitManager.GeneratePathTo(tileX, tileY);
         }

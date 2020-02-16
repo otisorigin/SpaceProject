@@ -18,18 +18,18 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
     private List<Node> _dynamicObstacleNodes;
 
     private DoubleKeyDictionary<float, float, Node> _graph;
-    
+
     public void GeneratePathTo(float x, float y)
     {
-         if (!_map.UnitCanEnterTile((int)x, (int)y))
+        if (!_map.UnitCanEnterTile((int) x, (int) y))
         {
             return;
         }
 
-         float xf = x + ShiftFactor;
-         float yf = y + ShiftFactor;
-        
-        var unit = _unitManager.SelectedUnit.GetComponent<Unit>();
+        float xf = x + ShiftFactor;
+        float yf = y + ShiftFactor;
+
+        var unit = _unitManager.SelectedUnit.GetComponent<Unit>().GetComponentInChildren<MovementSystem>();
         unit.CurrentPath = null;
 
         var unvisited = new List<Node>();
@@ -86,9 +86,8 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
                     {
                         dist[v] = alt;
                         prev[v] = u;
-                    } 
+                    }
                 }
-                
             }
         }
 
@@ -118,42 +117,46 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
         _dynamicObstacleNodes = new List<Node>();
         foreach (var uObject in _unitManager.GetUnitObjects())
         {
-            var unit = uObject.GetComponent<Unit>();
-            var unitScale = unit.GetScale();
-            if(unitScale == 1)
+            var unit = uObject.GetComponent<Unit>().GetComponentInChildren<MovementSystem>();
+            var unitScale = uObject.GetComponent<Unit>().GetScale();
+            if (unitScale == 1)
             {
                 SetUnitObstacle1X1(unit.tileX, unit.tileY);
             }
-            if(unitScale == 2)
+
+            if (unitScale == 2)
             {
                 SetUnitObstacle2X2(unit.tileX, unit.tileY);
             }
+
             if (unitScale == 3)
             {
                 SetUnitObstacle3X3(unit.tileX, unit.tileY);
             }
         }
     }
-    
+
     public List<Node> GetAvailableNodes()
     {
         Debug.Log("GetAvailableNodes not implemented for PathFindingGrapgh3x3");
         return null;
     }
-    
+
     private void SetUnitObstacle1X1(float tileX, float tileY)
     {
         if (tileX + 1 <= _map.mapSizeX)
         {
             if (tileY + 1 <= _map.mapSizeY)
             {
-                _dynamicObstacleNodes.Add(_graph[tileX + ShiftFactor, tileY + ShiftFactor]); 
+                _dynamicObstacleNodes.Add(_graph[tileX + ShiftFactor, tileY + ShiftFactor]);
             }
+
             if (tileY > 0)
             {
-                _dynamicObstacleNodes.Add(_graph[tileX + ShiftFactor, tileY - ShiftFactor]); 
+                _dynamicObstacleNodes.Add(_graph[tileX + ShiftFactor, tileY - ShiftFactor]);
             }
         }
+
         if (tileX > 0)
         {
             if (tileY + 1 <= _map.mapSizeY)
@@ -167,37 +170,42 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
             }
         }
     }
-    
+
     private void SetUnitObstacle2X2(float tileX, float tileY)
     {
         _dynamicObstacleNodes.Add(_graph[tileX, tileY]);
         if (tileY <= _map.mapSizeY - ShiftFactor)
         {
-            _dynamicObstacleNodes.Add(_graph[tileX, tileY + 1]); 
+            _dynamicObstacleNodes.Add(_graph[tileX, tileY + 1]);
         }
+
         if (tileY > 0)
         {
-            _dynamicObstacleNodes.Add(_graph[tileX, tileY - 1]); 
+            _dynamicObstacleNodes.Add(_graph[tileX, tileY - 1]);
         }
+
         if (tileX <= _map.mapSizeX - ShiftFactor)
         {
-            _dynamicObstacleNodes.Add(_graph[tileX + 1, tileY]); 
+            _dynamicObstacleNodes.Add(_graph[tileX + 1, tileY]);
             if (tileY <= _map.mapSizeY - ShiftFactor)
             {
-                _dynamicObstacleNodes.Add(_graph[tileX + 1, tileY + 1]); 
+                _dynamicObstacleNodes.Add(_graph[tileX + 1, tileY + 1]);
             }
+
             if (tileY > 0)
             {
-                _dynamicObstacleNodes.Add(_graph[tileX + 1, tileY - 1]); 
+                _dynamicObstacleNodes.Add(_graph[tileX + 1, tileY - 1]);
             }
         }
+
         if (tileX > ShiftFactor)
         {
-            _dynamicObstacleNodes.Add(_graph[tileX - 1, tileY]); 
+            _dynamicObstacleNodes.Add(_graph[tileX - 1, tileY]);
             if (tileY <= _map.mapSizeY - ShiftFactor)
             {
                 _dynamicObstacleNodes.Add(_graph[tileX - 1, tileY + 1]);
             }
+
             if (tileY > ShiftFactor)
             {
                 _dynamicObstacleNodes.Add(_graph[tileX - 1, tileY - 1]);
@@ -216,11 +224,13 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
             _dynamicObstacleNodes.Add(_graph[tileX - ShiftFactor, tileY + ShiftFactor + 1]);
             _dynamicObstacleNodes.Add(_graph[tileX + ShiftFactor, tileY + ShiftFactor + 1]);
         }
+
         if (tileY > 1)
         {
             _dynamicObstacleNodes.Add(_graph[tileX - ShiftFactor, tileY - ShiftFactor - 1]);
             _dynamicObstacleNodes.Add(_graph[tileX + ShiftFactor, tileY - ShiftFactor - 1]);
         }
+
         if (_map.mapSizeX - 2 > tileX)
         {
             _dynamicObstacleNodes.Add(_graph[tileX + ShiftFactor + 1, tileY + ShiftFactor]);
@@ -229,11 +239,13 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
             {
                 _dynamicObstacleNodes.Add(_graph[tileX + ShiftFactor + 1, tileY + ShiftFactor + 1]);
             }
+
             if (tileY > 1)
             {
                 _dynamicObstacleNodes.Add(_graph[tileX + ShiftFactor + 1, tileY - ShiftFactor - 1]);
             }
         }
+
         if (tileX > 1)
         {
             _dynamicObstacleNodes.Add(_graph[tileX - ShiftFactor - 1, tileY + ShiftFactor]);
@@ -242,6 +254,7 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
             {
                 _dynamicObstacleNodes.Add(_graph[tileX - ShiftFactor - 1, tileY + ShiftFactor + 1]);
             }
+
             if (tileY > 1)
             {
                 _dynamicObstacleNodes.Add(_graph[tileX - ShiftFactor - 1, tileY - ShiftFactor - 1]);
@@ -267,48 +280,48 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
             }
         }
 
-        for (float x = 0 + ShiftFactor; x < _map.mapSizeX-1; x++)
+        for (float x = 0 + ShiftFactor; x < _map.mapSizeX - 1; x++)
         {
-            for (float y = 0 + ShiftFactor; y < _map.mapSizeY-1; y++)
+            for (float y = 0 + ShiftFactor; y < _map.mapSizeY - 1; y++)
             {
-                if (x > 1 && _map.UnitCanEnterNode(x-1, y))
+                if (x > 1 && _map.UnitCanEnterNode(x - 1, y))
                 {
                     _graph[x, y].neighbours.Add(_graph[x - 1, y]);
-                        if (y > 1 && 
-                            _map.UnitCanEnterNode(x, y - 1) &&
-                            _map.UnitCanEnterNode(x - 1, y) &&
-                            _map.UnitCanEnterNode(x - 1, y - 1))
-                                _graph[x, y].neighbours.Add(_graph[x - 1, y - 1]);
-                        if (y < _map.mapSizeY - 2 &&
-                            _map.UnitCanEnterNode(x, y + 1) &&
-                            _map.UnitCanEnterNode(x - 1, y) &&
-                            _map.UnitCanEnterNode(x - 1, y + 1))
-                                _graph[x, y].neighbours.Add(_graph[x - 1, y + 1]);
+                    if (y > 1 &&
+                        _map.UnitCanEnterNode(x, y - 1) &&
+                        _map.UnitCanEnterNode(x - 1, y) &&
+                        _map.UnitCanEnterNode(x - 1, y - 1))
+                        _graph[x, y].neighbours.Add(_graph[x - 1, y - 1]);
+                    if (y < _map.mapSizeY - 2 &&
+                        _map.UnitCanEnterNode(x, y + 1) &&
+                        _map.UnitCanEnterNode(x - 1, y) &&
+                        _map.UnitCanEnterNode(x - 1, y + 1))
+                        _graph[x, y].neighbours.Add(_graph[x - 1, y + 1]);
                 }
 
                 //Right
                 if (x < _map.mapSizeX - 2 && _map.UnitCanEnterNode(x + 1, y))
                 {
                     _graph[x, y].neighbours.Add(_graph[x + 1, y]);
-                        if (y > 1 && 
-                            _map.UnitCanEnterNode(x, y - 1) &&
-                            _map.UnitCanEnterNode(x + 1, y) &&
-                            _map.UnitCanEnterNode(x + 1, y - 1))
-                                _graph[x, y].neighbours.Add(_graph[x + 1, y - 1]);
-                        if (y < _map.mapSizeX - 2 && 
-                            _map.UnitCanEnterNode(x, y + 1) &&
-                            _map.UnitCanEnterNode(x + 1, y) &&
-                            _map.UnitCanEnterNode(x + 1, y + 1))
-                                _graph[x, y].neighbours.Add(_graph[x + 1, y + 1]);
+                    if (y > 1 &&
+                        _map.UnitCanEnterNode(x, y - 1) &&
+                        _map.UnitCanEnterNode(x + 1, y) &&
+                        _map.UnitCanEnterNode(x + 1, y - 1))
+                        _graph[x, y].neighbours.Add(_graph[x + 1, y - 1]);
+                    if (y < _map.mapSizeX - 2 &&
+                        _map.UnitCanEnterNode(x, y + 1) &&
+                        _map.UnitCanEnterNode(x + 1, y) &&
+                        _map.UnitCanEnterNode(x + 1, y + 1))
+                        _graph[x, y].neighbours.Add(_graph[x + 1, y + 1]);
                 }
 
                 //Up and down
-                if (y > 1 && _map.UnitCanEnterNode(x, y-1))
+                if (y > 1 && _map.UnitCanEnterNode(x, y - 1))
                 {
                     _graph[x, y].neighbours.Add(_graph[x, y - 1]);
                 }
 
-                if (y < _map.mapSizeX - 2 && _map.UnitCanEnterNode(x, y+1))
+                if (y < _map.mapSizeX - 2 && _map.UnitCanEnterNode(x, y + 1))
                 {
                     _graph[x, y].neighbours.Add(_graph[x, y + 1]);
                 }

@@ -21,8 +21,8 @@ public class PathFindingGraph1x1 : MonoBehaviour, IPathFindingGraph
         _dynamicObstacleNodes = new List<Node>();
         foreach (var uObject in _unitManager.GetUnitObjects())
         {
-            var unit = uObject.GetComponent<Unit>();
-            var unitScale = unit.GetScale();
+            var unit = uObject.GetComponent<Unit>().GetComponentInChildren<MovementSystem>();
+            var unitScale = uObject.GetComponent<Unit>().GetScale();
             if (unitScale == 1)
             {
                 _dynamicObstacleNodes.Add(_graph[(int) unit.tileX, (int) unit.tileY]);

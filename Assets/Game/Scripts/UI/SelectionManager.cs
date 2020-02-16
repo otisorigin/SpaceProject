@@ -25,11 +25,13 @@ public class SelectionManager : MonoBehaviour
     private void UnitSelection()
     {
         var selectedObject = _cursorManager.SelectedObject;
-        if ((_unitManager.SelectedUnit == null || !_unitManager.SelectedUnit.IsMoving) && selectedObject != null && selectedObject.CompareTag(_unitTag))
+        if ((_unitManager.SelectedUnit == null ||
+             !_unitManager.SelectedUnit.GetComponentInChildren<MovementSystem>().IsMoving) && selectedObject != null &&
+            selectedObject.CompareTag(_unitTag))
         {
             var selectedUnit = selectedObject.GetComponent<Unit>();
             OnUnitHover(selectedUnit);
-            OnUnitClick(selectedUnit);  
+            OnUnitClick(selectedUnit);
         }
         else
         {
@@ -51,11 +53,11 @@ public class SelectionManager : MonoBehaviour
 
     private void OnUnitClick(Unit unit)
     {
-        if (_manager.IsUnitOfCurrentPlayer(unit) && !_unitManager.IsThisUnitSelected(unit) && Input.GetMouseButtonDown(0))
+        if (_manager.IsUnitOfCurrentPlayer(unit) && !_unitManager.IsThisUnitSelected(unit) &&
+            Input.GetMouseButtonDown(0))
         {
             _unitManager.UnitSelect(unit);
             _circleMeshRenderer.enabled = false;
         }
     }
-    
 }

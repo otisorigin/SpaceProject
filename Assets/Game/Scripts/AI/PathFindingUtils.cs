@@ -8,7 +8,7 @@ public class PathFindingUtils
     public static void GeneratePathTo(int x, int y, List<Node> dynamicObstacleNodes, Node[,] graph, TileMap map,
         UnitManager unitManager)
     {
-        var unit = unitManager.SelectedUnit.GetComponent<Unit>();
+        var unit = unitManager.SelectedUnit.GetComponent<Unit>().GetComponentInChildren<MovementSystem>();
         unit.CurrentPath = null;
 
         if (unit.RemainingMovement == 0 || !map.UnitCanEnterTile(x, y) ||
@@ -111,7 +111,7 @@ public class PathFindingUtils
     public static List<Node> GetAvailableNodes(List<Node> dynamicObstacleNodes, Node[,] graph, UnitManager unitManager,
         TileMap map)
     {
-        var unit = unitManager.SelectedUnit.GetComponent<Unit>();
+        var unit = unitManager.SelectedUnit.GetComponent<Unit>().GetComponentInChildren<MovementSystem>();
 
         if (unit.RemainingMovement == 0)
         {
