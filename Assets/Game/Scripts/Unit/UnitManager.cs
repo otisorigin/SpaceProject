@@ -114,4 +114,9 @@ public class UnitManager : MonoBehaviour
     {
         _map.CurrentGraph.GeneratePathTo(x, y);
     }
+
+    public MovementSystem GetSelectedUnitMovementSystem()
+    {
+        return SelectedUnit.GetComponent<Unit>().GetComponentInChildren<MovementSystem>();
+    }
 }

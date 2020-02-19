@@ -14,7 +14,7 @@ public class ClickableTile : MonoBehaviour
     {
         if (GameManager.CurrentState == GameManager.GameState.UnitMovement)
         {
-            var unit = UnitManager.SelectedUnit.GetComponent<Unit>().GetComponentInChildren<MovementSystem>();
+            var unit = UnitManager.GetSelectedUnitMovementSystem();
             unit.isPathSet = true;
             unit.IsMoving = true;
         }
@@ -25,7 +25,7 @@ public class ClickableTile : MonoBehaviour
         //Debug.Log("Mouse over x: " + tileX + " y: " + tileY);
         if (Map != null && GameManager.CurrentState == GameManager.GameState.UnitMovement &&
             UnitManager.SelectedUnit != null &&
-            !UnitManager.SelectedUnit.GetComponent<Unit>().GetComponentInChildren<MovementSystem>().isPathSet)
+            !UnitManager.GetSelectedUnitMovementSystem().isPathSet && !UnitManager.GetSelectedUnitMovementSystem().IsMoving)
         {
             UnitManager.GeneratePathTo(tileX, tileY);
         }
