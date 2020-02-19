@@ -31,7 +31,7 @@ public class PathIndicator : MonoBehaviour
 
     private void SetIndicatorPosition()
     {
-        var currentPath = _unitManager.SelectedUnit.GetComponentInChildren<MovementSystem>().CurrentPath;
+        var currentPath = _unitManager.GetSelectedUnitMovementSystem().CurrentPath;
         if (currentPath != null)
         {
             var node = currentPath[currentPath.Count - 1];

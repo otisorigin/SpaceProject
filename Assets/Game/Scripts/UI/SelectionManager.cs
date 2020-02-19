@@ -26,7 +26,7 @@ public class SelectionManager : MonoBehaviour
     {
         var selectedObject = _cursorManager.SelectedObject;
         if ((_unitManager.SelectedUnit == null ||
-             !_unitManager.SelectedUnit.GetComponentInChildren<MovementSystem>().IsMoving) && selectedObject != null &&
+             !_unitManager.GetSelectedUnitMovementSystem().IsMoving) && selectedObject != null &&
             selectedObject.CompareTag(_unitTag))
         {
             var selectedUnit = selectedObject.GetComponent<Unit>();

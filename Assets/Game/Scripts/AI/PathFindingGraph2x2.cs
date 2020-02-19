@@ -29,7 +29,7 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
         float xf = x + ShiftFactor;
         float yf = y + ShiftFactor;
 
-        var unit = _unitManager.SelectedUnit.GetComponent<Unit>().GetComponentInChildren<MovementSystem>();
+        var unit = _unitManager.GetSelectedUnitMovementSystem();
         unit.CurrentPath = null;
 
         var unvisited = new List<Node>();

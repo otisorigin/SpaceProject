@@ -100,14 +100,14 @@ public class UnitManager : MonoBehaviour
         Debug.Log("Unit selected");
         if (SelectedUnit != null)
         {
-            SelectedUnit.GetComponentInChildren<MovementSystem>().ClearCurrentPath();
+            GetSelectedUnitMovementSystem().ClearCurrentPath();
         }
 
         _manager.ChangeGameState(GameManager.GameState.UnitMovement);
         SelectedUnit = selectedUnit;
 
         OnUnitSelect(SelectedUnit);
-        SelectedUnit.GetComponentInChildren<MovementSystem>().ShowAvailableTilesToMove();
+        GetSelectedUnitMovementSystem().ShowAvailableTilesToMove();
     }
 
     public void GeneratePathTo(int x, int y)
@@ -117,6 +117,6 @@ public class UnitManager : MonoBehaviour
 
     public MovementSystem GetSelectedUnitMovementSystem()
     {
-        return SelectedUnit.GetComponent<Unit>().GetComponentInChildren<MovementSystem>();
+        return SelectedUnit.GetComponentInChildren<MovementSystem>();
     }
 }
