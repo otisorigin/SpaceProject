@@ -25,6 +25,7 @@ public class TileMap : MonoBehaviour
     [NonSerialized] public int mapSizeY = 35;
 
     Node[,] _graph;
+    private ClickableTile[,] _pathTilePool;
 
     private void Awake()
     {
@@ -84,17 +85,18 @@ public class TileMap : MonoBehaviour
         ClearAvailablePathTiles();
         foreach (var node in nodes)
         {
-            var pathTile = Instantiate(tileArray[8].tileVisualPrefab, new Vector3(node.x, node.y, 1), Quaternion.identity);
-            // pathTile.Map = this;
-            // pathTile.GameManager = manager;
-            // pathTile.UnitManager = _unitManager;
+            var pathTile = _pathTilePool[(int)node.x, (int)node.y];
+            pathTile.gameObject.SetActive(true);
             _availablePathTiles.Add(pathTile);
         }
     }
 
     private void ClearAvailablePathTiles()
     {
-        _availablePathTiles.ForEach(tile => Destroy(tile.gameObject));
+        foreach (var clickableTile in _pathTilePool)
+        {
+            clickableTile.gameObject.SetActive(false);
+        }
         _availablePathTiles.Clear();
     }
 
@@ -176,8 +178,21 @@ public class TileMap : MonoBehaviour
                 _tiles[x, y] = 0;
             }
         }
-
+        CreatePathTilePool();
         GenerateAsteroids();
+    }
+
+    private void CreatePathTilePool()
+    {
+        _pathTilePool = new ClickableTile[mapSizeX,mapSizeY];
+        for (int x = 0; x < mapSizeX; x++)
+        {
+            for (int y = 0; y < mapSizeY; y++)
+            {
+                _pathTilePool[x, y] = Instantiate(tileArray[8].tileVisualPrefab, new Vector3(x, y, 1), Quaternion.identity);
+                _pathTilePool[x, y].gameObject.SetActive(false);
+            }
+        }
     }
 
     private void GenerateAsteroids()
