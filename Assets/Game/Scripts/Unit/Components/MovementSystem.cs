@@ -83,6 +83,11 @@ public class MovementSystem : MonoBehaviour
             // Debug.Log("isMoving = false");
             IsMoving = false;
             ShowAvailableTilesToMove();
+
+            if (RemainingMovement == 0 && tileX.Equals(target.x) && tileY.Equals(target.y))
+            {
+                _unitManager.Invoke(nameof(UnitManager.UnitFinishMovementPerTurn), 1);
+            }
         }
 
         if (Vector3.Distance(position, target) > 0.1f)

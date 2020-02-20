@@ -44,8 +44,22 @@ public class SelectionManager : MonoBehaviour
         if (!_unitManager.IsThisUnitSelected(unit))
         {
             _circleMeshRenderer.enabled = true;
-            _circleMeshRenderer.material.color =
-                _manager.IsUnitOfCurrentPlayer(unit) ? Color.cyan : Color.red;
+            if (_manager.IsUnitOfCurrentPlayer(unit))
+            {
+                if (unit.GetComponentInChildren<MovementSystem>().RemainingMovement == 0)
+                {
+                    _circleMeshRenderer.material.color = Constants.Colors.DarkYellow;
+                }
+                else
+                {
+                    _circleMeshRenderer.material.color = Color.cyan;
+                }
+            }
+            else
+            {
+                _circleMeshRenderer.material.color = Color.red;
+            }
+
             GameUtils.SetUnitScaleForObject(this, unit, 0.2f);
             GameUtils.SetUnitPositionForObject(this, unit);
         }
@@ -54,6 +68,7 @@ public class SelectionManager : MonoBehaviour
     private void OnUnitClick(Unit unit)
     {
         if (_manager.IsUnitOfCurrentPlayer(unit) && !_unitManager.IsThisUnitSelected(unit) &&
+            unit.GetComponentInChildren<MovementSystem>().RemainingMovement != 0 &&
             Input.GetMouseButtonDown(0))
         {
             _unitManager.UnitSelect(unit);

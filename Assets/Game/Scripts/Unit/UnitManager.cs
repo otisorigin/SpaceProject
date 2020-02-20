@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -16,6 +17,7 @@ public class UnitManager : MonoBehaviour
     public int UnitSpawnZoneLength;
 
     public event Action<Unit> OnUnitSelect = delegate { };
+    //public event Action<Unit> OnUnitFinishMovement = delegate { };
 
     private Unit previousSelectedUnit;
     // Start is called before the first frame update
@@ -23,6 +25,7 @@ public class UnitManager : MonoBehaviour
     private void Awake()
     {
         OnUnitSelect += HandleUnitSelect;
+        //OnUnitFinishMovement += 
     }
 
     private void HandleUnitSelect(Unit selectedUnit)
@@ -108,6 +111,13 @@ public class UnitManager : MonoBehaviour
 
         OnUnitSelect(SelectedUnit);
         GetSelectedUnitMovementSystem().ShowAvailableTilesToMove();
+    }
+
+    public void UnitFinishMovementPerTurn()
+    {
+        //StartCoroutine(TimeoutCoroutine());
+        SelectedUnit = null;
+        _manager.ChangeGameState(GameManager.GameState.UnitSelection);
     }
 
     public void GeneratePathTo(int x, int y)
