@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Game.Scripts.Utils.Collections;
 using UnityEngine;
 using Zenject;
 using static PathFindingUtils;

@@ -17,77 +17,15 @@ public class PathFindingUtils
         {
             return;
         }
-
-        var unvisited = new List<Node>();
-
-        var dist = new Dictionary<Node, float>();
-        var prev = new Dictionary<Node, Node>();
-
+        
         Node source = graph[(int) unit.tileX, (int) unit.tileY];
         Node target = graph[x, y];
 
-        dist[source] = 0;
-        prev[source] = null;
-
-        foreach (var node in graph)
-        {
-            if (node != source)
-            {
-                dist[node] = Mathf.Infinity;
-                prev[node] = null;
-            }
-
-            if (!dynamicObstacleNodes.Contains(node) &&
-                !IsRemainingMovementEnoughWithCost(source, node, unit.RemainingMovement))
-            {
-                unvisited.Add(node);
-            }
-        }
-
-        var availableNodes = new List<Node>();
-
-        while (unvisited.Count > 0)
-        {
-            //unvisited node with smallest distance
-            Node u = null;
-
-            foreach (var possibleU in unvisited)
-            {
-                if (u == null || dist[possibleU] < dist[u])
-                {
-                    u = possibleU;
-                }
-            }
-
-            if (u == target)
-            {
-                break;
-            }
-
-            unvisited.Remove(u);
-           
-
-            foreach (var v in u.neighbours)
-            {
-                if (!dynamicObstacleNodes.Contains(v) /*&& !_diagonalNeighbourObstacleNodes.Contains(v)*/)
-                {
-                    float alt = dist[u] + map.CostToEnterTile(u, v);
-                   
-                    if (alt < dist[v] && alt <= unit.RemainingMovement)
-                    {
-                        dist[v] = alt;
-                        prev[v] = u;
-                    }
-
-                    
-                }
-            }
-        }
-
+        var path = AStarSearch(source, target, unit.RemainingMovement, dynamicObstacleNodes, map);
 //        map.ShowAvailableTilesToMove(availableNodes);
 
         //we found shortest way to our target or there is no way to our target
-        if (prev[target] == null)
+        if (path[target] == null)
         {
             //no way between our target and the source
             return;
@@ -100,12 +38,57 @@ public class PathFindingUtils
         while (curr != null)
         {
             currentPath.Add(curr);
-            curr = prev[curr];
+            curr = path[curr];
         }
 
         currentPath.Reverse();
         unit.CurrentPath = currentPath;
         //map.ShowAvailableTilesToMove(availableNodes);
+        
+    }
+
+    private static Dictionary<Node, Node> AStarSearch(Node source, Node target, int remainingMovement, List<Node> dynamicObstacleNodes, TileMap map)
+    {
+        var cameFrom = new Dictionary<Node, Node>();
+        var costSoFar = new Dictionary<Node, float>();
+        
+        var frontier = new PriorityQueue<Node>();
+        frontier.Enqueue(source, 0);
+
+        cameFrom[source] = null;
+        cameFrom[target] = null;
+        costSoFar[source] = 0;
+
+        while (frontier.Count > 0)
+        {
+            var current = frontier.Dequeue();
+            
+            if (current.Equals(target))
+            {
+                break;
+            }
+            
+            foreach (var next in current.neighbours)
+            {
+                if (!dynamicObstacleNodes.Contains(next))
+                {
+                    float newCost = costSoFar[current] + map.CostToEnterTile(current, next);
+                    if (newCost <= remainingMovement && (!costSoFar.ContainsKey(next) || newCost < costSoFar[next]))
+                    {
+                        costSoFar[next] = newCost;
+                        double priority = newCost + Heuristic(next, target);
+                        frontier.Enqueue(next, priority);
+                        cameFrom[next] = current;
+                    } 
+                }
+            }
+        }
+        return cameFrom;
+    }
+
+    private static double Heuristic(Node a, Node b)
+    {
+        return Math.Abs(a.x - b.x) + Math.Abs(a.y - b.y);
     }
 
     public static List<Node> GetAvailableNodes(List<Node> dynamicObstacleNodes, Node[,] graph, UnitManager unitManager,
@@ -166,10 +149,11 @@ public class PathFindingUtils
                 if (!dynamicObstacleNodes.Contains(v))
                 {
                     float alt = dist[u] + map.CostToEnterTile(u, v);
-                    if (unit.RemainingMovement+2 < alt && !float.IsPositiveInfinity(map.CostToEnterTile(u, v)))
+                    if (unit.RemainingMovement + 2 < alt && !float.IsPositiveInfinity(map.CostToEnterTile(u, v)))
                     {
                         availableNodes.Remove(u);
                     }
+
                     if (alt < dist[v] && alt <= unit.RemainingMovement)
                     {
                         dist[v] = alt;
@@ -178,7 +162,8 @@ public class PathFindingUtils
                 }
             }
         }
-       // map.ShowAvailableTilesToMove(availableNodes);
+
+        // map.ShowAvailableTilesToMove(availableNodes);
         return availableNodes;
     }
 
