@@ -36,66 +36,8 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
         Node source = _graph[unit.tileX, unit.tileY];
         Node target = _graph[xf, yf];
 
-        var prev = PathFindingUtils.AStarSearch(source, target, unit.RemainingMovement, _dynamicObstacleNodes, _map);
-
-        // var unvisited = new List<Node>();
-        //
-        // var dist = new Dictionary<Node, float>();
-        // var prev = new Dictionary<Node, Node>();
-        //
-
-        //
-        // dist[source] = 0;
-        // prev[source] = null;
-        //
-        // foreach (var node in _graph.Values)
-        // {
-        //     if (node != source)
-        //     {
-        //         dist[node] = Mathf.Infinity;
-        //         prev[node] = null;
-        //     }
-        //
-        //     if (!_dynamicObstacleNodes.Contains(node))
-        //     {
-        //         unvisited.Add(node);
-        //     }
-        // }
-        //
-        // while (unvisited.Count > 0)
-        // {
-        //     //unvisited node with smallest distance
-        //     Node u = null;
-        //
-        //     foreach (var possibleU in unvisited)
-        //     {
-        //         if (u == null || dist[possibleU] < dist[u])
-        //         {
-        //             u = possibleU;
-        //         }
-        //     }
-        //
-        //     if (u == target)
-        //     {
-        //         break;
-        //     }
-        //
-        //     unvisited.Remove(u);
-        //
-        //     foreach (var v in u.neighbours)
-        //     {
-        //         if (!_dynamicObstacleNodes.Contains(v) /*&& !_diagonalNeighbourObstacleNodes.Contains(v)*/)
-        //         {
-        //             float alt = dist[u] + _map.CostToEnterTile(u, v);
-        //             if (alt < dist[v])
-        //             {
-        //                 dist[v] = alt;
-        //                 prev[v] = u;
-        //             }
-        //         }
-        //     }
-        // }
-
+        var prev = AStarSearch(source, target, unit.RemainingMovement, _dynamicObstacleNodes, _map);
+        
         //we found shortest way to our target or there is no way to our target
         if (prev[target] == null)
         {
