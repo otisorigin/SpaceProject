@@ -32,65 +32,69 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
 
         var unit = _unitManager.GetSelectedUnitMovementSystem();
         unit.CurrentPath = null;
-
-        var unvisited = new List<Node>();
-
-        var dist = new Dictionary<Node, float>();
-        var prev = new Dictionary<Node, Node>();
-
+        
         Node source = _graph[unit.tileX, unit.tileY];
         Node target = _graph[xf, yf];
 
-        dist[source] = 0;
-        prev[source] = null;
+        var prev = PathFindingUtils.AStarSearch(source, target, unit.RemainingMovement, _dynamicObstacleNodes, _map);
 
-        foreach (var node in _graph.Values)
-        {
-            if (node != source)
-            {
-                dist[node] = Mathf.Infinity;
-                prev[node] = null;
-            }
+        // var unvisited = new List<Node>();
+        //
+        // var dist = new Dictionary<Node, float>();
+        // var prev = new Dictionary<Node, Node>();
+        //
 
-            if (!_dynamicObstacleNodes.Contains(node))
-            {
-                unvisited.Add(node);
-            }
-        }
-
-        while (unvisited.Count > 0)
-        {
-            //unvisited node with smallest distance
-            Node u = null;
-
-            foreach (var possibleU in unvisited)
-            {
-                if (u == null || dist[possibleU] < dist[u])
-                {
-                    u = possibleU;
-                }
-            }
-
-            if (u == target)
-            {
-                break;
-            }
-
-            unvisited.Remove(u);
-
-            foreach (var v in u.neighbours)
-            {
-                if (!_dynamicObstacleNodes.Contains(v) /*&& !_diagonalNeighbourObstacleNodes.Contains(v)*/)
-                {
-                    float alt = dist[u] + _map.CostToEnterTile(u, v);
-                    if (alt < dist[v])
-                    {
-                        dist[v] = alt;
-                        prev[v] = u;
-                    }
-                }
-            }
-        }
+        //
+        // dist[source] = 0;
+        // prev[source] = null;
+        //
+        // foreach (var node in _graph.Values)
+        // {
+        //     if (node != source)
+        //     {
+        //         dist[node] = Mathf.Infinity;
+        //         prev[node] = null;
+        //     }
+        //
+        //     if (!_dynamicObstacleNodes.Contains(node))
+        //     {
+        //         unvisited.Add(node);
+        //     }
+        // }
+        //
+        // while (unvisited.Count > 0)
+        // {
+        //     //unvisited node with smallest distance
+        //     Node u = null;
+        //
+        //     foreach (var possibleU in unvisited)
+        //     {
+        //         if (u == null || dist[possibleU] < dist[u])
+        //         {
+        //             u = possibleU;
+        //         }
+        //     }
+        //
+        //     if (u == target)
+        //     {
+        //         break;
+        //     }
+        //
+        //     unvisited.Remove(u);
+        //
+        //     foreach (var v in u.neighbours)
+        //     {
+        //         if (!_dynamicObstacleNodes.Contains(v) /*&& !_diagonalNeighbourObstacleNodes.Contains(v)*/)
+        //         {
+        //             float alt = dist[u] + _map.CostToEnterTile(u, v);
+        //             if (alt < dist[v])
+        //             {
+        //                 dist[v] = alt;
+        //                 prev[v] = u;
+        //             }
+        //         }
+        //     }
+        // }
 
         //we found shortest way to our target or there is no way to our target
         if (prev[target] == null)
@@ -139,8 +143,78 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
 
     public List<Node> GetAvailableNodes()
     {
-        Debug.Log("GetAvailableNodes not implemented for PathFindingGrapgh3x3");
-        return null;
+        //PathFindingUtils.GetAvailableNodes(_dynamicObstacleNodes, _graph.Values, _unitManager, _map);
+         var unit = _unitManager.GetSelectedUnitMovementSystem();
+        
+        if (unit.RemainingMovement == 0)
+        {
+            return new List<Node>();
+        }
+        
+        var unvisited = new List<Node>();
+        
+        var dist = new Dictionary<Node, float>();
+        var prev = new Dictionary<Node, Node>();
+        
+        Node source = _graph[(int) unit.tileX, (int) unit.tileY];
+        
+        dist[source] = 0;
+        prev[source] = null;
+        
+        foreach (var node in _graph.Values)
+        {
+            if (node != source)
+            {
+                dist[node] = Mathf.Infinity;
+                prev[node] = null;
+            }
+        
+            if (!_dynamicObstacleNodes.Contains(node) &&
+                !IsRemainingMovementEnoughWithCost(source, node, unit.RemainingMovement))
+            {
+                unvisited.Add(node);
+            }
+        }
+        
+        var availableNodes = new List<Node>();
+        
+        while (unvisited.Count > 0)
+        {
+            //unvisited node with smallest distance
+            Node u = null;
+        
+            foreach (var possibleU in unvisited)
+            {
+                if (u == null || dist[possibleU] < dist[u])
+                {
+                    u = possibleU;
+                }
+            }
+        
+            unvisited.Remove(u);
+            availableNodes.Add(u);
+        
+            foreach (var v in u.neighbours)
+            {
+                if (!_dynamicObstacleNodes.Contains(v))
+                {
+                    float alt = dist[u] + _map.CostToEnterTile(u, v);
+                    if (unit.RemainingMovement + 2 < alt && !float.IsPositiveInfinity(_map.CostToEnterTile(u, v)))
+                    {
+                        availableNodes.Remove(u);
+                    }
+        
+                    if (alt < dist[v] && alt <= unit.RemainingMovement)
+                    {
+                        dist[v] = alt;
+                        prev[v] = u;
+                    }
+                }
+            }
+        }
+        
+        // // map.ShowAvailableTilesToMove(availableNodes);
+        return availableNodes;
     }
 
     private void SetUnitObstacle1X1(float tileX, float tileY)

@@ -47,7 +47,7 @@ public class PathFindingUtils
         
     }
 
-    private static Dictionary<Node, Node> AStarSearch(Node source, Node target, int remainingMovement, List<Node> dynamicObstacleNodes, TileMap map)
+    public static Dictionary<Node, Node> AStarSearch(Node source, Node target, int remainingMovement, List<Node> dynamicObstacleNodes, TileMap map)
     {
         var cameFrom = new Dictionary<Node, Node>();
         var costSoFar = new Dictionary<Node, float>();
@@ -183,7 +183,7 @@ public class PathFindingUtils
 //               !(target.x - source.x >= -remainingMovement);
 //    }
 
-    private static bool IsRemainingMovementEnoughWithCost(Node source, Node target, int remainingMovement)
+    public static bool IsRemainingMovementEnoughWithCost(Node source, Node target, int remainingMovement)
     {
         var delta = Math.Abs(source.y - target.y);
         return !(target.y - source.y <= remainingMovement) ||
