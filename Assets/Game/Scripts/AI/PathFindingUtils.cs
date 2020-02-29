@@ -5,21 +5,22 @@ using Zenject;
 
 public class PathFindingUtils
 {
-    public static void GeneratePathTo(int x, int y, List<Node> dynamicObstacleNodes, Node[,] graph, TileMap map,
+    public static void GeneratePathTo(Node source, Node target, List<Node> dynamicObstacleNodes, /*Node[,] graph,*/ TileMap map,
         UnitManager unitManager)
     {
         var unit = unitManager.GetSelectedUnitMovementSystem();
         unit.CurrentPath = null;
 
-        if (unit.RemainingMovement == 0 || !map.UnitCanEnterTile(x, y) ||
-            IsRemainingMovementEnoughWithCost(graph[(int) unit.tileX, (int) unit.tileY], graph[x, y],
-                unit.RemainingMovement))
-        {
-            return;
-        }
+        // if (unit.RemainingMovement == 0 || !map.UnitCanEnterTile(x, y) ||
+        //     IsRemainingMovementEnoughWithCost(graph[(int) unit.tileX, (int) unit.tileY], graph[x, y],
+        //         unit.RemainingMovement))
+        // if (!map.UnitCanEnterTile((int) x, (int) y))
+        // {
+        //     return;
+        // }
         
-        Node source = graph[(int) unit.tileX, (int) unit.tileY];
-        Node target = graph[x, y];
+        // Node source = graph[(int) unit.tileX, (int) unit.tileY];
+        // Node target = graph[x, y];
 
         var path = AStarSearch(source, target, unit.RemainingMovement, dynamicObstacleNodes, map);
 //        map.ShowAvailableTilesToMove(availableNodes);
@@ -91,17 +92,17 @@ public class PathFindingUtils
         return Math.Abs(a.x - b.x) + Math.Abs(a.y - b.y);
     }
 
-    public static List<Node> GetAvailableNodes(List<Node> dynamicObstacleNodes, Node[,] graph, UnitManager unitManager,
+    public static HashSet<Node> GetAvailableNodes(List<Node> dynamicObstacleNodes, Node[,] graph, UnitManager unitManager,
         TileMap map)
     {
         var unit = unitManager.GetSelectedUnitMovementSystem();
 
         if (unit.RemainingMovement == 0)
         {
-            return new List<Node>();
+            return new HashSet<Node>();
         }
 
-        var unvisited = new List<Node>();
+        var unvisited = new HashSet<Node>();
 
         var dist = new Dictionary<Node, float>();
         var prev = new Dictionary<Node, Node>();
@@ -126,7 +127,7 @@ public class PathFindingUtils
             }
         }
 
-        var availableNodes = new List<Node>();
+        var availableNodes = new HashSet<Node>();
 
         while (unvisited.Count > 0)
         {
@@ -146,7 +147,7 @@ public class PathFindingUtils
 
             foreach (var v in u.neighbours)
             {
-                if (!dynamicObstacleNodes.Contains(v))
+                if (!dynamicObstacleNodes.Contains(v) )
                 {
                     float alt = dist[u] + map.CostToEnterTile(u, v);
                     if (unit.RemainingMovement + 2 < alt && !float.IsPositiveInfinity(map.CostToEnterTile(u, v)))
@@ -164,8 +165,10 @@ public class PathFindingUtils
         }
 
         // map.ShowAvailableTilesToMove(availableNodes);
-        return availableNodes;
+        return availableNodes; 
     }
+    
+    
 
     public static void AddObstacleNode(float x, float y, List<Node> obstacles, Node[,] graph)
     {

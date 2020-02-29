@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Game.Scripts.Utils.Collections;
+using ModestTree;
 using UnityEngine;
 using Zenject;
 using static PathFindingUtils;
@@ -26,38 +27,94 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
         {
             return;
         }
+        var unit = _unitManager.GetSelectedUnitMovementSystem();
+        var source = _graph[unit.tileX, unit.tileY];
+        var target = GetAvailableTarget(x, y, _unitManager.SelectedUnit);
+        PathFindingUtils.GeneratePathTo(source, target, _dynamicObstacleNodes, _map, _unitManager);
+        //
+        //
+        //
+        // // float xf = x + ShiftFactor;
+        // // float yf = y + ShiftFactor;
+        //
+        // var target = GetAvailableTarget(x, y, _unitManager.SelectedUnit);
+        // if (target.neighbours.IsEmpty())
+        // {
+        //     return;
+        // }
+        //
+        // var unit = _unitManager.GetSelectedUnitMovementSystem();
+        // unit.CurrentPath = null;
+        //
+        // Node source = _graph[unit.tileX, unit.tileY];
+        // //Node target = _graph[xf, yf];
+        //
+        // var prev = AStarSearch(source, target, unit.RemainingMovement, _dynamicObstacleNodes, _map);
+        //
+        // //we found shortest way to our target or there is no way to our target
+        // if (prev[target] == null)
+        // {
+        //     //no way between our target and the source
+        //     return;
+        // }
+        //
+        // var currentPath = new List<Node>();
+        //
+        // Node curr = target;
+        //
+        // while (curr != null)
+        // {
+        //     currentPath.Add(curr);
+        //     curr = prev[curr];
+        // }
+        //
+        // currentPath.Reverse();
+        // unit.CurrentPath = currentPath;
+    }
 
+    private Node GetAvailableTarget(float x, float y, Unit unit)
+    {
+        var availableNodes = unit.GetComponentInChildren<MovementSystem>().availableNodesToMove;
         float xf = x + ShiftFactor;
         float yf = y + ShiftFactor;
-
-        var unit = _unitManager.GetSelectedUnitMovementSystem();
-        unit.CurrentPath = null;
-        
-        Node source = _graph[unit.tileX, unit.tileY];
-        Node target = _graph[xf, yf];
-
-        var prev = AStarSearch(source, target, unit.RemainingMovement, _dynamicObstacleNodes, _map);
-        
-        //we found shortest way to our target or there is no way to our target
-        if (prev[target] == null)
+        if (_graph.ContainsKey(xf+1, yf+1) && availableNodes.Contains(_graph[xf+1, yf+1]))
         {
-            //no way between our target and the source
-            return;
+            return _graph[xf, yf];
+        }
+        xf = x - ShiftFactor;
+        yf = y - ShiftFactor;
+        if (_graph.ContainsKey(xf-1, yf-1) && availableNodes.Contains(_graph[xf-1, yf-1]))
+        {
+            return _graph[xf, yf];
+        }
+        xf = x + ShiftFactor;
+        yf = y - ShiftFactor;
+        if (_graph.ContainsKey(xf, yf) && availableNodes.Contains(_graph[xf, yf]))
+        {
+            return _graph[xf, yf];
+        }
+        xf = x - ShiftFactor;
+        yf = y + ShiftFactor;
+        if (_graph.ContainsKey(xf, yf) && availableNodes.Contains(_graph[xf, yf]))
+        {
+            return _graph[xf, yf];
         }
 
-        var currentPath = new List<Node>();
-
-        Node curr = target;
-
-        while (curr != null)
-        {
-            currentPath.Add(curr);
-            curr = prev[curr];
-        }
-
-        currentPath.Reverse();
-        unit.CurrentPath = currentPath;
+        return new Node {x = -1, y = -1, neighbours = new List<Node>()};
     }
+
+    // private bool Unit2x2CanEnterTile(int x, int y)
+    // {
+    //     var canEnterMainTile = _map.UnitCanEnterTile(x, y);
+    //     if (canEnterMainTile)
+    //     {
+    //         return true;
+    //     }
+    //     else
+    //     {
+    //         
+    //     }
+    // }
 
     public void SetDynamicObstacleNodes()
     {
@@ -83,14 +140,14 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
         }
     }
 
-    public List<Node> GetAvailableNodes()
+    public HashSet<Node> GetAvailableNodes()
     {
         //PathFindingUtils.GetAvailableNodes(_dynamicObstacleNodes, _graph.Values, _unitManager, _map);
          var unit = _unitManager.GetSelectedUnitMovementSystem();
         
         if (unit.RemainingMovement == 0)
         {
-            return new List<Node>();
+            return new HashSet<Node>();
         }
         
         var unvisited = new List<Node>();
@@ -98,7 +155,7 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
         var dist = new Dictionary<Node, float>();
         var prev = new Dictionary<Node, Node>();
         
-        Node source = _graph[(int) unit.tileX, (int) unit.tileY];
+        Node source = _graph[unit.tileX, unit.tileY];
         
         dist[source] = 0;
         prev[source] = null;
@@ -118,7 +175,7 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
             }
         }
         
-        var availableNodes = new List<Node>();
+        var availableNodes = new HashSet<Node>();
         
         while (unvisited.Count > 0)
         {
@@ -156,7 +213,36 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
         }
         
         // // map.ShowAvailableTilesToMove(availableNodes);
-        return availableNodes;
+        return AddNodesForUnit2x2(availableNodes);
+    }
+
+    private HashSet<Node> AddNodesForUnit2x2(HashSet<Node> nodes)
+    {
+        var newAvailableNodes = new HashSet<Node>();
+        foreach (var node in nodes)
+        {
+            if (_map.UnitCanEnterNode(node.x, node.y))
+            {
+                newAvailableNodes.Add(node);
+                var newY = node.y + 1;
+                if (newY < _map.mapSizeY)
+                {
+                    newAvailableNodes.Add(_graph[node.x, newY]);
+                }
+                var newX = node.x + 1;
+                if (newX < _map.mapSizeX)
+                {
+                    newAvailableNodes.Add(_graph[newX, node.y]);
+                }
+
+                if (newX < _map.mapSizeX && newY < _map.mapSizeY)
+                {
+                    newAvailableNodes.Add(_graph[node.x+1, node.y+1]);
+                } 
+            }
+        }
+
+        return newAvailableNodes;
     }
 
     private void SetUnitObstacle1X1(float tileX, float tileY)

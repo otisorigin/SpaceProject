@@ -5,5 +5,5 @@ public interface IPathFindingGraph
     void GeneratePathTo(float x, float y);
     void SetDynamicObstacleNodes();
     List<Node> GetDynamicObstacleNodes();
-    List<Node> GetAvailableNodes();
+    HashSet<Node> GetAvailableNodes();
 }

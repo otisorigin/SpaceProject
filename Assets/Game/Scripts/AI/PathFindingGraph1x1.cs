@@ -13,7 +13,14 @@ public class PathFindingGraph1x1 : MonoBehaviour, IPathFindingGraph
 
     public void GeneratePathTo(float x, float y)
     {
-        PathFindingUtils.GeneratePathTo((int) x, (int) y, _dynamicObstacleNodes, _graph, _map, _unitManager);
+        if (!_map.UnitCanEnterTile((int) x, (int) y))
+        {
+            return;
+        }
+        var unit = _unitManager.GetSelectedUnitMovementSystem();
+        var source = _graph[(int) unit.tileX, (int) unit.tileY];
+        var target = _graph[(int) x, (int) y];
+        PathFindingUtils.GeneratePathTo(source, target, _dynamicObstacleNodes, _map, _unitManager);
     }
 
     public void SetDynamicObstacleNodes()
@@ -53,7 +60,7 @@ public class PathFindingGraph1x1 : MonoBehaviour, IPathFindingGraph
         return _dynamicObstacleNodes;
     }
 
-    public List<Node> GetAvailableNodes()
+    public HashSet<Node> GetAvailableNodes()
     {
         //_unitManager.SelectedUnit.availableNodesToMove = nodes;
         //_map.ShowAvailableTilesToMove(nodes);

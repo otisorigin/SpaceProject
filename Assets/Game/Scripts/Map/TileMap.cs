@@ -80,7 +80,7 @@ public class TileMap : MonoBehaviour
         return cost;
     }
 
-    public void ShowAvailablePathTiles(List<Node> nodes)
+    public void ShowAvailablePathTiles(HashSet<Node> nodes)
     {    
         ClearAvailablePathTiles();
         foreach (var node in nodes)

@@ -2344,7 +2344,7 @@ MonoBehaviour:
   - {fileID: 2014139911}
   - {fileID: 6264105734240577820}
   - {fileID: 503039343}
-  UnitSpawnZoneLength: 7
+  UnitSpawnZoneLength: 5
 --- !u!4 &2100395087
 Transform:
   m_ObjectHideFlags: 0
@@ -2951,6 +2951,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 3229137049535837778, guid: 1309337f37a25af48b902b400b3a659a,
         type: 3}
+    - target: {fileID: 4453433788844581997, guid: d9a87fcc6d481964e90794a737d6bd39,
+        type: 3}
+      propertyPath: minAsteroidsNumber
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 4453433788844581996, guid: d9a87fcc6d481964e90794a737d6bd39,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3086,6 +3091,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3404498847597962475, guid: ff532125de46be34c82b4f0099a8a211,
+        type: 3}
+      propertyPath: travelDistance
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff532125de46be34c82b4f0099a8a211, type: 3}

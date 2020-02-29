@@ -12,7 +12,7 @@ public class MovementSystem : MonoBehaviour
     public List<Node> CurrentPath { get; set; }
     public float tileX { get; set; }
     public float tileY { get; set; }
-    public List<Node> availableNodesToMove { get; set; }
+    public HashSet<Node> availableNodesToMove { get; set; }
 
     public bool IsMoving { get; set; }
 
