@@ -19,12 +19,13 @@ public class PathFindingGraph3x3 : MonoBehaviour, IPathFindingGraph
         {
             return;
         }
+
         var unit = _unitManager.GetSelectedUnitMovementSystem();
         var source = _graph[(int) unit.tileX, (int) unit.tileY];
-        var target = GetAvailableTarget(x, y, _unitManager.SelectedUnit);//_graph[(int) x, (int) y];
+        var target = GetAvailableTarget(x, y, _unitManager.SelectedUnit); //_graph[(int) x, (int) y];
         PathFindingUtils.GeneratePathTo(source, target, _dynamicObstacleNodes, _map, _unitManager);
     }
-    
+
     private Node GetAvailableTarget(float x, float y, Unit unit)
     {
         var availableNodes = unit.GetComponentInChildren<MovementSystem>().availableNodesToMove;
@@ -32,128 +33,89 @@ public class PathFindingGraph3x3 : MonoBehaviour, IPathFindingGraph
         var sizeY = _map.mapSizeY;
         if (x.Equals(0) && y.Equals(0))
         {
-            return _graph[(int) x+1, (int) y+1];
+            return _graph[(int) x + 1, (int) y + 1];
         }
+        
         if (x.Equals(sizeX) && x.Equals(sizeY))
         {
-            return _graph[(int) x-1, (int) y-1];
+            return _graph[(int) x - 1, (int) y - 1];
         }
+        
         if (x.Equals(0))
         {
-            return _graph[(int) x+1, (int) y];
+            return _graph[(int) x + 1, (int) y];
         }
+        
         if (y.Equals(0))
         {
-            return _graph[(int) x, (int) y+1];
+            return _graph[(int) x, (int) y + 1];
         }
+        
         if (x.Equals(sizeX))
         {
-            return _graph[(int) x-1, (int) y];
+            return _graph[(int) x - 1, (int) y];
         }
+        
         if (y.Equals(sizeY))
         {
-            return _graph[(int) x, (int) y-1];
+            return _graph[(int) x, (int) y - 1];
         }
+        
         var isTopRightCorner = !availableNodes.Contains(_graph[(int) x + 1, (int) y]) &&
-                                !availableNodes.Contains(_graph[(int) x, (int) y + 1]);
+                               !availableNodes.Contains(_graph[(int) x, (int) y + 1]);
         if (isTopRightCorner)
         {
-            return _graph[(int) x-1, (int) y-1]; 
+            return _graph[(int) x - 1, (int) y - 1];
         }
+        
         var isBottomLeftCorner = !availableNodes.Contains(_graph[(int) x - 1, (int) y]) &&
                                  !availableNodes.Contains(_graph[(int) x, (int) y - 1]);
         if (isBottomLeftCorner)
         {
-            return _graph[(int) x+1, (int) y+1]; 
+            return _graph[(int) x + 1, (int) y + 1];
         }
+        
         var isTopLeftCorner = !availableNodes.Contains(_graph[(int) x, (int) y + 1]) &&
                               !availableNodes.Contains(_graph[(int) x - 1, (int) y]);
         if (isTopLeftCorner)
         {
-            return _graph[(int) x+1, (int) y-1]; 
+            return _graph[(int) x + 1, (int) y - 1];
         }
-        var isBottomRightCorner = !availableNodes.Contains(_graph[(int) x+1, (int) y]) &&
-                                  !availableNodes.Contains(_graph[(int) x, (int) y-1]);
+        
+        var isBottomRightCorner = !availableNodes.Contains(_graph[(int) x + 1, (int) y]) &&
+                                  !availableNodes.Contains(_graph[(int) x, (int) y - 1]);
         if (isBottomRightCorner)
         {
-            return _graph[(int) x-1, (int) y+1]; 
+            return _graph[(int) x - 1, (int) y + 1];
         }
+        
         var isTopBorder = !availableNodes.Contains(_graph[(int) x, (int) y + 1]);
         if (isTopBorder)
         {
-            return _graph[(int) x, (int) y-1];
+            return _graph[(int) x, (int) y - 1];
         }
+        
         var isBottomBorder = !availableNodes.Contains(_graph[(int) x, (int) y - 1]);
         if (isBottomBorder)
         {
-            return _graph[(int) x, (int) y+1];
+            return _graph[(int) x, (int) y + 1];
         }
-        var isLeftBorder = !availableNodes.Contains(_graph[(int) x-1, (int) y]);
+        
+        var isLeftBorder = !availableNodes.Contains(_graph[(int) x - 1, (int) y]);
         if (isLeftBorder)
         {
-            return _graph[(int) x+1, (int) y];
+            return _graph[(int) x + 1, (int) y];
         }
-        var isRightBorder = !availableNodes.Contains(_graph[(int) x+1, (int) y]);
+        
+        var isRightBorder = !availableNodes.Contains(_graph[(int) x + 1, (int) y]);
         if (isRightBorder)
         {
-            return _graph[(int) x-1, (int) y];
-        }
-        if (availableNodes.Contains(_graph[(int)x, (int)y]))
-        {
-            return _graph[(int) x, (int) y];
-        }
-    
-        return new Node {x = -1, y = -1, neighbours = new List<Node>()};
-    }
-
-    private bool IsTileAvailableFor3x3(int tileX, int tileY, HashSet<Node> availableNodes)
-    {
-        int startX = 0;
-        int startY = 0;
-        int finishX;
-        int finishY;
-        int unitScale = 3;
-        if (tileX != 0)
-        {
-            startX = tileX - 1;
-            finishX = startX + unitScale;
-        }
-        else
-        {
-            finishX = startX + unitScale;
+            return _graph[(int) x - 1, (int) y];
         }
 
-        if (tileY != 0)
-        {
-            startY = tileY - 1;
-            finishY = startY + unitScale;
-        }
-        else
-        {
-            finishY = startY + unitScale;
-        }
-
-        if (tileY == _map.mapSizeY - 1)
-        {
-            finishY = _map.mapSizeY;
-        }
-
-        if (tileX == _map.mapSizeX - 1)
-        {
-            finishX = _map.mapSizeX;
-        }
-
-        for (int i = startY; i < finishY; i++)
-        {
-            for (int j = startX; j < finishX; j++)
-            {
-                if (!availableNodes.Contains(_graph[tileX, tileY]))
-                {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return availableNodes.Contains(_graph[(int) x, (int) y])
+            ? _graph[(int) x, (int) y]
+            : new Node {x = -1, y = -1, neighbours = new List<Node>()};
     }
 
     public void SetDynamicObstacleNodes()
@@ -388,11 +350,11 @@ public class PathFindingGraph3x3 : MonoBehaviour, IPathFindingGraph
 
     public HashSet<Node> GetAvailableNodes()
     {
-        var availableNodes =  PathFindingUtils.GetAvailableNodes(_dynamicObstacleNodes, _graph, _unitManager, _map);
+        var availableNodes = PathFindingUtils.GetAvailableNodes(_dynamicObstacleNodes, _graph, _unitManager, _map);
         return AddNodesForUnit3x3(availableNodes);
         // return  PathFindingUtils.GetAvailableNodes(_dynamicObstacleNodes, _graph, _unitManager, _map);
     }
-    
+
     private HashSet<Node> AddNodesForUnit3x3(HashSet<Node> nodes)
     {
         var newAvailableNodes = new HashSet<Node>();
@@ -403,13 +365,14 @@ public class PathFindingGraph3x3 : MonoBehaviour, IPathFindingGraph
 
         return newAvailableNodes;
     }
-    
+
     private void AddNodesForUnit3x3InCollection(int tileX, int tileY, HashSet<Node> nodes)
     {
         if (!_map.UnitCanEnterTile(tileX, tileY, 3))
         {
             return;
         }
+
         int startX = 0;
         int startY = 0;
         int finishX;

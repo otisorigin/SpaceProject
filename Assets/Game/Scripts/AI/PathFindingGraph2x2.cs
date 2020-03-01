@@ -23,7 +23,7 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
 
     public void GeneratePathTo(float x, float y)
     {
-        if (!_map.UnitCanEnterTile((int) x, (int) y))
+        if (!_map.UnitCanEnterTile((int)x,(int)y))
         {
             return;
         }
@@ -31,90 +31,63 @@ public class PathFindingGraph2x2 : MonoBehaviour, IPathFindingGraph
         var source = _graph[unit.tileX, unit.tileY];
         var target = GetAvailableTarget(x, y, _unitManager.SelectedUnit);
         PathFindingUtils.GeneratePathTo(source, target, _dynamicObstacleNodes, _map, _unitManager);
-        //
-        //
-        //
-        // // float xf = x + ShiftFactor;
-        // // float yf = y + ShiftFactor;
-        //
-        // var target = GetAvailableTarget(x, y, _unitManager.SelectedUnit);
-        // if (target.neighbours.IsEmpty())
-        // {
-        //     return;
-        // }
-        //
-        // var unit = _unitManager.GetSelectedUnitMovementSystem();
-        // unit.CurrentPath = null;
-        //
-        // Node source = _graph[unit.tileX, unit.tileY];
-        // //Node target = _graph[xf, yf];
-        //
-        // var prev = AStarSearch(source, target, unit.RemainingMovement, _dynamicObstacleNodes, _map);
-        //
-        // //we found shortest way to our target or there is no way to our target
-        // if (prev[target] == null)
-        // {
-        //     //no way between our target and the source
-        //     return;
-        // }
-        //
-        // var currentPath = new List<Node>();
-        //
-        // Node curr = target;
-        //
-        // while (curr != null)
-        // {
-        //     currentPath.Add(curr);
-        //     curr = prev[curr];
-        // }
-        //
-        // currentPath.Reverse();
-        // unit.CurrentPath = currentPath;
     }
 
     private Node GetAvailableTarget(float x, float y, Unit unit)
     {
         var availableNodes = unit.GetComponentInChildren<MovementSystem>().availableNodesToMove;
+        var sizeX = _map.mapSizeX;
+        var sizeY = _map.mapSizeY;
         float xf = x + ShiftFactor;
         float yf = y + ShiftFactor;
-        if (_graph.ContainsKey(xf+1, yf+1) && availableNodes.Contains(_graph[xf+1, yf+1]))
+
+        if (!availableNodes.Contains(_graph[xf, yf]))
         {
-            return _graph[xf, yf];
+            return GetEmptyNode();
         }
-        xf = x - ShiftFactor;
-        yf = y - ShiftFactor;
-        if (_graph.ContainsKey(xf-1, yf-1) && availableNodes.Contains(_graph[xf-1, yf-1]))
+
+        if (y.Equals(sizeY))
         {
-            return _graph[xf, yf];
+            return _graph[xf, yf - 1];
         }
-        xf = x + ShiftFactor;
-        yf = y - ShiftFactor;
-        if (_graph.ContainsKey(xf, yf) && availableNodes.Contains(_graph[xf, yf]))
+        if (x.Equals(sizeX) && x.Equals(sizeY))
         {
-            return _graph[xf, yf];
+            return _graph[xf - 1, yf - 1];
         }
-        xf = x - ShiftFactor;
-        yf = y + ShiftFactor;
+        var isTopRightCorner = x < sizeX && y < sizeY && !availableNodes.Contains(_graph[xf + 1, yf]) &&
+                               !availableNodes.Contains(_graph[xf, yf + 1]);
+        if (isTopRightCorner)
+        {
+            return _graph[xf-1, yf-1];
+        }
+        var isTopLeftCorner = x > 0 && y < sizeY && !availableNodes.Contains(_graph[xf, yf + 1]) &&
+                              !availableNodes.Contains(_graph[xf - 1, yf]);
+        if (isTopLeftCorner)
+        {
+            return _graph[xf, yf-1];
+        }
+        var isTopBorder = !availableNodes.Contains(_graph[xf, yf + 1]);
+        if (isTopBorder)
+        {
+            return _graph[xf, yf-1];
+        }
+        var isRightBorder = !availableNodes.Contains(_graph[xf + 1, yf]);
+        if (isRightBorder)
+        {
+            return _graph[xf-1, yf];
+        }
         if (_graph.ContainsKey(xf, yf) && availableNodes.Contains(_graph[xf, yf]))
         {
             return _graph[xf, yf];
         }
 
-        return new Node {x = -1, y = -1, neighbours = new List<Node>()};
+        return GetEmptyNode();
     }
 
-    // private bool Unit2x2CanEnterTile(int x, int y)
-    // {
-    //     var canEnterMainTile = _map.UnitCanEnterTile(x, y);
-    //     if (canEnterMainTile)
-    //     {
-    //         return true;
-    //     }
-    //     else
-    //     {
-    //         
-    //     }
-    // }
+    private static Node GetEmptyNode()
+    {
+        return new Node {x = -1, y = -1, neighbours = new List<Node>()};
+    }
 
     public void SetDynamicObstacleNodes()
     {

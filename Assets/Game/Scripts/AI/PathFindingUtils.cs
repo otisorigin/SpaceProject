@@ -8,6 +8,7 @@ public class PathFindingUtils
     public static void GeneratePathTo(Node source, Node target, List<Node> dynamicObstacleNodes, /*Node[,] graph,*/ TileMap map,
         UnitManager unitManager)
     {
+        Debug.Log("Target X: " + target.x + " Y: " + target.y);
         var unit = unitManager.GetSelectedUnitMovementSystem();
         unit.CurrentPath = null;
 
@@ -96,7 +97,7 @@ public class PathFindingUtils
         TileMap map)
     {
         var unit = unitManager.GetSelectedUnitMovementSystem();
-
+        var unitScale = unitManager.SelectedUnit.GetScale();
         if (unit.RemainingMovement == 0)
         {
             return new HashSet<Node>();
@@ -147,7 +148,7 @@ public class PathFindingUtils
 
             foreach (var v in u.neighbours)
             {
-                if (!dynamicObstacleNodes.Contains(v) )
+                if (!dynamicObstacleNodes.Contains(v) && map.UnitCanEnterTile((int)u.x, (int)u.y, unitScale))
                 {
                     float alt = dist[u] + map.CostToEnterTile(u, v);
                     if (unit.RemainingMovement + 2 < alt && !float.IsPositiveInfinity(map.CostToEnterTile(u, v)))
