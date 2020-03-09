@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Zenject;
+using Random = UnityEngine.Random;
 
 public class UnitManager : MonoBehaviour
 {
@@ -54,8 +55,8 @@ public class UnitManager : MonoBehaviour
     private void SetPlayersUnits()
     {
         //TODO логика выбора юнитов игроками
-        firstPlayerUnitGroup = new Unit[10];
-        secondPlayerUnitGroup = new Unit[10];
+        firstPlayerUnitGroup = new Unit[3];
+        secondPlayerUnitGroup = new Unit[3];
         firstPlayerUnitGroup[0] = units[0];
         //var middleUnit = units[1];
         //middleUnit.tileX = middleUnit.tileX + 0.5f;
@@ -82,7 +83,6 @@ public class UnitManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     public bool IsThisUnitSelected(Unit unit)
@@ -116,8 +116,18 @@ public class UnitManager : MonoBehaviour
     public void UnitFinishMovementPerTurn()
     {
         //StartCoroutine(TimeoutCoroutine());
-        SelectedUnit = null;
-        _manager.ChangeGameState(GameManager.GameState.UnitSelection);
+        if (GetSelectedUnitMovementSystem().RemainingMovement == 0)
+        {
+            SelectedUnit = null;
+            SetGameStateAfterUnitMovement();
+        }
+    }
+
+    private bool isAllUnitsFinishMovement()
+    {
+        return _manager.CurrentPlayer.UnitGroup
+            .ToList()
+            .All(unit => unit.GetComponentInChildren<MovementSystem>().RemainingMovement == 0);
     }
 
     public void GeneratePathTo(int x, int y)
@@ -128,5 +138,35 @@ public class UnitManager : MonoBehaviour
     public MovementSystem GetSelectedUnitMovementSystem()
     {
         return SelectedUnit.GetComponentInChildren<MovementSystem>();
+    }
+
+    public void SelectedUnitDefenceMode()
+    {
+        GetSelectedUnitMovementSystem().RemainingMovement = 0;
+        GetSelectedUnitMovementSystem().ClearCurrentPath();
+        _map.ClearAvailablePathTiles();
+        SetGameStateAfterUnitMovement();
+        SelectRandomUnit();
+    }
+
+    private void SetGameStateAfterUnitMovement()
+    {
+        _manager.ChangeGameState(isAllUnitsFinishMovement()
+            ? GameManager.GameState.EndOfTurn
+            : GameManager.GameState.UnitSelection);
+    }
+
+    public void SelectRandomUnit(Unit excludeUnit = null)
+    {
+        var availableUnits = firstPlayerUnitGroup
+            .Where(unit => !unit.Equals(excludeUnit) && unit.GetComponentInChildren<MovementSystem>().RemainingMovement != 0).ToArray();
+        if (availableUnits.Length != 0)
+        {
+            var selectedUnit = availableUnits[Random.Range(0, availableUnits.Length)];
+            if (selectedUnit != null)
+            {
+                UnitSelect(selectedUnit);
+            }
+        }
     }
 }

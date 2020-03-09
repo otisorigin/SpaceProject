@@ -17,7 +17,7 @@ public class MovementSystem : MonoBehaviour
     public bool IsMoving { get; set; }
 
     // How far this unit can move in one turn. Note that some tiles cost extra.
-    public int RemainingMovement { get; private set; }
+    public int RemainingMovement { get; set; }
 
     private int _travelDistance;
     private float _speed;

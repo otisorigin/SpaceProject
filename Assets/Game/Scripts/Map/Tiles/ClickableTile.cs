@@ -22,7 +22,7 @@ public class ClickableTile : MonoBehaviour
 
     void OnMouseOver()
     {
-        Debug.Log("Mouse over x: " + tileX + " y: " + tileY);
+        //Debug.Log("Mouse over x: " + tileX + " y: " + tileY);
         if (Map != null && GameManager.CurrentState == GameManager.GameState.UnitMovement &&
             UnitManager.SelectedUnit != null &&
             !UnitManager.GetSelectedUnitMovementSystem().isPathSet && !UnitManager.GetSelectedUnitMovementSystem().IsMoving)

@@ -91,7 +91,7 @@ public class TileMap : MonoBehaviour
         }
     }
 
-    private void ClearAvailablePathTiles()
+    public void ClearAvailablePathTiles()
     {
         foreach (var clickableTile in _pathTilePool)
         {

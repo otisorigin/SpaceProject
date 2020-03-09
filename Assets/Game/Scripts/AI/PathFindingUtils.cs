@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Zenject;
 
 public class PathFindingUtils
 {
@@ -11,20 +10,7 @@ public class PathFindingUtils
         Debug.Log("Target X: " + target.x + " Y: " + target.y);
         var unit = unitManager.GetSelectedUnitMovementSystem();
         unit.CurrentPath = null;
-
-        // if (unit.RemainingMovement == 0 || !map.UnitCanEnterTile(x, y) ||
-        //     IsRemainingMovementEnoughWithCost(graph[(int) unit.tileX, (int) unit.tileY], graph[x, y],
-        //         unit.RemainingMovement))
-        // if (!map.UnitCanEnterTile((int) x, (int) y))
-        // {
-        //     return;
-        // }
-        
-        // Node source = graph[(int) unit.tileX, (int) unit.tileY];
-        // Node target = graph[x, y];
-
         var path = AStarSearch(source, target, unit.RemainingMovement, dynamicObstacleNodes, map);
-//        map.ShowAvailableTilesToMove(availableNodes);
 
         //we found shortest way to our target or there is no way to our target
         if (path[target] == null)
@@ -45,8 +31,6 @@ public class PathFindingUtils
 
         currentPath.Reverse();
         unit.CurrentPath = currentPath;
-        //map.ShowAvailableTilesToMove(availableNodes);
-        
     }
 
     public static Dictionary<Node, Node> AStarSearch(Node source, Node target, int remainingMovement, List<Node> dynamicObstacleNodes, TileMap map)
@@ -165,7 +149,6 @@ public class PathFindingUtils
             }
         }
 
-        // map.ShowAvailableTilesToMove(availableNodes);
         return availableNodes; 
     }
     
@@ -178,14 +161,6 @@ public class PathFindingUtils
         obstacles.Add(graph[(int) (x - 0.5f), (int) (y + 0.5f)]);
         obstacles.Add(graph[(int) (x + 0.5f), (int) (y - 0.5f)]);
     }
-
-//    private static bool IsRemainingMovementEnough(Node source, Node target, int remainingMovement)
-//    {
-//        return !(target.y - source.y <= remainingMovement) ||
-//               !(target.x - source.x <= remainingMovement) ||
-//               !(target.y - source.y >= -remainingMovement) ||
-//               !(target.x - source.x >= -remainingMovement);
-//    }
 
     public static bool IsRemainingMovementEnoughWithCost(Node source, Node target, int remainingMovement)
     {

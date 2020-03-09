@@ -6,6 +6,7 @@ public class CoreInstaller : MonoInstaller<CoreInstaller>
     public TileMap mapPrefab;
     public CursorManager cursorManagerPrefab;
     public SelectionManager selectionManager;
+    public GameUIController gameUiController;
     public UnitManager unitManager;
     public PathFindingGraph1x1 graph1X1;
     public PathFindingGraph2x2 graph2X2;
@@ -18,6 +19,7 @@ public class CoreInstaller : MonoInstaller<CoreInstaller>
         Container.Bind<HealthSystem>().AsSingle();
         Container.Bind<ClickableTile>().AsSingle();
         Container.Bind<SelectedUnitIndicator>().AsSingle();
+        Container.Bind<GameUIController>().FromComponentInNewPrefab(gameUiController).AsSingle();
         Container.Bind<TileMap>().FromComponentInNewPrefab(mapPrefab).AsSingle();
         Container.Bind<CursorManager>().FromComponentInNewPrefab(cursorManagerPrefab).AsSingle();
         Container.Bind<SelectionManager>().FromInstance(selectionManager).AsSingle();

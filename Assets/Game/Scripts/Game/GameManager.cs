@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Zenject;
@@ -10,12 +9,15 @@ public class GameManager : MonoBehaviour
     private Player _player2;
     [Inject] private UnitManager _unitManager;
     [Inject] private TileMap _tileMap;
+    [Inject] private GameUIController _uiController;
     public Player CurrentPlayer { get; private set; }
     
-    public enum GameState {UnitSelection, UnitMovement, UnitAttack};
+    public enum GameState {UnitSelection, UnitMovement, UnitAttack, EndOfTurn};
     
     public event Action OnNextTurn = delegate { };
-
+    public event Action OnEndOfTurnState = delegate { };
+    public event Action OnUnitMovementState = delegate { };
+    public event Action OnUnitSelectionState = delegate { };
     public GameState CurrentState { get; private set; }
 
     private void Awake()
@@ -25,6 +27,7 @@ public class GameManager : MonoBehaviour
         _player1 = new Player("1", _unitManager.firstPlayerUnitGroup);
         _player2 = new Player("2", _unitManager.secondPlayerUnitGroup);
         CurrentPlayer = _player1;
+        _uiController.InitUiController();
         ChangeGameState(GameState.UnitSelection);
         //SetUnitPosition();
         
@@ -38,31 +41,29 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void ButtonAttack()
-    {
-        //TODO Change state from UnitMovement to UnitAttack
-    }
-
-    public void ButtonResetPath()
-    {
-        if (_unitManager.SelectedUnit != null)
-        {
-            var unit = _unitManager.GetSelectedUnitMovementSystem();
-            unit.CurrentPath = null;
-            unit.isPathSet = false;
-        }
-    }
-    
-    public void ButtonNextTurn()
+    public void NextTurn()
     {
         Debug.Log("Current player = " + CurrentPlayer.Name);
         CurrentPlayer = CurrentPlayer == _player1 ? _player2 : _player1;
+        ChangeGameState(GameState.UnitSelection);
         OnNextTurn();
     }
 
     public void ChangeGameState(GameState newState)
     {
         CurrentState = newState;
+        if (newState.Equals(GameState.EndOfTurn))
+        {
+            OnEndOfTurnState();
+        }
+        if (newState.Equals(GameState.UnitMovement))
+        {
+            OnUnitMovementState();
+        }
+        if (newState.Equals(GameState.UnitSelection))
+        {
+            OnUnitSelectionState();
+        }
         Debug.Log("Current game state: " + CurrentState);
     }
 
@@ -72,17 +73,4 @@ public class GameManager : MonoBehaviour
     }
 
 
-    
-//    private void SetUnitPosition()
-//    {
-//        if (SelectedUnit != null)
-//        {
-//            var unit = SelectedUnit.GetComponent<Unit>();
-//            unit.tileX = (int) unit.transform.position.x;
-//            unit.tileY = (int) unit.transform.position.y;
-//            // unit.map = this;
-//        }
-//    }
-
- 
 }
