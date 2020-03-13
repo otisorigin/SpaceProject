@@ -11,6 +11,7 @@ public class CoreInstaller : MonoInstaller<CoreInstaller>
     public PathFindingGraph1x1 graph1X1;
     public PathFindingGraph2x2 graph2X2;
     public PathFindingGraph3x3 graph3X3;
+    public CameraController cameraController;
 
     public override void InstallBindings()
     {
@@ -19,7 +20,9 @@ public class CoreInstaller : MonoInstaller<CoreInstaller>
         Container.Bind<HealthSystem>().AsSingle();
         Container.Bind<ClickableTile>().AsSingle();
         Container.Bind<SelectedUnitIndicator>().AsSingle();
+        //Container.Bind<CameraManager>().AsSingle();
         Container.Bind<GameUIController>().FromComponentInNewPrefab(gameUiController).AsSingle();
+        Container.Bind<CameraController>().FromComponentInNewPrefab(cameraController).AsSingle();
         Container.Bind<TileMap>().FromComponentInNewPrefab(mapPrefab).AsSingle();
         Container.Bind<CursorManager>().FromComponentInNewPrefab(cursorManagerPrefab).AsSingle();
         Container.Bind<SelectionManager>().FromInstance(selectionManager).AsSingle();

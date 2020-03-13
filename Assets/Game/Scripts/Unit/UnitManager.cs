@@ -15,6 +15,7 @@ public class UnitManager : MonoBehaviour
 
     [Inject] private GameManager _manager;
     [Inject] private TileMap _map;
+    [Inject] private CameraController _camera;
     public int UnitSpawnZoneLength;
 
     public event Action<Unit> OnUnitSelect = delegate { };
@@ -101,6 +102,7 @@ public class UnitManager : MonoBehaviour
     public void UnitSelect(Unit selectedUnit)
     {
         Debug.Log("Unit selected");
+        _camera.MoveCameraTo(selectedUnit.transform.position);
         if (SelectedUnit != null)
         {
             GetSelectedUnitMovementSystem().ClearCurrentPath();
@@ -167,6 +169,11 @@ public class UnitManager : MonoBehaviour
             {
                 UnitSelect(selectedUnit);
             }
+        }
+
+        if (SelectedUnit != null && SelectedUnit == excludeUnit)
+        {
+            _camera.MoveCameraTo(excludeUnit.transform.position);
         }
     }
 }

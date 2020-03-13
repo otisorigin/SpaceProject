@@ -24,8 +24,6 @@ public class CursorManager : MonoBehaviour
 
         RaycastHit hitInfo;
 
-//        RaycastHit[] hits = Physics.RaycastAll(ray);
-
         if (Physics.Raycast(ray, out hitInfo))
         {
 //            Debug.Log("Mouse is over: " + hitInfo.collider.name + " " + hitInfo.transform.root.gameObject.name);

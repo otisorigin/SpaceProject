@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [Inject] private UnitManager _unitManager;
     [Inject] private TileMap _tileMap;
     [Inject] private GameUIController _uiController;
+    //[Inject] private CameraManager _camera;
     public Player CurrentPlayer { get; private set; }
     
     public enum GameState {UnitSelection, UnitMovement, UnitAttack, EndOfTurn};
@@ -28,6 +29,7 @@ public class GameManager : MonoBehaviour
         _player2 = new Player("2", _unitManager.secondPlayerUnitGroup);
         CurrentPlayer = _player1;
         _uiController.InitUiController();
+       // _camera.InitCamera();
         ChangeGameState(GameState.UnitSelection);
         //SetUnitPosition();
         

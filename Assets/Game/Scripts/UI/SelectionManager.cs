@@ -12,7 +12,7 @@ public class SelectionManager : MonoBehaviour
 
     void Start()
     {
-        _unitTag = FindObjectOfType<Unit>().tag;
+        //_unitTag = FindObjectOfType<Unit>().tag;
         _circleMeshRenderer = transform.GetChild(0).GetComponent<MeshRenderer>();
         _circleMeshRenderer.enabled = false;
     }
@@ -27,7 +27,7 @@ public class SelectionManager : MonoBehaviour
         var selectedObject = _cursorManager.SelectedObject;
         if ((_unitManager.SelectedUnit == null ||
              !_unitManager.GetSelectedUnitMovementSystem().IsMoving) && selectedObject != null &&
-            selectedObject.CompareTag(_unitTag))
+            selectedObject.gameObject.CompareTag("Unit"))
         {
             var selectedUnit = selectedObject.GetComponent<Unit>();
             OnUnitHover(selectedUnit);
