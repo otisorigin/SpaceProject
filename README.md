@@ -49,7 +49,7 @@ Trello доска проекта: https://trello.com/b/jxXAc7aS/space-project
  - Старался по максимуму переносить логику из Update методов (вызываются на каждом Tick-е) на эвенты
 
 Использованные ресурсы:
- - Видеоурок Pathfinding 1x1 по алгоритму Дийкстры: https://www.youtube.com/watch?v=kYeTW2Zr8NA
+ - Видеоурок Pathfinding 1x1 по алгоритму Дейкстры: https://www.youtube.com/watch?v=kYeTW2Zr8NA
  - Видеоурок Unity Healthbar: https://www.youtube.com/watch?v=CA2snUe7ARM
  - Ассеты: https://opengameart.org/content/space-game-art-pack-extended
  
