@@ -1,5 +1,7 @@
 # SpaceProject
 
+![image](https://user-images.githubusercontent.com/29784234/132104531-22b2cd26-48f0-43be-8c25-62dfcc75f552.png)
+
 Pet-проект по реализации простой пошаговой стратегии в духе XCOM на Unity.
 
 Build на WebGL: https://otisorigin.github.io/SpaceProject-WebGL/
