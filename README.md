@@ -6,6 +6,8 @@ Build на WebGL: https://otisorigin.github.io/SpaceProject-WebGL/
 
 Trello доска проекта: https://trello.com/b/jxXAc7aS/space-project
 
+Исходный код проекта: https://github.com/otisorigin/SpaceProject/tree/master/Assets/Game/Scripts
+
 Ключевые особенности:
  - Графика 2D на спрайтах, вид сверху
  - 2 игрока, ходят по очереди
@@ -46,5 +48,8 @@ Trello доска проекта: https://trello.com/b/jxXAc7aS/space-project
  - При расчете пути на сетке графов учитываются статические препятствия (астероиды) и динамические препятствия (другие юниты)
  - Старался по максимуму переносить логику из Update методов (вызываются на каждом Tick-е) на эвенты
 
-//Использованные ресурсы
+Использованные ресурсы:
+ - Видеоурок Pathfinding 1x1 по алгоритму Дийкстры: https://www.youtube.com/watch?v=kYeTW2Zr8NA
+ - Видеоурок Unity Healthbar: https://www.youtube.com/watch?v=CA2snUe7ARM
+ - Ассеты: https://opengameart.org/content/space-game-art-pack-extended
  
