@@ -52,7 +52,7 @@ Technical aspects:
  - I tried to transfer logic from Update methods (called at each Tick) to events as much as possible
 
 Resources:
- - Videolesson Pathfinding 1x1 about Dijkstra algorithm: https://www.youtube.com/watch?v=kYeTW2Zr8NA
- - Videolesson Unity Healthbar: https://www.youtube.com/watch?v=CA2snUe7ARM
+ - (Videolesson) Pathfinding 1x1 using Dijkstra algorithm: https://www.youtube.com/watch?v=kYeTW2Zr8NA
+ - (Videolesson) Unity Healthbar: https://www.youtube.com/watch?v=CA2snUe7ARM
  - Assets: https://opengameart.org/content/space-game-art-pack-extended
  
