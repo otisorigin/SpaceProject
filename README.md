@@ -2,58 +2,57 @@
 
 ![image](https://user-images.githubusercontent.com/29784234/132104531-22b2cd26-48f0-43be-8c25-62dfcc75f552.png)
 
-Pet-проект по реализации простой пошаговой стратегии в духе XCOM на Unity.
+Pet-project to implement a simple XCOM-like turn-based strategy on Unity.
 
-Build на WebGL: https://otisorigin.github.io/SpaceProject-WebGL/
+Build on WebGL: https://otisorigin.github.io/SpaceProject-WebGL/
 
-Trello доска проекта: https://trello.com/b/jxXAc7aS/space-project
+Trello board: https://trello.com/b/jxXAc7aS/space-project
 
-Исходный код проекта: https://github.com/otisorigin/SpaceProject/tree/master/Assets/Game/Scripts
+Source code: https://github.com/otisorigin/SpaceProject/tree/master/Assets/Game/Scripts
 
-Ключевые особенности:
- - Графика 2D на спрайтах, вид сверху
- - 2 игрока, ходят по очереди
- - Поле симметричных размеров
- - 3 размера юнитов (по занимаемым клеткам) 1х1, 2х2, 3х3
- - 6 видов юнитов
+Key features:
+ - 2D Sprite graphics, top-down
+ - 2 players take turns
+ - 3 unit sizes (by occupied cells) 1x1, 2x2, 3x3
+ - 6 types of units
  
-Что реализовано: 
-   - Отображение сетки поля
-   - Динамически генерируемый бэкграунд перед боем (на фоне космоса динамически расставляются туманности и планеты)
-   - Динамически генерируемые препятствия на карте (астероеды) перед боем
-   - Подсветка юнитов при наведении курсора: синий (можно выбрать этот юнит), зеленый (выбранный юнит), красный (вражеский юнит)
-   - Выбор юнита для передвижения курсором с помощью мыши
-   - Передвижение камеры по карте клавишами W,A,S,D
-   - Приближение/отдаление камеры на Q/E
-   - При выборе юнита, доступная область хода обозначается желтым;
-   - У каждого юнита есть своя дальность хода
-   - Выбор траектории движения осуществляется передвижением курсора с помощью мыши
-   - При выборе пути траектория движения отображается на карте
-   - У игрока есть возможность не тратить сразу весь ход юнита, а пройти часть пути и затем переключится на другого юнита
-   - Если нет необходимости ходить юнитом или проходить всю возможную длину пути, можно задать ему режим обороны
-   - Есть возможность сбросить установленный путь в процессе движения юнита (кнопка Reset Path)
-   - Для выбора следующего доступного юнита есть кнопка (Next Unit)
-   - Завершение хода и переключение на следующего игрока
-   - Компонент здоровья и полоска HP у каждого юнита
-   - Полоски HP у дружественных юнитов подсвечиваются зелёным, а у вражеских красным
-   - 6 видов юнитов (без настроенных характеристик)
+Was implemented: 
+ - Field grid display
+ - Dynamically generated background before the battle (nebulae and planets are dynamically placed against the background of space)
+ - Dynamically generated obstacles on the map (asteroids) before the battle
+ - Highlighting units when hovering over: blue (you can select this unit), green (selected unit), red (enemy unit)
+ - Selecting a unit to move by cursor (mouse control)
+ - Move the camera around the map using the W, A, S, D keys
+ - Zoom in / out the camera on Q / E
+ - While selecting a unit, the available turn area is indicated in yellow;
+ - Each unit has its own range
+ - The choice of the trajectory of movement is carried out by moving the cursor with the mouse
+ - When choosing a path, the trajectory of movement is displayed on the map
+ - The player has the opportunity not to spend the entire turn of a unit at once, but to go part of the way and then switch to another unit
+ - If there is no need to move unit or go the entire possible length of the path, you can set it to the defense mode
+ - It is possible to reset the set path during the movement of the unit (Reset Path button)
+ - There is a button to select the next available unit (Next Unit)
+ - Ending a turn and switching to the next player
+ - Health component and HP bar for each unit
+ - The HP bars of friendly units are highlighted in green, and those of enemy units are highlighted in red
+ - 6 types of units (without tuned characteristics)
 
-Что осталось реализовать:
-   - Режим стрельбы
-   - Меню, интерфейсы
-   - Выбор комбинации юнитов из 6 штук перед боем каждым игроком
-   - Графические эффекты (эффект реактивных двигателей, эффекты стрельбы и т.д.)
+Need to be implemented:
+ - Fire mode
+ - Menu, UI
+ - Choosing a combination of 6 units before the battle by each player
+ - Graphic effects (jet engine effect, shooting effects, etc.)
  
- Технические аспекты:
- - Pathfinding на алгоритме A*
- - Сетки графов для юнитов трех размеров (1х1, 2х2, 3х3)
- - Подключен DI контейнер Zenject
- - 4 GameState: Выбор юнита (UnitSelection), Движение юнита (UnitMovement), Стрельба юнитом (UnitAttack), Конец хода игрока (EndOfTurn)
- - При расчете пути на сетке графов учитываются статические препятствия (астероиды) и динамические препятствия (другие юниты)
- - Старался по максимуму переносить логику из Update методов (вызываются на каждом Tick-е) на эвенты
+Technical aspects:
+ - Pathfinding based on A*
+ - Graph grid for 3 size of units (1х1, 2х2, 3х3)
+ - Used Zenject DI container
+ - 4 GameStates: Unit Selection, Unit Movement, Unit Attack, End Of Turn
+ - When calculating the path on the grid of graphs, static obstacles (asteroids) and dynamic obstacles (other units) are taken into account
+ - I tried to transfer logic from Update methods (called at each Tick) to events as much as possible
 
-Использованные ресурсы:
+Resources:
  - Видеоурок Pathfinding 1x1 по алгоритму Дейкстры: https://www.youtube.com/watch?v=kYeTW2Zr8NA
- - Видеоурок Unity Healthbar: https://www.youtube.com/watch?v=CA2snUe7ARM
- - Ассеты: https://opengameart.org/content/space-game-art-pack-extended
+ - Videolesson Unity Healthbar: https://www.youtube.com/watch?v=CA2snUe7ARM
+ - Assets: https://opengameart.org/content/space-game-art-pack-extended
  
