@@ -6,7 +6,7 @@ Pet-project to implement a simple XCOM-like turn-based strategy on Unity.
 
 Build on WebGL: https://otisorigin.github.io/SpaceProject-WebGL/
 
-Trello board: https://trello.com/b/jxXAc7aS/space-project
+Trello board (RU): https://trello.com/b/jxXAc7aS/space-project
 
 Source code: https://github.com/otisorigin/SpaceProject/tree/master/Assets/Game/Scripts
 
