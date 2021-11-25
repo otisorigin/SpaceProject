@@ -17,14 +17,14 @@ Key features:
  - 6 types of units
  
 Was implemented: 
- - Field grid display
- - Dynamically generated background before the battle (nebulae and planets are dynamically placed against the background of space)
+ - Displaying field grid
+ - Dynamically generated background before the battle (nebulae and planets are dynamically placed on the space background)
  - Dynamically generated obstacles on the map (asteroids) before the battle
  - Highlighting units when hovering over: blue (you can select this unit), green (selected unit), red (enemy unit)
- - Selecting a unit to move by cursor (mouse control)
+ - Selecting a unit by moving cursor (mouse control)
  - Move the camera around the map using the W, A, S, D keys
  - Zoom in / out the camera on Q / E
- - While selecting a unit, the available turn area is indicated in yellow;
+ - While selecting a unit, the available turn area is indicated as yellow;
  - Each unit has its own range
  - The choice of the trajectory of movement is carried out by moving the cursor with the mouse
  - When choosing a path, the trajectory of movement is displayed on the map
